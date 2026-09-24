@@ -1,0 +1,161 @@
+{
+ "rows": [
+  {
+   "phase": "idle-front",
+   "frames": 151,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "stir-band",
+   "frames": 190,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 50,
+   "over20": 1,
+   "over34": 1
+  },
+  {
+   "phase": "scroll     0",
+   "frames": 90,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 49.9,
+   "over20": 1,
+   "over34": 1
+  },
+  {
+   "phase": "scroll  1000",
+   "frames": 80,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 133.3,
+   "over20": 1,
+   "over34": 1
+  },
+  {
+   "phase": "scroll  2000",
+   "frames": 76,
+   "p50": 16.7,
+   "p95": 33.3,
+   "max": 66.7,
+   "over20": 4,
+   "over34": 1
+  },
+  {
+   "phase": "scroll  3000",
+   "frames": 76,
+   "p50": 16.7,
+   "p95": 33.4,
+   "max": 33.7,
+   "over20": 16,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  4000",
+   "frames": 79,
+   "p50": 16.7,
+   "p95": 33.2,
+   "max": 33.4,
+   "over20": 4,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  5000",
+   "frames": 78,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 33.3,
+   "over20": 2,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  6000",
+   "frames": 77,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  7000",
+   "frames": 135,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.9,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "loupe",
+   "frames": 231,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  }
+ ],
+ "loaf": [
+  {
+   "start": 12424.600000023842,
+   "dur": 70,
+   "block": 5.4,
+   "render": 55.10000002384186,
+   "style": 0,
+   "phase": "stir-band",
+   "y": 0,
+   "scripts": [
+    {
+     "dur": 55,
+     "fn": "u",
+     "src": "paper-Xk4qH_9y.js",
+     "inv": "FrameRequestCallback",
+     "fsl": 0
+    }
+   ]
+  },
+  {
+   "start": 16412,
+   "dur": 54.10000002384186,
+   "block": 0,
+   "render": 4.600000023841858,
+   "style": 0.10000002384185791,
+   "phase": "scroll-down",
+   "y": 546,
+   "scripts": []
+  },
+  {
+   "start": 17845,
+   "dur": 149.5,
+   "block": 88.3,
+   "render": 138.19999992847443,
+   "style": 0.19999992847442627,
+   "phase": "scroll-down",
+   "y": 1629,
+   "scripts": [
+    {
+     "dur": 137,
+     "fn": "u",
+     "src": "paper-Xk4qH_9y.js",
+     "inv": "FrameRequestCallback",
+     "fsl": 2
+    }
+   ]
+  },
+  {
+   "start": 18871.100000023842,
+   "dur": 56,
+   "block": 0,
+   "render": 2,
+   "style": 0.10000002384185791,
+   "phase": "scroll-down",
+   "y": 2288,
+   "scripts": []
+  }
+ ]
+}

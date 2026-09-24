@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- @include head.html -->
+  <title data-i18n="mdTitle">How this sheet was made. Stefano Doko</title>
+  <meta name="description" data-i18n-attr="content:mdDescription" content="How Stefano Doko’s site is put together: a live WebGL engraving, wood type fitted line by line, two languages with their own addresses, and one clock for everything that moves.">
+  <meta property="og:title" data-i18n-attr="content:mdTitle" content="How this sheet was made. Stefano Doko">
+  <meta property="og:description" data-i18n-attr="content:mdDescription" content="How Stefano Doko’s site is put together: a live WebGL engraving, wood type fitted line by line, two languages with their own addresses, and one clock for everything that moves.">
+</head>
+<body data-page="made">
+<!-- @include defs.html -->
+<!-- @include chrome.html -->
+
+  <main id="main">
+    <article class="sheet sheet--made" aria-labelledby="made-h">
+<!-- @include dateline.html -->
+
+      <h1 class="sheethead sheethead--page" id="made-h" data-fit="head" data-ink="made" data-ink-source="intro"><span data-i18n="mdHead">How this sheet was made.</span></h1>
+      <p class="sheet__lede" data-feed data-i18n="mdLede">The type on this sheet is live text, the engraving at the top of the front page is drawn by your browser as you watch, and the only pictures are the screenshots of the work. This is how the rest is done.</p>
+
+      <div class="colophon-long">
+        <section aria-labelledby="md-eng-h">
+          <h2 class="colhead" id="md-eng-h"><svg class="orn"><use href="#star"/></svg><span data-i18n="mdEngHead">The engraving</span></h2>
+          <p data-i18n="mdEng">The band at the top of the front page is a small 3D scene (perfume bottles, a delivery van, a beach bar) drawn as a line engraving: tone becomes parallel lines, crossed where the shadow is deep. Move the pointer over it and the wet ink smears, the black plate slipping off the red. It is WebGL, drawn with three.js and cut again thirty times a second.</p>
+        </section>
+        <section aria-labelledby="md-type-h">
+          <h2 class="colhead" id="md-type-h"><svg class="orn"><use href="#star"/></svg><span data-i18n="mdTypeHead">The type</span></h2>
+          <p data-i18n="mdType">Three faces, all served from this site: Anybody, a wood gothic whose width can be set anywhere from 50 to 150; Ultra, a fat face from wood type; and Old Standard, a newspaper face of the late 1800s. Every headline is fitted line by line, the way a compositor fills a measure: the width and the size of each line are chosen to fill it, and nothing is stretched.</p>
+        </section>
+        <section aria-labelledby="md-ink-h">
+          <h2 class="colhead" id="md-ink-h"><svg class="orn"><use href="#star"/></svg><span data-i18n="mdInkHead">The ink</span></h2>
+          <p data-i18n="mdInk">Headlines arrive as outlines and take ink as a roller passes over them with your scroll. The roller is a 3D object; the ink is the text itself, shown through a window that slides open behind it, so inking a headline moves layers and repaints nothing. Scroll back, and the roller rolls back.</p>
+        </section>
+        <section aria-labelledby="md-lang-h">
+          <h2 class="colhead" id="md-lang-h"><svg class="orn"><use href="#star"/></svg><span data-i18n="mdLangHead">Two languages</span></h2>
+          <p data-i18n="mdLang">Every word is set in English and in Albanian, and each language has its own address. Some browsers come without Albanian month names, so the dateline sets them by hand; the long words of the verse on the front page are hyphenated by hand too, in both languages.</p>
+        </section>
+        <section aria-labelledby="md-clock-h">
+          <h2 class="colhead" id="md-clock-h"><svg class="orn"><use href="#star"/></svg><span data-i18n="mdClockHead">One clock</span></h2>
+          <p data-i18n="mdClock">Everything that moves (the scroll, the ink, the running line, the game, the 3D) is driven by one clock, once a frame. Nothing else keeps its own time, so nothing fights over the same frame.</p>
+        </section>
+        <section aria-labelledby="md-speed-h">
+          <h2 class="colhead" id="md-speed-h"><svg class="orn"><use href="#star"/></svg><span data-i18n="mdSpeedHead">Speed</span></h2>
+          <p data-i18n="mdSpeed">Measured on a computer with 2013 integrated graphics, and on a phone-sized screen with the processor slowed four times: while the sheet scrolls, 95 frames in 100 are drawn within about 17 ms, a sixtieth of a second. Getting there meant handing the paper textures to the browser as files instead of text, reading the page before writing to it on every frame, and printing the red sheet once, unseen, while the proof counter runs, so its first appearance costs nothing.</p>
+        </section>
+        <section aria-labelledby="md-runs-h">
+          <h2 class="colhead" id="md-runs-h"><svg class="orn"><use href="#star"/></svg><span data-i18n="mdRunsHead">What it runs on</span></h2>
+          <p data-i18n="mdRuns">Vite builds it, three.js draws the 3D, GSAP keeps the one clock and Lenis smooths the scroll. No framework, no tracking, no cookies: static files that any host can serve.</p>
+        </section>
+      </div>
+
+      <section class="measured" aria-labelledby="measured-h">
+        <h2 class="colhead" id="measured-h"><svg class="orn"><use href="#star"/></svg><span data-i18n="mdMeasuredHead">The press, measured</span></h2>
+        <table class="measured__table">
+          <tbody>
+            <tr><th scope="row" data-i18n-list="mdMeasured.0">Time to draw a frame while scrolling, for 95 frames in 100</th><td>16.8 ms</td></tr>
+            <tr><th scope="row" data-i18n-list="mdMeasured.1">The same on a phone-sized screen, processor slowed four times</th><td>16.8 ms</td></tr>
+            <tr><th scope="row" data-i18n-list="mdMeasured.2">Pieces drawn for the engraving each frame</th><td data-i18n-list="mdMeasured.3">73, from about 370</td></tr>
+            <tr><th scope="row" data-i18n-list="mdMeasured.4">Slowest frame the first time the red sheet appears</th><td data-i18n-list="mdMeasured.5">20 ms, from 50</td></tr>
+          </tbody>
+        </table>
+        <p class="measured__note" data-i18n="mdMeasuredNote">Measured on 23 September 2026 in Chrome, on the machine described above.</p>
+      </section>
+
+      <section class="setline" aria-labelledby="setline-h">
+        <h2 class="colhead" id="setline-h"><svg class="orn"><use href="#star"/></svg><span data-i18n="mdSetHead">Set your own line</span></h2>
+        <label class="setline__label" for="setline-in" data-i18n="mdSetLabel">Your business name</label>
+        <input class="setline__in" id="setline-in" type="text" maxlength="40" autocomplete="off" spellcheck="false" value="Stefano Doko" data-setline-in>
+        <p class="setline__out" aria-hidden="true" data-setline-out>Stefano Doko</p>
+        <p class="setline__how" data-i18n="mdSetHow">Type, and the line is fitted to the measure as you go: the width axis first, then the size.</p>
+      </section>
+
+      <nav class="next" aria-label="Next sheet" data-i18n-attr="aria-label:nextLabel">
+        <a class="next__link" href="/contact/" data-route="contact">
+          <span class="next__line" data-fit="head"><span data-i18n="mdNext">Next: send a telegram</span></span>
+          <svg class="hand next__hand" aria-hidden="true"><use href="#hand"/></svg>
+        </a>
+      </nav>
+    </article>
+  </main>
+
+<!-- @include foot.html -->
+<!-- @include end.html -->
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!doctype html><html lang="sq"><head><meta charset="utf-8"><link rel="stylesheet" href="brand.css">
+<!-- Business card, 85 x 55 mm (EU standard).
+     ?bleed=1 adds 3 mm of colour on every side for the printer; text stays 4 mm inside the trim. -->
+<style>
+:root { --b: 0mm; --w: 85mm; --h: 55mm; --safe: 5mm; }
+html.bleed { --b: 3mm; }
+@page { margin: 0; }
+body { width: calc(var(--w) + 2 * var(--b)); }
+.frame { position: relative; width: calc(var(--w) + 2 * var(--b)); height: calc(var(--h) + 2 * var(--b)); page-break-after: always; overflow: hidden; }
+.frame:last-child { page-break-after: auto; }
+.inner { position: absolute; inset: calc(var(--b) + var(--safe)); display: flex; flex-direction: column; }
+
+/* front: the mark alone on Doko Red */
+.front .inner { align-items: center; justify-content: center; }
+.front img { height: 17mm; width: auto; display: block; }
+
+/* back: name, role, contact */
+.back .top { display: flex; justify-content: space-between; align-items: flex-start; }
+.back .top img { height: 6.4mm; width: auto; display: block; }
+.back .top .tag { font-weight: 600; font-size: 5.6pt; letter-spacing: .08em; text-transform: uppercase; color: var(--red); margin-top: .4mm; }
+.back h2 { margin-top: auto; font-weight: 600; font-size: 14.5pt; letter-spacing: -0.025em; line-height: 1; }
+.back .role { font-size: 7pt; letter-spacing: -0.005em; line-height: 1.35; margin-top: 1.4mm; color: var(--fade); }
+.back .rule { height: .35mm; background: var(--ink); margin: 2.6mm 0 2.2mm; }
+.back .contact { display: grid; grid-template-columns: auto 1fr; column-gap: 3mm; row-gap: .9mm; font-size: 7pt; line-height: 1.2; letter-spacing: -0.005em; }
+.back .contact dt { font-weight: 600; color: var(--red); font-size: 5.6pt; letter-spacing: .08em; text-transform: uppercase; padding-top: .35mm; }
+.back .contact dd { margin: 0; font-weight: 500; }
+</style>
+<script>
+  if (new URLSearchParams(location.search).get('bleed')) document.documentElement.classList.add('bleed');
+</script>
+</head><body>
+<div class="frame red front"><div class="inner"><img src="../logo/mark-tight-cream.svg" alt="Stefano Doko"></div></div>
+<div class="frame cream back"><div class="inner">
+  <div class="top"><img src="../logo/mark-tight.svg" alt=""><span class="tag">Shqipëri</span></div>
+  <h2>Stefano Doko</h2>
+  <p class="role">Dizajner grafik · Dizajner dhe zhvillues uebi<br>Graphic designer · Web designer &amp; developer</p>
+  <div class="rule"></div>
+  <dl class="contact">
+    <dt>Email</dt><dd data-f="email">hello@example.invalid</dd>
+    <dt>Tel</dt><dd data-f="phone">+355 6X XXX XXXX</dd>
+    <dt>Web</dt><dd data-f="web">domain.al</dd>
+    <dt>IG</dt><dd data-f="ig">@handle</dd>
+  </dl>
+</div></div>
+</body></html>

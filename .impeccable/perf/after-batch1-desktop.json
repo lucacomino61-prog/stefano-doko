@@ -1,0 +1,151 @@
+{
+ "rows": [
+  {
+   "phase": "idle-front",
+   "frames": 151,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "stir-band",
+   "frames": 193,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 83.1,
+   "over20": 1,
+   "over34": 1
+  },
+  {
+   "phase": "scroll     0",
+   "frames": 92,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  1000",
+   "frames": 81,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 116.6,
+   "over20": 1,
+   "over34": 1
+  },
+  {
+   "phase": "scroll  2000",
+   "frames": 76,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 33.3,
+   "over20": 1,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  3000",
+   "frames": 79,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  4000",
+   "frames": 80,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  5000",
+   "frames": 76,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 50,
+   "over20": 3,
+   "over34": 2
+  },
+  {
+   "phase": "scroll  6000",
+   "frames": 80,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  7000",
+   "frames": 134,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "loupe",
+   "frames": 234,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 17,
+   "over20": 0,
+   "over34": 0
+  }
+ ],
+ "loaf": [
+  {
+   "start": 12075.899999976158,
+   "dur": 104.10000002384186,
+   "block": 38.7,
+   "render": 87.70000004768372,
+   "style": 0.10000002384185791,
+   "phase": "stir-band",
+   "y": 0,
+   "scripts": [
+    {
+     "dur": 88,
+     "fn": "u",
+     "src": "paper-RxTq3IcB.js",
+     "inv": "FrameRequestCallback",
+     "fsl": 0
+    }
+   ]
+  },
+  {
+   "start": 17580.100000023842,
+   "dur": 136.69999992847443,
+   "block": 75.3,
+   "render": 125.29999995231628,
+   "style": 0.19999992847442627,
+   "phase": "scroll-down",
+   "y": 1624,
+   "scripts": [
+    {
+     "dur": 124,
+     "fn": "u",
+     "src": "paper-RxTq3IcB.js",
+     "inv": "FrameRequestCallback",
+     "fsl": 1
+    }
+   ]
+  },
+  {
+   "start": 23379.799999952316,
+   "dur": 54,
+   "block": 0,
+   "render": 2.399999976158142,
+   "style": 0.19999992847442627,
+   "phase": "scroll-down",
+   "y": 5945,
+   "scripts": []
+  }
+ ]
+}

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stefano Doko — Identity</title>
+<link rel="stylesheet" href="templates/brand.css">
+<style>
+@font-face { font-family: 'Inter'; src: url('../v5/fonts-src/Inter-VF-latin.woff2') format('woff2'); font-weight: 100 900; }
+body { width: 1600px; background: #F7F4EC; color: var(--ink); padding: 64px 72px 80px; font-size: 19px; line-height: 1.45; letter-spacing: -0.01em; }
+.label { font-weight: 600; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; }
+.slug { display: flex; justify-content: space-between; border-bottom: 2px solid var(--ink); padding-bottom: 12px; }
+h1 { font-weight: 700; font-size: 92px; line-height: .92; letter-spacing: -0.05em; margin-top: 48px; }
+h1 em { font-style: normal; color: var(--red); }
+.lede { font-size: 24px; line-height: 1.4; max-width: 900px; margin-top: 24px; letter-spacing: -0.015em; }
+section { border-top: 1px solid var(--ink); margin-top: 56px; padding-top: 16px; }
+.cols { display: grid; gap: 32px; margin-top: 22px; align-items: start; }
+.c2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.c3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.c4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.tile { border-radius: 10px; display: grid; place-items: center; aspect-ratio: 4 / 3; }
+.tile img { width: 48%; height: auto; }
+.tile.wide img { height: auto; width: 78%; }
+small, .cap { display: block; font-size: 15px; color: var(--fade); margin-top: 10px; }
+table { width: 100%; border-collapse: collapse; margin-top: 18px; font-size: 18px; }
+td { border-bottom: 1px solid #d8d2c5; padding: 14px 12px 14px 0; vertical-align: top; }
+td:first-child { font-weight: 600; width: 22%; }
+td:nth-child(2) { width: 20%; color: var(--fade); }
+.clear { position: relative; display: inline-block; padding: 0; }
+.clear img { display: block; height: 260px; }
+.clear::after { content: ''; position: absolute; inset: 0; border: 2px dashed var(--red); border-radius: 4px; }
+.sw { border-radius: 10px; height: 180px; padding: 20px; display: flex; flex-direction: column; justify-content: flex-end; font-weight: 600; }
+.sw span { font-weight: 400; font-size: 15px; opacity: .8; }
+.type { font-weight: 700; font-size: 72px; letter-spacing: -0.05em; line-height: 1; }
+.type2 { font-weight: 400; font-size: 30px; letter-spacing: -0.015em; margin-top: 12px; }
+.tabs { display: flex; gap: 10px; }
+.tab { display: flex; align-items: center; gap: 10px; background: #E4DED2; border-radius: 10px 10px 0 0; padding: 12px 18px; font: 15px/1 system-ui, sans-serif; letter-spacing: 0; }
+.avatar { width: 180px; height: 180px; border-radius: 50%; overflow: hidden; }
+.avatar img { width: 100%; height: 100%; display: block; }
+.sizes { display: flex; align-items: end; gap: 36px; margin-top: 22px; }
+.sizes figure { margin: 0; text-align: center; font-size: 14px; color: var(--fade); }
+.shots { display: flex; gap: 24px; align-items: flex-start; margin-top: 22px; }
+.shots img { border-radius: 10px; display: block; }
+.dont { position: relative; }
+.dont .tile::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top right, transparent calc(50% - 2px), var(--red) calc(50% - 2px), var(--red) calc(50% + 2px), transparent calc(50% + 2px)); border-radius: 10px; }
+.dont .tile { position: relative; }
+</style>
+</head>
+<body>
+  <div class="slug label"><span>Stefano Doko</span><span>Identity · v1.0</span><span>Albania</span></div>
+  <h1>S, and the D is a speech bubble. <em>Write to Stefano.</em></h1>
+  <p class="lede">One mark, one typeface, three colours, used the same way on the website, Instagram, print and email. The mark says the initials and the one thing the site asks of you: write to him. Everything around it stays plain, so the mark is what people remember.</p>
+
+  <section>
+    <span class="label">Directives, and what each one decided</span>
+    <table>
+      <tr><td>Simple, solid, reducible</td><td>Paul Rand, Sagi Haviv</td><td>Two solid shapes, no outlines, gradients or thin lines. It must read in one colour and as a 16 px tab icon.</td></tr>
+      <tr><td>Plain type, one twist</td><td>Michael Bierut</td><td>The S is an ordinary bold S. The twist is the D: it is a speech bubble, because the whole site asks you to write to Stefano.</td></tr>
+      <tr><td>One typeface, one grid, few colours</td><td>Massimo Vignelli, Experimental Jetset</td><td>Inter only. Red, ink and cream only. Everything is measured on the S’s cap height; clear space is a quarter of it.</td></tr>
+      <tr><td>Everything else stays quiet</td><td>Massimo Vignelli</td><td>The name is set plainly, never styled. Only the mark carries an idea.</td></tr>
+      <tr><td>In use, type is the image</td><td>Paula Scher</td><td>Posts and stories use one huge headline, tightly set, with at most one word in red.</td></tr>
+    </table>
+  </section>
+
+  <section>
+    <span class="label">The mark</span>
+    <div class="cols c2">
+      <div style="display:grid;place-items:center;background:var(--cream);border-radius:10px;padding:60px"><span class="clear"><img src="logo/mark-red.svg" alt=""></span><small>The dashed line is the clear space: nothing else goes inside it.</small></div>
+      <div class="cols c2" style="margin-top:0">
+        <div class="tile" style="background:var(--cream)"><img src="logo/mark-red.svg" alt=""></div>
+        <div class="tile" style="background:var(--red)"><img src="logo/mark-cream.svg" alt=""></div>
+        <div class="tile" style="background:var(--ink)"><img src="logo/mark-dark.svg" alt=""></div>
+        <div class="tile" style="background:var(--cream)"><img src="logo/mark-ink.svg" alt=""></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="label">With the name</span>
+    <div class="cols c2">
+      <div><div class="tile wide" style="background:var(--cream);aspect-ratio:2.2"><img src="logo/lockup-tag-sq.svg" alt=""></div><small>Horizontal: website header, email signature, invoices. Albanian and English taglines.</small></div>
+      <div><div class="tile wide" style="background:var(--ink);aspect-ratio:2.2"><img src="logo/lockup-tag-en-dark.svg" alt=""></div><small>On dark backgrounds the name and the S turn cream; the bubble stays red.</small></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="label">Colour and type</span>
+    <div class="cols c4">
+      <div class="sw" style="background:var(--red);color:var(--cream)">Doko Red<span>#E23B2E · the mark, one word per headline</span></div>
+      <div class="sw" style="background:var(--ink);color:var(--cream)">Ink<span>#141414 · text</span></div>
+      <div class="sw" style="background:var(--cream);color:var(--ink);box-shadow:inset 0 0 0 1px #d8d2c5">Cream<span>#EFE6D2 · backgrounds</span></div>
+      <div><div class="type">Inter</div><div class="type2">SemiBold for the name, Bold for headlines, Regular for text.</div></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="label">Small sizes</span>
+    <div class="cols c2">
+      <div class="sizes">
+        <figure><div class="avatar"><img src="logo/avatar.svg" alt=""></div>Instagram</figure>
+        <figure><img src="logo/app-icon.svg" width="96" height="96" style="border-radius:22px" alt=""><br>app icon</figure>
+        <figure><img src="logo/favicon.svg" width="32" height="32" alt=""><br>32 px</figure>
+        <figure><img src="logo/favicon.svg" width="16" height="16" alt=""><br>16 px</figure>
+      </div>
+      <div class="tabs" style="align-self:end"><div class="tab"><img src="logo/favicon.svg" width="16" height="16" alt="">Stefano Doko, dizajner grafik</div><div class="tab"><img src="logo/favicon.svg" width="16" height="16" alt="">Elixir</div></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="label">In use</span>
+    <div class="shots">
+      <img src="export/instagram/post-cover.png" width="300" alt="">
+      <img src="export/instagram/post-work.png" width="300" alt="">
+      <img src="export/instagram/story.png" width="210" alt="">
+      <img src="export/instagram/highlights/puna.png" width="120" alt="">
+      <div style="display:grid;gap:24px">
+        <img src="export/web/og-image.png" width="420" alt="">
+        <div style="display:flex;gap:16px"><img src="export/print/card-front.png" width="200" alt=""><img src="export/print/card-back.png" width="200" alt=""></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="label">Never</span>
+    <div class="cols c4">
+      <div class="dont"><div class="tile" style="background:var(--cream)"><img src="logo/mark-red.svg" style="transform:scaleX(1.5)" alt=""></div><small>Stretch or squash it.</small></div>
+      <div class="dont"><div class="tile" style="background:var(--cream)"><img src="logo/mark-red.svg" style="transform:rotate(-14deg)" alt=""></div><small>Rotate it.</small></div>
+      <div class="dont"><div class="tile" style="background:var(--cream)"><img src="logo/mark-red.svg" style="filter:hue-rotate(160deg)" alt=""></div><small>Recolour it.</small></div>
+      <div class="dont"><div class="tile" style="background:var(--cream)"><img src="logo/mark-red.svg" style="filter:drop-shadow(10px 14px 8px rgba(0,0,0,.45))" alt=""></div><small>Add shadows, outlines or effects.</small></div>
+    </div>
+  </section>
+</body>
+</html>

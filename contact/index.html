@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- @include head.html -->
+  <title data-i18n="ctTitle">Send a telegram to Stefano Doko</title>
+  <meta name="description" data-i18n-attr="content:ctDescription" content="Write to Stefano Doko, graphic designer and web developer in Albania, in Albanian or English: say what your business is and what it needs.">
+  <meta property="og:title" data-i18n-attr="content:ctTitle" content="Send a telegram to Stefano Doko">
+  <meta property="og:description" data-i18n-attr="content:ctDescription" content="Write to Stefano Doko, graphic designer and web developer in Albania, in Albanian or English: say what your business is and what it needs.">
+</head>
+<body data-page="contact">
+<!-- @include defs.html -->
+<!-- @include chrome.html -->
+
+  <main id="main">
+    <article class="sheet sheet--telegraph" aria-labelledby="tg-h">
+<!-- @include dateline.html -->
+
+      <h1 class="sheethead sheethead--page" id="tg-h" data-fit="head" data-ink="telegraph" data-ink-source="intro"><span data-i18n="ctHead">Send a telegram.</span></h1>
+      <p class="sheet__lede" data-feed data-i18n="extraLine">Write in Albanian or English. Say what your business is and what it needs to look like.</p>
+
+      <form class="telegram" name="telegram" method="post" novalidate data-telegram data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="telegram">
+        <p class="telegram__trap" aria-hidden="true"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+        <div class="telegram__strip">
+          <span class="telegram__kind" data-i18n="ctKind">Telegram</span>
+          <span class="telegram__to"><span data-i18n="ctTo">To</span> Stefano Doko, <span data-i18n="zone">Albania</span></span>
+          <span class="telegram__count"><span data-i18n="ctWords">Words</span> <b data-telegram-count>0</b></span>
+        </div>
+
+        <div class="telegram__row">
+          <label class="telegram__field">
+            <span class="telegram__label" data-i18n="ctName">Your name</span>
+            <input type="text" name="name" autocomplete="name" required aria-describedby="tg-name-err" data-i18n-attr="placeholder:ctNameHint" placeholder="As you would sign it">
+            <span class="telegram__err" id="tg-name-err" data-err="name"></span>
+          </label>
+          <label class="telegram__field">
+            <span class="telegram__label" data-i18n="ctBusiness">Your business</span>
+            <input type="text" name="business" autocomplete="organization" data-i18n-attr="placeholder:ctBusinessHint" placeholder="A shop, a bar, a studio">
+          </label>
+        </div>
+
+        <label class="telegram__field telegram__field--message">
+          <span class="telegram__label" data-i18n="ctMessage">Message</span>
+          <textarea name="message" rows="6" required aria-describedby="tg-msg-err tg-msg-note" data-i18n-attr="placeholder:ctMessageHint" placeholder="What the business does, and what it needs" data-telegram-message></textarea>
+          <span class="telegram__err" id="tg-msg-err" data-err="message"></span>
+          <span class="telegram__note" id="tg-msg-note" data-i18n="ctWordsNote">Telegrams were paid by the word. This one is free.</span>
+        </label>
+
+        <div class="telegram__row">
+          <label class="telegram__field">
+            <span class="telegram__label" data-i18n="ctReply">Where to reply: email or phone</span>
+            <input type="text" name="reply" autocomplete="email" required aria-describedby="tg-reply-err">
+            <span class="telegram__err" id="tg-reply-err" data-err="reply"></span>
+          </label>
+          <fieldset class="telegram__field telegram__langs">
+            <legend class="telegram__label" data-i18n="ctReplyIn">Reply in</legend>
+            <label class="telegram__choice"><input type="radio" name="lang" value="sq"> <span lang="sq">Shqip</span></label>
+            <label class="telegram__choice"><input type="radio" name="lang" value="en"> <span lang="en">English</span></label>
+          </fieldset>
+        </div>
+
+        <div class="telegram__foot">
+          <button class="btn btn--ink btn--lg" type="submit"><span data-i18n="ctSend">Send the telegram</span><svg class="hand" aria-hidden="true"><use href="#hand"/></svg></button>
+          <p class="telegram__direct"><span data-i18n="ctDirect">Or write straight to</span> <a class="word" href="mailto:hello@example.invalid" data-mail data-mail-text>hello@example.invalid</a></p>
+        </div>
+        <div class="telegram__status" role="status" aria-live="polite" data-telegram-status></div>
+      </form>
+
+      <section class="privacy" aria-labelledby="privacy-h">
+        <h2 class="colhead" id="privacy-h"><svg class="orn"><use href="#star"/></svg><span data-i18n="ctPrivacyHead">What happens to what you write</span></h2>
+        <p data-i18n="ctPrivacy">This form writes the telegram into your own mail app, and nothing is sent until you press send there; this site keeps nothing. In your browser the site stores the language you chose and your best score in the game and, until you close the tab, that you have seen the opening counter. No cookies, no tracking.</p>
+      </section>
+    </article>
+  </main>
+
+<!-- @include foot.html -->
+<!-- @include end.html -->
+</body>
+</html>

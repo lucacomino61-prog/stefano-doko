@@ -1,0 +1,44 @@
+  <header class="toolbar" data-toolbar>
+    <a class="lockup" href="/" data-route="home" aria-label="Stefano Doko, front page" data-i18n-attr="aria-label:lockupLabel">
+      <svg class="lockup__mark" aria-hidden="true"><use href="#sd-mark"/></svg>
+      <span class="lockup__name">Stefano Doko</span>
+      <span class="lockup__role"><svg class="orn"><use href="#star"/></svg><span data-i18n="role">Designer &amp; developer</span><svg class="orn"><use href="#star"/></svg></span>
+    </a>
+    <nav class="toolbar__nav" aria-label="Sections" data-i18n-attr="aria-label:sectionsLabel">
+      <a class="word" href="/#work" data-route="home" data-hash="#work" data-i18n="navWork">Work</a>
+      <a class="word" href="/#about" data-route="home" data-hash="#about" data-i18n="navAbout">About</a>
+      <a class="word" href="/#services" data-route="home" data-hash="#services" data-i18n="navServices">Services</a>
+      <a class="word" href="/contact/" data-route="contact" data-i18n="navContact">Contact</a>
+    </nav>
+    <div class="toolbar__end">
+      <div class="lang" role="group" aria-label="Language" data-i18n-attr="aria-label:langLabel">
+        <button class="lang__btn" type="button" data-lang="en" aria-pressed="true" lang="en">EN</button>
+        <button class="lang__btn" type="button" data-lang="sq" aria-pressed="false" lang="sq">SQ</button>
+      </div>
+      <a class="btn btn--ink" href="mailto:hello@example.invalid" data-mail>
+        <span data-i18n="cta">Write to Stefano</span><svg class="hand" aria-hidden="true"><use href="#hand"/></svg>
+      </a>
+    </div>
+  </header>
+
+  <!-- Sticky pill: appears once the head of the sheet has gone by -->
+  <div class="pill" data-pill>
+    <a class="pill__mark" href="/" data-route="home" aria-label="Front page" data-i18n-attr="aria-label:frontLabel"><svg aria-hidden="true"><use href="#sd-mark"/></svg></a>
+    <nav class="pill__nav" aria-label="Sections" data-i18n-attr="aria-label:sectionsLabel">
+      <a class="word" href="/#work" data-route="home" data-hash="#work" data-i18n="navWork">Work</a>
+      <a class="word" href="/#about" data-route="home" data-hash="#about" data-i18n="navAbout">About</a>
+      <a class="word" href="/#services" data-route="home" data-hash="#services" data-i18n="navServices">Services</a>
+      <a class="word" href="/contact/" data-route="contact" data-i18n="navContact">Contact</a>
+      <button class="word word--btn" type="button" data-menu-open aria-expanded="false" aria-controls="stack-menu" data-i18n="navMenu">Index</button>
+    </nav>
+    <a class="btn btn--ink btn--sm" href="mailto:hello@example.invalid" data-mail><span data-i18n="cta">Write to Stefano</span></a>
+  </div>
+
+  <!-- Phones: the controls sit under the thumb -->
+  <nav class="tabbar" aria-label="Sections" data-i18n-attr="aria-label:sectionsLabel">
+    <a class="tabbar__item" href="/#work" data-route="home" data-hash="#work" data-i18n="navWork">Work</a>
+    <a class="tabbar__item" href="/#about" data-route="home" data-hash="#about" data-i18n="navAbout">About</a>
+    <a class="tabbar__item tabbar__item--ink" href="mailto:hello@example.invalid" data-mail><span data-i18n="ctaShort">Write</span><svg class="hand" aria-hidden="true"><use href="#hand"/></svg></a>
+    <button class="tabbar__item" type="button" data-lang-toggle lang="sq">SQ</button>
+    <button class="tabbar__item" type="button" data-menu-open aria-expanded="false" aria-controls="stack-menu" data-i18n="navMenu">Index</button>
+  </nav>

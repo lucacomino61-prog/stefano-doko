@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stefano Doko — Mark v5</title>
+<style>
+@font-face { font-family: 'Inter'; src: url('fonts-src/Inter-VF-latin.woff2') format('woff2'); font-weight: 100 900; }
+:root { --paper: #EFE6D2; --ink: #141414; --alarm: #E23B2E; }
+* { box-sizing: border-box; margin: 0; }
+body { width: 1600px; background: #F7F4EC; color: var(--ink); padding: 56px 64px 64px; font: 400 19px/1.45 'Inter', sans-serif; letter-spacing: -.005em; }
+.label { font: 600 13px/1 'Inter', sans-serif; letter-spacing: .06em; text-transform: uppercase; }
+.slug { display: flex; justify-content: space-between; border-bottom: 2px solid var(--ink); padding-bottom: 12px; }
+.grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 56px; padding-top: 36px; }
+.cell { border-top: 1px solid var(--ink); padding-top: 14px; }
+.cell p { margin-top: 16px; max-width: 760px; }
+.hero { width: 100%; display: block; margin-top: 24px; }
+.light { width: 100%; display: block; margin-top: 30px; }
+.wall { margin-top: 20px; background: #CFCBC2; padding: 40px 30px; border-radius: 4px; }
+.wall img { width: 100%; display: block; }
+.row { display: flex; align-items: end; gap: 30px; margin-top: 22px; }
+.row figure { margin: 0; text-align: center; }
+.row figcaption { margin-top: 8px; font-size: 14px; }
+.avatar { width: 150px; height: 150px; border-radius: 50%; overflow: hidden; }
+.avatar img { width: 100%; height: 100%; }
+</style>
+</head>
+<body>
+  <div class="slug label"><span>Stefano Doko</span><span>Mark · the sign</span><span>Albania</span></div>
+  <div class="grid">
+    <section class="cell">
+      <span class="label">1 · The sign</span>
+      <img class="hero" src="logo.svg" alt="">
+      <img class="light" src="logo-light.svg" alt="">
+      <p>The name as a sign: a black band, a thin white rule along the top, a red disc and a plain sans in medium weight. Every measure is a multiple of one module, so the sign can be rebuilt at any size and still hold.</p>
+    </section>
+    <div>
+      <section class="cell">
+        <span class="label">2 · In Albanian, on a wall</span>
+        <div class="wall"><img src="logo-sq.svg" alt=""></div>
+      </section>
+      <section class="cell" style="margin-top:36px">
+        <span class="label">3 · Small</span>
+        <div class="row">
+          <figure><div class="avatar"><img src="icon-disc.svg" alt=""></div><figcaption>Instagram</figcaption></figure>
+          <figure><img src="icon.svg" width="96" height="96" alt=""><figcaption>96 px</figcaption></figure>
+          <figure><img src="icon.svg" width="64" height="64" alt=""><figcaption>64 px</figcaption></figure>
+          <figure><img src="icon-disc.svg" width="32" height="32" alt=""><figcaption>32 px</figcaption></figure>
+          <figure><img src="icon-disc.svg" width="16" height="16" alt=""><figcaption>16 px</figcaption></figure>
+        </div>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

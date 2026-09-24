@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stefano Doko — Mark v4</title>
+<style>
+@font-face { font-family: 'Anybody'; src: url('../../public/fonts/Anybody-VF.woff2') format('woff2'); font-weight: 100 900; font-stretch: 50% 150%; }
+@font-face { font-family: 'Old Standard'; src: url('../../public/fonts/OldStandard-Italic.woff2') format('woff2'); font-style: italic; }
+:root { --paper: #EFE6D2; --ink: #141414; --alarm: #E23B2E; }
+* { box-sizing: border-box; margin: 0; }
+body { width: 1600px; background: var(--paper); color: var(--ink); padding: 56px 64px 64px; font: italic 21px/1.35 'Old Standard', serif; }
+.label { font: 800 15px/1 'Anybody', sans-serif; font-stretch: 90%; letter-spacing: .08em; text-transform: uppercase; font-style: normal; }
+.slug { display: flex; justify-content: space-between; border-bottom: 3px solid var(--ink); padding-bottom: 12px; }
+.grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 56px; padding-top: 36px; }
+.cell { border-top: 2px solid var(--ink); padding-top: 14px; }
+.cell p { margin-top: 14px; }
+.hero { width: 100%; display: block; margin-top: 24px; }
+.inkbox { background: var(--ink); border-radius: 12px; padding: 26px; margin-top: 20px; }
+.inkbox img { width: 100%; display: block; }
+.wm { width: 100%; display: block; margin-top: 22px; }
+.row { display: flex; align-items: end; gap: 30px; margin-top: 22px; }
+.row figure { margin: 0; text-align: center; }
+.row figcaption { margin-top: 8px; font-size: 16px; }
+.avatar { width: 150px; height: 150px; border-radius: 50%; overflow: hidden; border: 2px solid var(--ink); }
+.avatar img { width: 100%; height: 100%; }
+</style>
+</head>
+<body>
+  <div class="slug label"><span>Stefano Doko</span><span>Mark · type is the image</span><span>Albania</span></div>
+  <div class="grid">
+    <section class="cell">
+      <span class="label">1 · The stack</span>
+      <img class="hero" src="logo.svg" alt="">
+      <p>One family, many voices. STEFANO climbs from hairline-condensed to black-extended, one step per letter, and DOKO lands at full volume; SHQIPËRI answers, getting quieter. Every line is justified to the same measure, so the sizes fall where the words fall.</p>
+    </section>
+    <div>
+      <section class="cell">
+        <span class="label">2 · Reversed</span>
+        <div class="inkbox"><img src="logo-reversed.svg" alt=""></div>
+      </section>
+      <section class="cell" style="margin-top:36px">
+        <span class="label">3 · In one line</span>
+        <img class="wm" src="wordmark.svg" alt="">
+      </section>
+      <section class="cell" style="margin-top:36px">
+        <span class="label">4 · Small</span>
+        <div class="row">
+          <figure><div class="avatar"><img src="icon.svg" alt=""></div><figcaption>Instagram</figcaption></figure>
+          <figure><img src="icon.svg" width="96" height="96" alt=""><figcaption>96 px</figcaption></figure>
+          <figure><img src="icon-ink.svg" width="64" height="64" alt=""><figcaption>64 px</figcaption></figure>
+          <figure><img src="icon.svg" width="32" height="32" alt=""><figcaption>32 px</figcaption></figure>
+          <figure><img src="icon.svg" width="16" height="16" alt=""><figcaption>16 px</figcaption></figure>
+        </div>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

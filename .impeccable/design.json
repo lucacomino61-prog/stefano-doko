@@ -1,0 +1,483 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-23T15:40:00+02:00",
+  "title": "Design System: Stefano Doko",
+  "extensions": {
+    "colorMeta": {
+      "relief-ink": {
+        "role": "primary",
+        "displayName": "Relief Ink",
+        "canonical": "oklch(19.1% 0 0)",
+        "cssVar": "--ink",
+        "tonalRamp": [
+          "#0B0B0B",
+          "#242424",
+          "#404040",
+          "#5D5D5D",
+          "#808080",
+          "#A4A4A4",
+          "#CACACA",
+          "#EEEEEE"
+        ]
+      },
+      "alarm-red": {
+        "role": "secondary",
+        "displayName": "Alarm Red",
+        "canonical": "oklch(60.4% 0.206 29.1)",
+        "cssVar": "--alarm",
+        "tonalRamp": [
+          "#220000",
+          "#4C0000",
+          "#7C0302",
+          "#AE160F",
+          "#E1392D",
+          "#FB7665",
+          "#FFB5A9",
+          "#FFE9E5"
+        ]
+      },
+      "newsprint": {
+        "role": "neutral",
+        "displayName": "Newsprint",
+        "canonical": "oklch(92.7% 0.028 86.6)",
+        "cssVar": "--paper",
+        "tonalRamp": [
+          "#100A01",
+          "#2A2314",
+          "#463F2F",
+          "#655D4C",
+          "#887F6D",
+          "#ACA491",
+          "#D3CAB6",
+          "#F7EEDA"
+        ]
+      },
+      "aged-stock": {
+        "role": "neutral",
+        "displayName": "Aged Stock",
+        "canonical": "oklch(87.9% 0.040 86.1)",
+        "cssVar": "--aged",
+        "tonalRamp": [
+          "#130900",
+          "#2D230B",
+          "#493E27",
+          "#685C44",
+          "#8B7F65",
+          "#B0A389",
+          "#D6C9AE",
+          "#FAEDD1"
+        ]
+      },
+      "ink-fade": {
+        "role": "neutral",
+        "displayName": "Ink Fade",
+        "canonical": "oklch(46.4% 0.017 74.2)",
+        "cssVar": "--fade",
+        "tonalRamp": [
+          "#0F0A04",
+          "#29231B",
+          "#453F36",
+          "#635C53",
+          "#867F75",
+          "#ABA399",
+          "#D1C9BF",
+          "#F5EDE2"
+        ]
+      },
+      "proof-paper": {
+        "role": "neutral",
+        "displayName": "Proof Paper",
+        "canonical": "oklch(91.2% 0.011 95.2)",
+        "cssVar": "--paper (PROOF)",
+        "tonalRamp": [
+          "#0D0B06",
+          "#26241E",
+          "#414039",
+          "#5F5E57",
+          "#828079",
+          "#A6A59D",
+          "#CCCBC3",
+          "#F1EFE6"
+        ]
+      },
+      "proof-aged": {
+        "role": "neutral",
+        "displayName": "Proof Aged",
+        "canonical": "oklch(86.3% 0.015 94.2)",
+        "cssVar": "--aged (PROOF)",
+        "tonalRamp": [
+          "#0D0B05",
+          "#26241C",
+          "#424037",
+          "#605E54",
+          "#838076",
+          "#A7A59A",
+          "#CECBC0",
+          "#F2EFE3"
+        ]
+      },
+      "proof-ink": {
+        "role": "primary",
+        "displayName": "Proof Ink",
+        "canonical": "oklch(27.8% 0.006 78.2)",
+        "cssVar": "--ink (PROOF)",
+        "tonalRamp": [
+          "#0D0B08",
+          "#262421",
+          "#413F3C",
+          "#5F5D5A",
+          "#82807C",
+          "#A7A4A0",
+          "#CDCAC6",
+          "#F1EEEA"
+        ]
+      },
+      "proof-fade": {
+        "role": "neutral",
+        "displayName": "Proof Fade",
+        "canonical": "oklch(44.6% 0.012 87.5)",
+        "cssVar": "--fade (PROOF)",
+        "tonalRamp": [
+          "#0D0B06",
+          "#26241E",
+          "#423F39",
+          "#605D56",
+          "#838078",
+          "#A8A49C",
+          "#CECAC2",
+          "#F2EEE6"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Wood Gothic (fitted)",
+        "purpose": "Masthead name, sheet heads, marquee gothic. Size and wdth chosen per line at runtime to fill the track; starts as an outline and is inked by the brayer."
+      },
+      "display-fat": {
+        "displayName": "Fat Face (fitted)",
+        "purpose": "Case titles, the sliced EXTRA head, the 404 code and pied sorts. Fitted by size alone."
+      },
+      "headline": {
+        "displayName": "Stand Head",
+        "purpose": "The centre-column stand head; balanced wrap."
+      },
+      "title": {
+        "displayName": "Column Title",
+        "purpose": "Column heads, contents entries, index sheets, fact boxes."
+      },
+      "body": {
+        "displayName": "Newspaper Serif",
+        "purpose": "All running copy; old-style proportional figures; the verse runs at clamp(20px, 1.78vw, 27px)/1.45 justified."
+      },
+      "lede": {
+        "displayName": "Italic Lede",
+        "purpose": "Sheet ledes, case lines, the EXTRA line."
+      },
+      "caption": {
+        "displayName": "Italic Caption",
+        "purpose": "Cuts, plates, callouts, contents sub-lines."
+      },
+      "label": {
+        "displayName": "Wood-Type Word",
+        "purpose": "Links and toggles, dateline, scores; clocks use tabular lining figures."
+      },
+      "button": {
+        "displayName": "Button Face",
+        "purpose": "Ink and line buttons."
+      }
+    },
+    "shadows": [
+      {
+        "name": "double-ring",
+        "value": "inset 0 0 0 2px var(--ink), inset 0 0 0 4px var(--paper), inset 0 0 0 5px var(--ink)",
+        "purpose": "The double-bordered box edge: pill, tab bar, fact boxes, specimen cards, line buttons. A border, not elevation."
+      },
+      {
+        "name": "plate-ring",
+        "value": "inset 0 0 0 2px var(--ink), inset 0 0 0 7px var(--aged), inset 0 0 0 8px var(--ink)",
+        "purpose": "Work plate mount, with the 14px chamfer clip."
+      },
+      {
+        "name": "ink-block",
+        "value": "inset 0 0 0 3px var(--ink), inset 0 0 0 4px color-mix(in srgb, var(--paper) 60%, transparent)",
+        "purpose": "Inner hairline on the solid ink button."
+      },
+      {
+        "name": "loose-sheet",
+        "value": "0 10px 24px -12px rgb(20 20 20 / 0.45)",
+        "purpose": "Floating paper objects: pill, tab bar, index sheets, fact boxes, stamp (up to 0 14px 26px -14px / 0.55)."
+      },
+      {
+        "name": "held-card",
+        "value": "0 22px 40px -22px rgb(20 20 20 / 0.55)",
+        "purpose": "Fan cards at rest; lifted 0 34px 50px -24px rgb(20 20 20 / 0.6)."
+      },
+      {
+        "name": "sheet-overlap",
+        "value": "0 -26px 48px -30px rgb(20 20 20 / 0.5)",
+        "purpose": "A case sheet sliding over the previous one."
+      },
+      {
+        "name": "focus",
+        "value": "outline: 2px solid var(--ink); outline-offset: 3px; box-shadow: 0 0 0 5px var(--alarm)",
+        "purpose": "Global focus-visible; the outer ring is paper on the EXTRA sheet."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.23, 1, 0.32, 1)",
+        "purpose": "Arrivals: presses, pill slide, feed, cards, notes."
+      },
+      {
+        "name": "ease-io",
+        "value": "cubic-bezier(0.77, 0, 0.175, 1)",
+        "purpose": "Mode swaps: the PRINT/PROOF colour cross-fade (0.8s)."
+      },
+      {
+        "name": "press",
+        "value": "transform: translateY(1px) scale(0.97); 160ms ease-out",
+        "purpose": "Pressed state of buttons and the stamp (tab bar 0.96)."
+      },
+      {
+        "name": "judder",
+        "value": "GSAP steps of 45ms, linear, then 80ms power2.out settle",
+        "purpose": "Every state change lands like a sheet under the platen (language, sound, proof, copy, case entry, intro)."
+      },
+      {
+        "name": "slit-feed",
+        "value": "clip-path: inset(50% 0 50% 0) to inset(0); 760ms ease-out",
+        "purpose": "Sheets marked [data-feed] open from a horizontal slit; the EXTRA sheet feeds by the registered --feed number."
+      },
+      {
+        "name": "type-case-tiles",
+        "value": "grid of ink blocks over red under-plates offset 4px 3px, scaleY in and out",
+        "purpose": "The language is re-set under the tiles."
+      },
+      {
+        "name": "brayer",
+        "value": "scroll-driven, pure function of scroll position",
+        "purpose": "Inks outlined heads; the roller enters left and exits right, never parks."
+      },
+      {
+        "name": "engine",
+        "value": "one GSAP ticker",
+        "purpose": "Drives Lenis (autoRaf off), the WebGL render and all UI; no other requestAnimationFrame loop."
+      },
+      {
+        "name": "reduced-motion",
+        "value": ".no-motion",
+        "purpose": "No intro, judder or feed; every head, verse word, cut and rule shows finished."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "phone",
+        "value": "max-width: 767px"
+      },
+      {
+        "name": "tablet",
+        "value": "768px to 1100px"
+      },
+      {
+        "name": "desktop",
+        "value": "min-width: 1101px"
+      }
+    ],
+    "layers": [
+      {
+        "name": "sheets",
+        "value": "0-2"
+      },
+      {
+        "name": "webgl-canvas",
+        "value": "30"
+      },
+      {
+        "name": "proof-notes",
+        "value": "35"
+      },
+      {
+        "name": "pill-and-tabbar",
+        "value": "40"
+      },
+      {
+        "name": "index",
+        "value": "50"
+      },
+      {
+        "name": "tiles",
+        "value": "60"
+      },
+      {
+        "name": "intro",
+        "value": "70"
+      },
+      {
+        "name": "skip-link",
+        "value": "80"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Ink Button",
+      "kind": "button",
+      "refersTo": "button-ink",
+      "description": "The solid block of ink; the primary action, with a manicule.",
+      "html": "<button class=\"ds-btn ds-btn-ink\">Write to Stefano <svg class=\"ds-hand\" viewBox=\"0 0 40 20\" aria-hidden=\"true\"><path d=\"M2 7h22c2 0 3-2 1-3l-6-2h8l9 4c2 1 3 3 3 5v2c0 3-2 5-5 5H14c-2 0-3-1-3-2s1-2 3-2h-3c-2 0-3-1-3-2s1-2 3-2H2z\" fill=\"currentColor\"/></svg></button>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; gap: 12px; height: 48px; padding: 0 20px 0 22px; border: 0; border-radius: 6px; font: 800 15px/1 Anybody, 'Arial Narrow', sans-serif; font-stretch: 92%; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; cursor: pointer; transition: transform 160ms cubic-bezier(0.23,1,0.32,1), box-shadow 160ms cubic-bezier(0.23,1,0.32,1), background-color 200ms ease; } .ds-hand { width: 34px; height: 17px; } .ds-btn-ink { background: var(--ink, #141414); color: var(--paper, #EFE6D2); box-shadow: inset 0 0 0 3px var(--ink, #141414), inset 0 0 0 4px color-mix(in srgb, var(--paper, #EFE6D2) 60%, transparent); } .ds-btn-ink:hover { box-shadow: inset 0 0 0 3px var(--ink, #141414), inset 0 0 0 5.5px var(--paper, #EFE6D2); } .ds-btn:active { transform: translateY(1px) scale(0.97); } .ds-btn:focus-visible { outline: 2px solid var(--ink, #141414); outline-offset: 3px; box-shadow: 0 0 0 5px var(--alarm, #E23B2E); }"
+    },
+    {
+      "name": "Line Button",
+      "kind": "button",
+      "refersTo": "button-line",
+      "description": "Double-ruled secondary action; fills with aged stock on hover.",
+      "html": "<button class=\"ds-btn2 ds-btn-line\">See the work</button>",
+      "css": ".ds-btn2 { display: inline-flex; align-items: center; height: 48px; padding: 0 20px 0 22px; border: 0; border-radius: 6px; font: 800 15px/1 Anybody, 'Arial Narrow', sans-serif; font-stretch: 92%; letter-spacing: 0.05em; text-transform: uppercase; cursor: pointer; transition: transform 160ms cubic-bezier(0.23,1,0.32,1), box-shadow 160ms cubic-bezier(0.23,1,0.32,1), background-color 200ms ease; } .ds-btn-line { background: transparent; color: var(--ink, #141414); box-shadow: inset 0 0 0 2px var(--ink, #141414), inset 0 0 0 4px var(--paper, #EFE6D2), inset 0 0 0 5px var(--ink, #141414); } .ds-btn-line:hover { background: var(--aged, #E3D6BA); box-shadow: inset 0 0 0 3px var(--ink, #141414), inset 0 0 0 5px var(--aged, #E3D6BA), inset 0 0 0 6.5px var(--ink, #141414); } .ds-btn-line:active { transform: translateY(1px) scale(0.97); } .ds-btn-line:focus-visible { outline: 2px solid var(--ink, #141414); outline-offset: 3px; }"
+    },
+    {
+      "name": "Wood-Type Word",
+      "kind": "nav",
+      "refersTo": "word",
+      "description": "Links and toggles: uppercase wood type with a rule underline that inks heavier when pressed or current.",
+      "html": "<nav class=\"ds-words\"><a class=\"ds-word\" href=\"#\" aria-current=\"true\">Work</a><a class=\"ds-word\" href=\"#\">About</a><a class=\"ds-word\" href=\"#\">Contact</a></nav>",
+      "css": ".ds-words { display: flex; gap: 36px; } .ds-word { color: var(--ink, #141414); font: 800 14px/1 Anybody, 'Arial Narrow', sans-serif; font-stretch: 90%; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; text-decoration-color: color-mix(in srgb, var(--ink, #141414) 30%, transparent); transition: text-decoration-color 160ms ease, text-decoration-thickness 160ms ease; } .ds-word:hover { text-decoration-color: var(--ink, #141414); text-decoration-thickness: 3px; } .ds-word[aria-current='true'] { text-decoration-color: var(--ink, #141414); text-decoration-thickness: 4px; } .ds-word:focus-visible { outline: 2px solid var(--ink, #141414); outline-offset: 3px; border-radius: 6px; }"
+    },
+    {
+      "name": "Language Control",
+      "kind": "chip",
+      "refersTo": "lang-toggle",
+      "description": "EN/SQ in a ruled frame; the pressed language is solid ink.",
+      "html": "<div class=\"ds-lang\"><button class=\"ds-lang-btn\" aria-pressed=\"true\">EN</button><button class=\"ds-lang-btn\" aria-pressed=\"false\">SQ</button></div>",
+      "css": ".ds-lang { display: inline-flex; gap: 2px; padding: 3px; border-radius: 6px; box-shadow: inset 0 0 0 2px var(--ink, #141414); } .ds-lang-btn { height: 34px; min-width: 44px; padding: 0 10px; border: 0; border-radius: 4px; background: none; color: var(--ink, #141414); font: 800 13px/1 Anybody, 'Arial Narrow', sans-serif; font-stretch: 95%; letter-spacing: 0.08em; cursor: pointer; transition: background-color 160ms ease, color 160ms ease; } .ds-lang-btn[aria-pressed='true'] { background: var(--ink, #141414); color: var(--paper, #EFE6D2); } .ds-lang-btn[aria-pressed='false']:hover { background: var(--aged, #E3D6BA); } .ds-lang-btn:focus-visible { outline: 2px solid var(--ink, #141414); outline-offset: 3px; }"
+    },
+    {
+      "name": "Work Plate",
+      "kind": "card",
+      "refersTo": "plate",
+      "description": "Aged-stock mount, double-ringed, 10px with a 14px chamfer; screenshot inside, italic caption below.",
+      "html": "<figure class=\"ds-plate\"><div class=\"ds-plate-mount\"><div class=\"ds-plate-img\"></div></div><figcaption class=\"ds-plate-cap\">Fig. 1. The home page, September 2026.</figcaption></figure>",
+      "css": ".ds-plate { display: grid; gap: 8px; margin: 0; width: 320px; } .ds-plate-mount { padding: 7px; border-radius: 10px; background: var(--aged, #E3D6BA); box-shadow: inset 0 0 0 2px var(--ink, #141414), inset 0 0 0 7px var(--aged, #E3D6BA), inset 0 0 0 8px var(--ink, #141414); clip-path: polygon(14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px), 0 14px); } .ds-plate-img { aspect-ratio: 1440 / 900; border-radius: 3px; background: repeating-linear-gradient(to bottom, var(--ink, #141414) 0 1px, transparent 1px 4px), var(--paper, #EFE6D2); } .ds-plate-cap { font: italic 400 14px/1.3 'Old Standard', 'Times New Roman', serif; color: var(--ink, #141414); }"
+    },
+    {
+      "name": "Fact Box",
+      "kind": "card",
+      "refersTo": "fact-box",
+      "description": "A loose double-ruled slip of newsprint, set at a slight tilt.",
+      "html": "<div class=\"ds-fact\">Online perfume shop</div>",
+      "css": ".ds-fact { display: inline-block; rotate: -2.2deg; padding: 12px 14px; border-radius: 10px; background: var(--paper, #EFE6D2); color: var(--ink, #141414); box-shadow: inset 0 0 0 2px var(--ink, #141414), inset 0 0 0 4px var(--paper, #EFE6D2), inset 0 0 0 5px var(--ink, #141414), 0 12px 22px -14px rgb(20 20 20 / 0.5); font: 850 15px/1.15 Anybody, 'Arial Narrow', sans-serif; font-stretch: 88%; letter-spacing: 0.03em; text-transform: uppercase; }"
+    },
+    {
+      "name": "Sort Input",
+      "kind": "input",
+      "refersTo": "input-sort",
+      "description": "A single type sort: one character in Ultra, ruled frame, red caret.",
+      "html": "<input class=\"ds-sort\" maxlength=\"1\" value=\"S\" aria-label=\"Letter\">",
+      "css": ".ds-sort { width: 56px; height: 48px; text-align: center; border: 0; border-radius: 6px; background: var(--paper, #EFE6D2); color: var(--ink, #141414); caret-color: var(--alarm, #E23B2E); box-shadow: inset 0 0 0 2px var(--ink, #141414); font: 400 26px/1 Ultra, Anybody, serif; } .ds-sort:focus-visible { outline: 2px solid var(--ink, #141414); outline-offset: 3px; }"
+    },
+    {
+      "name": "Sticky Pill",
+      "kind": "nav",
+      "refersTo": "pill",
+      "description": "The toolbar as a loose sheet once the masthead leaves: ink mark, words, reading rule along its foot.",
+      "html": "<div class=\"ds-pill\"><span class=\"ds-pill-mark\">SD</span><a class=\"ds-pill-word\" href=\"#\">Work</a><a class=\"ds-pill-word\" href=\"#\">About</a><a class=\"ds-pill-word\" href=\"#\">Contact</a></div>",
+      "css": ".ds-pill { position: relative; display: inline-flex; align-items: center; gap: 22px; height: 58px; padding: 0 16px 0 10px; border-radius: 10px; background: var(--paper, #EFE6D2); box-shadow: inset 0 0 0 2px var(--ink, #141414), inset 0 0 0 4px var(--paper, #EFE6D2), inset 0 0 0 5px var(--ink, #141414), 0 10px 24px -12px rgb(20 20 20 / 0.45); } .ds-pill::after { content: ''; position: absolute; left: 12px; right: 12px; bottom: 7px; height: 2px; background: var(--ink, #141414); transform-origin: left; transform: scaleX(0.4); } .ds-pill-mark { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 6px; background: var(--ink, #141414); color: var(--paper, #EFE6D2); font: 400 17px/1 Ultra, serif; } .ds-pill-word { color: var(--ink, #141414); font: 800 14px/1 Anybody, 'Arial Narrow', sans-serif; font-stretch: 90%; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: underline 2px; text-underline-offset: 6px; text-decoration-color: color-mix(in srgb, var(--ink, #141414) 30%, transparent); } .ds-pill-word:hover { text-decoration-color: var(--ink, #141414); text-decoration-thickness: 3px; } .ds-pill-word:focus-visible { outline: 2px solid var(--ink, #141414); outline-offset: 3px; }"
+    },
+    {
+      "name": "Extra Stamp",
+      "kind": "custom",
+      "refersTo": "stamp",
+      "description": "The EXTRA sheet's round stamp on alarm red: ringed newsprint disc with text on a circle. Its radius is 99px on a 200px box, not 50%: an exact circle sends the rings and shadow down Chrome's circle-only GPU shaders.",
+      "html": "<div class=\"ds-extra\"><a class=\"ds-stamp\" href=\"#\"><svg viewBox=\"0 0 200 200\" class=\"ds-stamp-ring\" aria-hidden=\"true\"><defs><path id=\"ds-c\" d=\"M100 100m-80 0a80 80 0 1 1 160 0a80 80 0 1 1-160 0\"/></defs><text><textPath href=\"#ds-c\">WRITE TO STEFANO * WRITE TO STEFANO *</textPath></text></svg></a></div>",
+      "css": ".ds-extra { padding: 24px; background: var(--alarm, #E23B2E); } .ds-stamp { position: relative; display: grid; place-items: center; width: 200px; height: 200px; border-radius: 99px; background: var(--paper, #EFE6D2); box-shadow: inset 0 0 0 3px var(--ink, #141414), inset 0 0 0 38px var(--paper, #EFE6D2), inset 0 0 0 39px var(--ink, #141414), 0 14px 26px -14px rgb(20 20 20 / 0.55); transition: transform 200ms cubic-bezier(0.23,1,0.32,1); } .ds-stamp:active { transform: scale(0.97); } .ds-stamp:focus-visible { outline: 2px solid var(--ink, #141414); outline-offset: 3px; box-shadow: 0 0 0 5px var(--paper, #EFE6D2); } .ds-stamp-ring { position: absolute; inset: 0; width: 100%; height: 100%; } .ds-stamp-ring text { font: 800 15.5px/1 Anybody, sans-serif; font-stretch: 110%; letter-spacing: 0.16em; fill: var(--ink, #141414); }"
+    },
+    {
+      "name": "Type Case",
+      "kind": "custom",
+      "refersTo": "type-case",
+      "description": "The languages he writes, set like a compositor's case: an aged-stock tray, double-ringed like a plate mount, holding one sheet of newsprint ruled into compartments. Box size follows what the web uses most (3x2, 2x1, 1x1); in page order the boxes tile the grid exactly (12 by 6, or 6 by 12 below 1100px). Names in Anybody caps, the big boxes with an italic line on what the language is for. The first time the case is seen, the sorts drop into their boxes.",
+      "html": "<div class=\"ds-case\"><ul class=\"ds-case-grid\"><li class=\"ds-box ds-box--a\"><span class=\"ds-name\">HTML</span><span class=\"ds-use\">the page itself</span></li><li class=\"ds-box ds-box--a\"><span class=\"ds-name\">CSS</span><span class=\"ds-use\">how it looks</span></li><li class=\"ds-box ds-box--b\"><span class=\"ds-name\">Go</span></li><li class=\"ds-box ds-box--b\"><span class=\"ds-name\">Rust</span></li><li class=\"ds-box\"><span class=\"ds-name\">Lua</span></li><li class=\"ds-box\"><span class=\"ds-name\">R</span></li></ul></div>",
+      "css": ".ds-case { padding: 8px; border-radius: 10px; background: var(--aged, #E3D6BA); box-shadow: inset 0 0 0 2px var(--ink, #141414), inset 0 0 0 5px var(--aged, #E3D6BA), inset 0 0 0 6px var(--ink, #141414); } .ds-case-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); grid-auto-rows: 58px; border-top: 1px solid var(--ink, #141414); border-left: 1px solid var(--ink, #141414); background: var(--paper, #EFE6D2); } .ds-box { display: flex; flex-direction: column-reverse; justify-content: space-between; gap: 6px; min-width: 0; padding: 8px 10px; border-right: 1px solid var(--ink, #141414); border-bottom: 1px solid var(--ink, #141414); } .ds-box--a { grid-column: span 3; grid-row: span 2; } .ds-box--b { grid-column: span 2; } .ds-name { font: 850 16px/0.9 'Anybody', 'Arial Narrow', sans-serif; font-stretch: 84%; text-transform: uppercase; white-space: nowrap; } .ds-box--b .ds-name { font-size: 22px; font-stretch: 80%; } .ds-box--a .ds-name { font-size: 40px; font-weight: 900; font-stretch: 72%; line-height: 0.84; } .ds-use { font: italic 400 14px/1.25 'Old Standard', 'Times New Roman', serif; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Penny Broadside",
+    "overview": "The site is the day's broadside, printed while you watch. Every surface is a sheet of coarse newsprint carrying one black relief ink; each sheet feeds in through a slit, settles under the platen with a small judder, and is replaced by the next. Type is set, not styled: a condensed wood gothic is fitted line by line to the measure on its width axis, a heavy fat-face carries the case titles and the EXTRA, and a nineteenth-century newspaper serif carries everything that is read. Headlines arrive uninked, as outlines, and take ink where a 3D brayer rolls across them with the scroll.\n\nDensity is that of a front page: double rules, column rules, datelines, a contents column, captions under every cut. Structure is drawn with rules rather than filled panels. Colour is almost absent by discipline; alarm red is a flood reserved for two places and a marking colour for the press's own marks. Imagery is either a live WebGL relief engraving (tone becomes parallel line, crossed in shadow) or real screenshots of the two live businesses, mounted as plates and shown true-colour only under the loupe.\n\nA second state, PROOF, re-inks the whole sheet as a correction proof: cooler stock, softer ink, red proof-reader's marks and ruled lines, the heads left uninked. It is a cross-fade of registered colour properties, not a separate theme.",
+    "keyCharacteristics": [
+      "One ink on newsprint; red is flood or mark, never decoration.",
+      "Display type is fitted to the measure per line, never stretched and never a fixed size.",
+      "Rules do the structural work: double rules at sheet heads, single rules between columns, star-capped rules at the ends of a measure.",
+      "Boxes are double-bordered with small radii; round shapes belong only to the stamp, the loupe and a key's lettered rings.",
+      "Motion is mechanical: judder, slit feed, rolling ink, type-case tiles. One GSAP ticker drives all of it.",
+      "Reduced motion shows every finished state at once."
+    ],
+    "rules": [
+      {
+        "name": "The One Ink Rule",
+        "body": "Everything structural is Relief Ink on Newsprint. A second colour never appears as a fill for panels, cards, or buttons outside the EXTRA sheet.",
+        "section": "colors"
+      },
+      {
+        "name": "The Flood-or-Mark Rule",
+        "body": "Alarm Red is either a full flood (the engraving band, the EXTRA sheet) or a press mark (focus ring, caret, proof marks, tiles, intro stamp). It is never a tint, a gradient, a hover colour, or a text colour for reading copy.",
+        "section": "colors"
+      },
+      {
+        "name": "The Registered Colour Rule",
+        "body": "Theme colours are @property-registered so PRINT and PROOF cross-fade as colours. A new colour role that must follow the mode is registered the same way.",
+        "section": "colors"
+      },
+      {
+        "name": "The Fitted Line Rule",
+        "body": "Display type fills its track by choosing size and width per line (Anybody's wdth axis, or size alone for Ultra). It is never scaled with transform, never letter-spaced to fit, and its grid tracks are minmax(0, 1fr) so unfitted text cannot widen the layout before fitting runs.",
+        "section": "typography"
+      },
+      {
+        "name": "The Uninked Head Rule",
+        "body": "A display head starts as an outline of the ink colour (1.4px stroke) and fills as the brayer passes, with a speckled mask on the fill. Without motion, or before scripts run, heads show fully inked.",
+        "section": "typography"
+      },
+      {
+        "name": "The Serif Reads Rule",
+        "body": "Anything longer than a label is set in Old Standard. Anybody and Ultra are for heads, labels and controls only.",
+        "section": "typography"
+      },
+      {
+        "name": "The Rule-Not-Panel Rule",
+        "body": "Columns, strips and sections are separated by ink rules (1px between columns, 2px closing a block, a 6px plus 1.5px double rule opening and closing a sheet). Background fills are not used to separate content.",
+        "section": "layout"
+      },
+      {
+        "name": "The Paper-on-Paper Rule",
+        "body": "A shadow means a loose sheet. It is always soft, downward, ink-tinted and negatively spread; never offset hard, never coloured, never used on in-page boxes.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Round-Is-Rare Rule",
+        "body": "Only the stamp, the loupe and a key's lettered rings (drawn on the plate, or pinned there as 20px letters on small screens) are round. Everything else is a rectangle with a 4, 6 or 10px corner.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do separate content with ink rules (1px, 2px, and the 6px plus 1.5px double rule) instead of filled panels.",
+      "Do fit display type per line on Anybody's width axis or Ultra's size, and hold it in minmax(0, 1fr) tracks.",
+      "Do draw box edges as inset double rings (2px ink, 2px paper, 1px ink) with 6px or 10px corners.",
+      "Do keep Alarm Red to its flood (engraving band, EXTRA sheet) and its press marks (focus ring, caret, proof marks, tiles, intro stamp).",
+      "Do register any new mode-dependent colour with @property so PRINT and PROOF cross-fade.",
+      "Do give every state change the press judder, and let reduced motion show the finished state.",
+      "Do keep all motion on the one GSAP ticker; nothing gets its own requestAnimationFrame loop."
+    ],
+    "donts": [
+      "Don't use a second hue, gradients, or tinted panels; the world has one ink and one red.",
+      "Don't set Alarm Red as the colour of reading-size text on newsprint.",
+      "Don't round anything fully except the stamp, the loupe and a key's lettered rings.",
+      "Don't set a callout ring on the detail it names, or run its rule through a word: the ring goes beside the detail and the rule through clear space (tools/shoot-work.mjs places them).",
+      "Don't give in-page boxes shadows, or give floating sheets a hard offset shadow.",
+      "Don't stretch display type with transforms or letter-spacing to fill a measure.",
+      "Don't set running copy in Anybody or Ultra.",
+      "Don't animate a clip-path with rounded corners, or give an exact circle rings and a soft shadow: Chrome compiles GPU shaders for them the first time they are drawn, mid-scroll. Open by transform, and keep round shapes at 99px on 200px."
+    ]
+  }
+}

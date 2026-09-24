@@ -1,0 +1,68 @@
+{
+ "rows": [
+  {
+   "phase": "idle-front",
+   "frames": 151,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "stir-band",
+   "frames": 197,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll     0",
+   "frames": 49,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  1000",
+   "frames": 49,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  2000",
+   "frames": 47,
+   "p50": 16.7,
+   "p95": 16.7,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  3000",
+   "frames": 49,
+   "p50": 16.7,
+   "p95": 16.7,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  4000",
+   "frames": 111,
+   "p50": 16.7,
+   "p95": 16.7,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  }
+ ],
+ "loaf": []
+}

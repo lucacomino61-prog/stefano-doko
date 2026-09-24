@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title data-i18n="notFoundTitle">Sheet not found, Stefano Doko</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#EFE6D2">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/fonts/Anybody-VF.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/Ultra-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body class="lost">
+  <svg class="defs" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="star" viewBox="0 0 24 24"><path d="M12 1.2 14.6 8.7H22.5L16.1 13.3 18.6 20.9 12 16.3 5.4 20.9 7.9 13.3 1.5 8.7H9.4Z"/></symbol>
+      <symbol id="hand" viewBox="0 0 128 64">
+        <path class="hand-cuff" d="M5 15.5 26.5 12.5 28.5 51.5 7.5 48.5Z"/>
+        <path class="hand-body" d="M28 17C36 14 44 12 52 13C58 11 66 12 70 17L112 17C121 17 122.5 28 114 28.5L77 29.5C81.5 31 81.5 36.5 76.5 37.5C81 39.5 80.5 44.5 75.5 45.5C78.5 47.5 77 52.5 71 52.5C62 53.5 50 53.5 42 51.5C36 50.5 32 49.5 29 49.5Z"/>
+        <path class="hand-line" d="M52 20.5C58 21.5 64 22.5 70.5 21.2M63 37.5H76M61.5 45.5H75M104 19.5C108.5 19.5 110.5 22.5 108.5 25.5M12 18.5 13 45.5M17 17.5 18 46.5M22 16.5 23 47.5"/>
+      </symbol>
+    </defs>
+  </svg>
+  <header class="toolbar toolbar--lost">
+    <a class="lockup" href="/" aria-label="Stefano Doko, front page">
+      <span class="lockup__name">Stefano Doko</span>
+      <span class="lockup__role"><svg class="orn"><use href="#star"/></svg><span data-i18n="role">Designer &amp; developer</span><svg class="orn"><use href="#star"/></svg></span>
+    </a>
+    <span></span>
+    <a class="btn btn--ink" href="mailto:hello@example.invalid"><span data-i18n="cta">Write to Stefano</span><svg class="hand" aria-hidden="true"><use href="#hand"/></svg></a>
+  </header>
+  <main class="lost__main" id="main">
+    <h1 class="lost__code" aria-label="404, sheet not found">404</h1>
+    <p class="lost__line" data-i18n="notFoundLine">The press dropped this sheet on the floor.</p>
+    <div class="pie" data-pie aria-hidden="true"></div>
+    <p class="sr-only" data-i18n="notFound">Sheet not found</p>
+    <div class="lost__actions">
+      <button class="btn btn--line" type="button" data-set><span data-i18n="setAgain">Set it again</span></button>
+      <a class="btn btn--ink" href="/"><span data-i18n="toFront">Back to the front page</span><svg class="hand" aria-hidden="true"><use href="#hand"/></svg></a>
+    </div>
+  </main>
+  <script type="module" src="/src/notfound.js"></script>
+</body>
+</html>

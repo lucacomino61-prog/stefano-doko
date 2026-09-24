@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stefano Doko — Mark v6</title>
+<style>
+@font-face { font-family: 'Anybody'; src: url('../../public/fonts/Anybody-VF.woff2') format('woff2'); font-weight: 100 900; font-stretch: 50% 150%; }
+@font-face { font-family: 'Old Standard'; src: url('../../public/fonts/OldStandard-Italic.woff2') format('woff2'); font-style: italic; }
+:root { --paper: #EFE6D2; --ink: #141414; --alarm: #E23B2E; }
+* { box-sizing: border-box; margin: 0; }
+body { width: 1600px; background: var(--paper); color: var(--ink); padding: 56px 64px 64px; font: italic 21px/1.35 'Old Standard', serif; }
+.label { font: 800 15px/1 'Anybody', sans-serif; font-stretch: 90%; letter-spacing: .08em; text-transform: uppercase; font-style: normal; }
+.slug { display: flex; justify-content: space-between; border-bottom: 3px solid var(--ink); padding-bottom: 12px; }
+.grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 56px; padding-top: 36px; }
+.cell { border-top: 2px solid var(--ink); padding-top: 14px; }
+.cell p { margin-top: 14px; }
+.hero { width: 100%; display: block; margin-top: 20px; }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 18px; }
+.pair img { width: 100%; display: block; border-radius: 10px; }
+.row { display: flex; align-items: end; gap: 30px; margin-top: 22px; }
+.row figure { margin: 0; text-align: center; }
+.row figcaption { margin-top: 8px; font-size: 16px; }
+.avatar { width: 150px; height: 150px; border-radius: 50%; overflow: hidden; }
+.avatar img { width: 100%; height: 100%; }
+</style>
+</head>
+<body>
+  <div class="slug label"><span>Stefano Doko</span><span>Mark · the rebus</span><span>Albania</span></div>
+  <div class="grid">
+    <section class="cell">
+      <span class="label">1 · The mark</span>
+      <img class="hero" src="logo.svg" alt="">
+      <p>The O in DOKO is a sun. Read it as a word or as a picture: both work. Fat Victorian letters of the kind Push Pin Studios brought back, rays that swirl, and a fine italic line underneath.</p>
+    </section>
+    <div>
+      <section class="cell">
+        <span class="label">2 · Reversed, and in one colour</span>
+        <div class="pair"><img src="logo-reversed.svg" alt=""><img src="logo-ink.svg" alt=""></div>
+      </section>
+      <section class="cell" style="margin-top:36px">
+        <span class="label">3 · Small</span>
+        <div class="row">
+          <figure><div class="avatar"><img src="icon.svg" alt=""></div><figcaption>Instagram</figcaption></figure>
+          <figure><img src="icon.svg" width="96" height="96" alt=""><figcaption>96 px</figcaption></figure>
+          <figure><img src="icon.svg" width="64" height="64" alt=""><figcaption>64 px</figcaption></figure>
+          <figure><img src="icon.svg" width="32" height="32" alt=""><figcaption>32 px</figcaption></figure>
+          <figure><img src="icon.svg" width="16" height="16" alt=""><figcaption>16 px</figcaption></figure>
+        </div>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

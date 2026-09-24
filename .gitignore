@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.impeccable/review/
+.claude-flow/
+__pycache__/
+.impeccable/perf/trace.json
+.impeccable/perf/regress-desktop.png

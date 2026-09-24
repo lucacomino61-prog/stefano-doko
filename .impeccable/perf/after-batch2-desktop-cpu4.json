@@ -1,0 +1,115 @@
+{
+ "rows": [
+  {
+   "phase": "idle-front",
+   "frames": 152,
+   "p50": 16.7,
+   "p95": 17.1,
+   "max": 18.2,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "stir-band",
+   "frames": 199,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.9,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll     0",
+   "frames": 99,
+   "p50": 16.7,
+   "p95": 17.1,
+   "max": 33.8,
+   "over20": 3,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  1000",
+   "frames": 85,
+   "p50": 16.7,
+   "p95": 17.1,
+   "max": 33.4,
+   "over20": 4,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  2000",
+   "frames": 77,
+   "p50": 16.7,
+   "p95": 16.9,
+   "max": 33.4,
+   "over20": 2,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  3000",
+   "frames": 82,
+   "p50": 16.7,
+   "p95": 33.3,
+   "max": 33.4,
+   "over20": 15,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  4000",
+   "frames": 83,
+   "p50": 16.7,
+   "p95": 16.9,
+   "max": 33.4,
+   "over20": 3,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  5000",
+   "frames": 82,
+   "p50": 16.7,
+   "p95": 17.9,
+   "max": 67.4,
+   "over20": 3,
+   "over34": 2
+  },
+  {
+   "phase": "scroll  6000",
+   "frames": 92,
+   "p50": 16.7,
+   "p95": 17.5,
+   "max": 33.3,
+   "over20": 1,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  7000",
+   "frames": 136,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.9,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "loupe",
+   "frames": 235,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 17,
+   "over20": 0,
+   "over34": 0
+  }
+ ],
+ "loaf": [
+  {
+   "start": 24259.599999904633,
+   "dur": 53.300000071525574,
+   "block": 0,
+   "render": 9.100000023841858,
+   "style": 2.8000000715255737,
+   "phase": "scroll-down",
+   "y": 5932,
+   "scripts": []
+  }
+ ]
+}

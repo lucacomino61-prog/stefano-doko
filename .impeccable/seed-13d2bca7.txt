@@ -1,0 +1,129 @@
+DIRECTION CONCEPT SEED (key: 13d2bca7; mode: experience; source: api; approved pool: c3b204a1eed6; 306/564 human-approved; rerun with --scope direction --mode experience --from 13d2bca7 --candidate-count 7 to reproduce this roll against this catalog revision)
+ASSIGNED INDEX: 5
+  After ordering the grounded directions by resonance, build candidate
+  5 of your own grounded list; the assignment never points at a
+  challenger. The assignment is the roll, not a suggestion: your top-ranked
+  direction is what every run would ship, so the script decides which grounded
+  direction gets built. Each direction joins a durable visual system to a
+  concrete expression for the requested first surface, decided as one. It must
+  survive the current task plus navigation, quiet and dense content,
+  interaction and state, and a substantially different future surface. In an
+  attended run, present the assigned direction fully committed and offer
+  re-roll. You may add ONE card for your top-ranked grounded candidate when
+  it is not the assigned direction, kicker IMPECCABLE’S PICK, with an honest risk line
+  naming its familiarity; one pick card, never a ranked lineup, and the pick
+  never takes the lead position. When the assignment IS your top candidate,
+  there is no pick card. Re-roll yourself only
+  on named factual grounds, when the assignment cannot carry the product's
+  truth or task; taste is never grounds.
+  The assignment exists to refuse the model's ranking rut, never to outrank
+  the user or the brief. Never expose assignment metadata in user-facing labels.
+CHALLENGERS:
+  1. a pixel-art arcade cabinet screen, where fat luminous pixels, scanlines, and phosphor bloom turn a 240-line grid into a stage with real glow
+     SOURCE ID: medium-native-crt-arcade-pixel-glow
+     CREATIVE SPARK: Up close it is just squares; at play distance the squares fuse into a hero, and the black between scanlines is doing half the work.
+     SYSTEM GRAMMAR:
+       - Palette/material: a sixteen-color sprite palette over phosphor black, scanline gaps doing half the shading, flashing white-gold reserved by law for power-ups
+       - Type/composition: eight-by-eight pixel caps for score and menus pinned to the top edge, the playfield composing in whole tiles with nothing allowed off-grid
+       - Topology/navigation: space is a tile grid with screen-by-screen rooms; the camera moves in whole-pixel steps.
+       - Controls/state: states are sprite swaps with strict palette discipline; damage, power, and rarity are palette laws.
+       - Responsive/motion: integer scaling preserves the grid at every size; bloom and scanlines are togglable capability layers.
+     WEB LEVERAGE: Crisp integer-scaled canvas with shader scanline glow, and every sprite state addressable in code.
+     QUALITY BAR: board https://impeccable.style/worlds/cards/medium-native-crt-arcade-pixel-glow.webp · hero https://impeccable.style/worlds/cards/medium-native-crt-arcade-pixel-glow-hero.webp
+  2. an early-80s rhythm machine step row, sixteen candy-colored step keys under a running chase light, pattern banks behind them and a tempo readout above, accents lighting deeper as the loop swings around again
+     SOURCE ID: signals-instruments-drum-machine-step-row
+     CREATIVE SPARK: you punch four steps into the red quarter of the row and hit run, the chase light comes around, and the empty machine suddenly has a pulse you made, so you lean in and accent the offbeat
+     SYSTEM GRAMMAR:
+       - Palette/material: charcoal panel ground, the step row quartered in red, orange, yellow, and white keys, lit LEDs as the only glow, silkscreen white labels for everything else
+       - Type/composition: instrument names as small silkscreen caps above their rows, the tempo in a red segmented readout, the sixteen-step row as the page's one unbroken line
+       - Topology/navigation: patterns are pages and banks are chapters; the step row is a timeline you write into place, and the chase light always tells you where now is
+       - Controls/state: tapping a step arms it and lights it, a second tap accents it brighter, the chase light sweeps in tempo, and an empty pattern is sixteen dark keys of invitation
+       - Responsive/motion: the sixteen-step row never wraps, it scales; motion is the chase light and a key's press flash, both locked to the clock
+     WEB LEVERAGE: web audio clocks the chase light and playback while each step key stays a toggle button operable by keyboard
+     QUALITY BAR: board https://impeccable.style/worlds/cards/signals-instruments-drum-machine-step-row.webp · hero https://impeccable.style/worlds/cards/signals-instruments-drum-machine-step-row-hero.webp
+  3. a hand-cranked paper menagerie of tabs, bellows, and pinned joints, where humble folds produce a surprising procession of motion
+     SOURCE ID: kinetic-sculpture-automata-crank-paper-menagerie
+     CREATIVE SPARK: The crank turns; a white fox bows, a crimson bird opens concertina wings, and their shadows cross on the paper wall behind them.
+     SYSTEM GRAMMAR:
+       - Palette/material: cut white paper on kraft board as the ground, charcoal cast shadow as body ink, one crimson fold reserved for the figure currently in motion
+       - Type/composition: hand-cut letterpress caps with visible tab and slot marks, captions on folded paper strips beneath each figure, one crank line ruling the base
+       - Topology/navigation: Advance through a procession while each figure opens into its own linkage and supporting details.
+       - Controls/state: Turn, pause, reverse, and inspect joints with folded, tensioned, extended, and resting states.
+       - Responsive/motion: Reduce the procession to one figure per viewport and provide illustrated keyframes beside every control.
+     WEB LEVERAGE: Pointer and keyboard input can drive a common crank timeline, synchronizing SVG cut-paper layers with accessible step descriptions.
+     QUALITY BAR: board https://impeccable.style/worlds/cards/kinetic-sculpture-automata-crank-paper-menagerie.webp · hero https://impeccable.style/worlds/cards/kinetic-sculpture-automata-crank-paper-menagerie-hero.webp
+  4. a seamless cyclorama passing from black night through cobalt and rose into white day, where light alone creates an infinite horizon behind the actors
+     SOURCE ID: stagecraft-theater-lighting-cyclorama-dawn
+     CREATIVE SPARK: The curved wall begins as depthless black; a low cobalt band appears, rose gathers above it, and the actors acquire shadows before the stage becomes day.
+     SYSTEM GRAMMAR:
+       - Palette/material: depthless cyc black as ground, a low cobalt horizon band as structure, rose gathering above it, white-day wash reserved for the fully active state
+       - Type/composition: lighting-plot stencil caps for cue names with tabular numerals, content held in horizontal horizon bands stacked from dark to light
+       - Topology/navigation: Organize atmosphere by horizon band, time phase, subject relation, and transition interval.
+       - Controls/state: Raise, blend, hold, and compare with night, first light, dawn, day, and blackout states.
+       - Responsive/motion: Offer discrete atmospheric phases with labels and patterns so color is never the sole signal.
+     WEB LEVERAGE: A scrubbable cue timeline binds horizon bands to actor and scene state, making each light transition inspectable while named cue states remain deep-linkable and text-equivalent.
+     QUALITY BAR: board https://impeccable.style/worlds/cards/stagecraft-theater-lighting-cyclorama-dawn.webp · hero https://impeccable.style/worlds/cards/stagecraft-theater-lighting-cyclorama-dawn-hero.webp
+  5. a penny-press broadside where relief-engraved skeletons act out the day's news, the image band across the top and dense verse set in two hard columns beneath it
+     SOURCE ID: posters-covers-sleeves-posada-calavera-broadside
+     CREATIVE SPARK: skeletons in feathered hats parade across the top of a cheap sheet, grinning at a scandal, and underneath them the verse is rammed into two columns so tight the press left ink on your thumb.
+     SYSTEM GRAMMAR:
+       - Palette/material: coarse newsprint in a single black relief ink, with one alarm color flooded behind the image band on holiday sheets only
+       - Type/composition: a shouting headline in mixed wood-type sizes tops the sheet, the engraving band sits below it, and verse fills two justified columns
+       - Topology/navigation: the sheet is one continuous cry, so navigation is by broadside rather than by section, each new sheet replacing the last
+       - Controls/state: controls are wood-type words with rule underlines, pressed states ink heavier, and read sheets fade toward the paper tone
+       - Responsive/motion: the two columns collapse to one and the image band goes full width, while motion is the judder of a hand-fed press
+     WEB LEVERAGE: css multi-column verse that collapses responsive, svg relief line art, and a print-judder motion on state change
+     QUALITY BAR: board https://impeccable.style/worlds/cards/posters-covers-sleeves-posada-calavera-broadside.webp · hero https://impeccable.style/worlds/cards/posters-covers-sleeves-posada-calavera-broadside-hero.webp
+  6. a skate-shop deck wall, full-bleed illustration on a die-cut canvas rack, brand logotypes built to survive scale-down, grip-tape black backs against screaming color
+     SOURCE ID: pop-culture-shelf-skate-deck-wall
+     CREATIVE SPARK: You walk the rack under buzzing shop lights, aqua and pink screaming off the maple, and pull one deck by the nose to flip it from grip-tape black to the full hand-drawn scream underneath.
+     SYSTEM GRAMMAR:
+       - Palette/material: screaming aqua, hot pink and bone white silkscreen inks on maple, grip-tape black as the resting back face, one dayglo spot color marking the deck in hand
+       - Type/composition: brand logotypes drawn as lockups that still read at sticker size, artist linework owning the full bleed, price and size in marker caps on a rail tag
+       - Topology/navigation: decks rack in vertical rows nose-up; you browse by walking the wall, each board a full-height card, the top rail names the brand family
+       - Controls/state: pulling a deck off the rack flips grip black to full art, the dayglo spot ink flags the selected board, sold decks leave an empty hook
+       - Responsive/motion: the wall narrows to a swipeable two-deck rack on phones; motion is the pull-and-flip off the hook
+     WEB LEVERAGE: horizontal scroll-snap rack of tall svg art; a 3d rotateY flip swaps the grip back for the full-bleed face
+     QUALITY BAR: board https://impeccable.style/worlds/cards/pop-culture-shelf-skate-deck-wall.webp · hero https://impeccable.style/worlds/cards/pop-culture-shelf-skate-deck-wall-hero.webp
+Fuse each challenger before judging it: the challenger supplies the form
+  and its system grammar, the product supplies every fact, and clarity wins
+  conflicts. Weigh the fused result against the assigned direction on exactly
+  two axes, audience identification and product clarity. Losing to strong
+  grounded material is a valid outcome; beating a thin or tool-monoculture
+  list is the point. A fused challenger that wins both axes becomes the build.
+  Close the weighing with a verdict per challenger, decided before any
+  borrowing is considered: wins (beats the assigned direction on both axes),
+  competitive (holds one axis), or declined (loses both). A declined
+  challenger is not spent: name the one discipline of its system the assigned
+  direction lacks, and raise the assigned direction to match before
+  presenting it. A donation transfers ambition and system discipline, never
+  the challenger's clothes; one world owns the page. Write each raise as its
+  own named line on the presented direction, and carry every verdict, kept
+  line, and raise into the decision page payload.
+When you can view images, open the QUALITY BAR board and hero for any
+challenger you weigh seriously and for the world you build. They exist as a
+craft bar, the finish level and commitment the build is expected to reach,
+never as a mockup to copy; your surface serves this product, not that render.
+PRODUCT.md and explicit incumbent brand commitments constrain every direction.
+The seed never chooses exact colors, fonts, tokens, or a user preference, and
+it never permits the world and first surface to be selected independently.
+The CREATIVE SPARK is a complete visual system, not a theme or decorative
+reference. Translate every supplied system rule into the product: palette and
+material, type and composition, topology, controls and states, and adaptation.
+Keep the source's visible character, scale, rhythm, and interaction instead of
+reducing vivid grammar to generic nouns. When the source is already a credible
+interface language, commit to it across navigation, content, controls, and
+states. Otherwise keep a literal carrier only when it becomes functional.
+Ambitious motion, spatial media, or interaction is welcome when it strengthens
+the product without weakening semantics, performance, or fallback behavior.
+TELEMETRY: after the user's choice resolves, rerun this script once with
+  --kind <assigned|pick|challenger|canon> --from 13d2bca7 --scope direction --mode experience,
+  adding --chosen <challenger-id> when a dealt challenger won and keeping
+  --register <safer|bolder> when the resolved round came from a steered hand.
+  One ping per resolved attended round. The ping is anonymous, the card kind
+  plus the catalog id when one won; your grounded candidates' names never
+  leave the machine, and the ping is skipped automatically when DO_NOT_TRACK
+  or IMPECCABLE_NO_TELEMETRY is set.
+A user- or brief-pinned decision beats the roll, always.
+ASSIGNED INDEX (restated for truncated readers): 5. Build candidate
+5 of your own grounded list; seed key 13d2bca7.

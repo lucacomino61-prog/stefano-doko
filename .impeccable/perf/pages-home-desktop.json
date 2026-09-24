@@ -1,0 +1,133 @@
+{
+ "rows": [
+  {
+   "phase": "idle-front",
+   "frames": 152,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 17.2,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "stir-band",
+   "frames": 281,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 17,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll     0",
+   "frames": 94,
+   "p50": 16.7,
+   "p95": 17,
+   "max": 33.4,
+   "over20": 1,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  1000",
+   "frames": 70,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 17.4,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  2000",
+   "frames": 83,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 50,
+   "over20": 1,
+   "over34": 1
+  },
+  {
+   "phase": "scroll  3000",
+   "frames": 90,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.9,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  4000",
+   "frames": 88,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.9,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  5000",
+   "frames": 87,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 17.1,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  6000",
+   "frames": 82,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  7000",
+   "frames": 89,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 17.5,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  8000",
+   "frames": 89,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 17.4,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  9000",
+   "frames": 73,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.9,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "loupe",
+   "frames": 246,
+   "p50": 16.7,
+   "p95": 16.9,
+   "max": 18,
+   "over20": 0,
+   "over34": 0
+  }
+ ],
+ "loaf": [
+  {
+   "start": 19868.5,
+   "dur": 51.300000071525574,
+   "block": 0,
+   "render": 3.3000000715255737,
+   "style": 1.100000023841858,
+   "phase": "scroll-down",
+   "y": 2220,
+   "scripts": []
+  }
+ ]
+}

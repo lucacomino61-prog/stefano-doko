@@ -1,0 +1,10 @@
+/* Stefano Doko: one typeface (Inter), three colours, one unit. */
+@font-face { font-family: 'Inter'; src: url('../../v5/fonts-src/Inter-VF-latin.woff2') format('woff2'); font-weight: 100 900; }
+:root { --red: #E23B2E; --ink: #141414; --cream: #EFE6D2; --fade: #5F584F; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; font-feature-settings: 'ss01', 'cv11'; letter-spacing: -0.02em; -webkit-font-smoothing: antialiased; }
+.frame { position: relative; overflow: hidden; }
+.cream { background: var(--cream); color: var(--ink); }
+.red { background: var(--red); color: var(--cream); }
+.ink { background: var(--ink); color: var(--cream); }
+.eyebrow { font-weight: 600; font-size: 26px; letter-spacing: 0.02em; text-transform: uppercase; }

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stefano Doko — Mark v2</title>
+<style>
+@font-face { font-family: 'Anybody'; src: url('../../public/fonts/Anybody-VF.woff2') format('woff2'); font-weight: 100 900; font-stretch: 50% 150%; }
+@font-face { font-family: 'Old Standard'; src: url('../../public/fonts/OldStandard-Italic.woff2') format('woff2'); font-style: italic; }
+:root { --paper: #EFE6D2; --ink: #141414; --fade: #5F584F; --alarm: #E23B2E; }
+* { box-sizing: border-box; margin: 0; }
+body { width: 1600px; background: var(--paper); color: var(--ink); padding: 56px 64px 64px; font: italic 21px/1.35 'Old Standard', serif; }
+.label { font: 800 15px/1 'Anybody', sans-serif; font-stretch: 90%; letter-spacing: .08em; text-transform: uppercase; font-style: normal; }
+.slug { display: flex; justify-content: space-between; border-bottom: 3px solid var(--ink); padding-bottom: 12px; }
+.grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 56px; padding-top: 36px; }
+.cell { border-top: 2px solid var(--ink); padding-top: 14px; }
+.cell p { margin-top: 12px; max-width: 640px; }
+.hero { display: grid; place-items: center; height: 520px; }
+.hero img { height: 440px; }
+.cons img { height: 440px; display: block; margin: 20px auto 0; }
+.lockup { display: flex; align-items: center; gap: 30px; margin-top: 26px; }
+.lockup img { height: 158px; }
+.wm { font: 800 88px/.86 'Anybody', sans-serif; font-stretch: 88%; font-style: normal; letter-spacing: -.02em; }
+.wm small { display: block; font: 800 17px/1 'Anybody', sans-serif; font-stretch: 90%; letter-spacing: .14em; text-transform: uppercase; margin-top: 14px; }
+.inkbox { background: var(--ink); color: var(--paper); border-radius: 12px; padding: 30px 34px; margin-top: 26px; }
+.inkbox .lockup { margin-top: 0; }
+.row { display: flex; align-items: end; gap: 34px; margin-top: 24px; }
+.row figure { margin: 0; text-align: center; }
+.row figcaption { margin-top: 8px; font-size: 16px; }
+.tab { display: inline-flex; align-items: center; gap: 8px; background: #DAD3C3; border-radius: 8px 8px 0 0; padding: 8px 14px; font: 14px/1 system-ui, sans-serif; font-style: normal; color: #222; margin-top: 18px; }
+.avatar { width: 150px; height: 150px; border-radius: 50%; background: var(--paper); border: 2px solid var(--ink); display: grid; place-items: center; }
+.avatar img { width: 96px; }
+</style>
+</head>
+<body>
+  <div class="slug label"><span>Stefano Doko</span><span>Mark · one shape</span><span>Albania</span></div>
+  <div class="grid">
+    <section class="cell">
+      <span class="label">1 · The mark</span>
+      <div class="hero"><img src="mark.svg" alt=""></div>
+      <p>Three half-discs and nothing else. Two small ones turned against each other make the S; the same shape at twice the size is the D. The red D is half of the stamp the site already prints, and a sun coming up over the sea.</p>
+    </section>
+    <section class="cell cons">
+      <span class="label">2 · Construction</span>
+      <img src="construction.svg" alt="">
+      <p>One module, r. The S is two half-discs of radius r; the D is one of radius 2r. Every edge sits on the grid, so the mark can be drawn with a compass and a ruler.</p>
+    </section>
+    <section class="cell">
+      <span class="label">3 · With the name</span>
+      <div class="lockup"><img src="mark.svg" alt=""><div class="wm">stefano doko<small>Graphic designer · Albania</small></div></div>
+      <div class="inkbox"><div class="lockup"><img src="mark-paper-on-ink.svg" alt="" style="height:158px"><div class="wm">stefano doko<small>Dizajner grafik · Shqipëri</small></div></div></div>
+    </section>
+    <section class="cell">
+      <span class="label">4 · Small, and in one colour</span>
+      <div class="row">
+        <figure><div class="avatar"><img src="mark.svg" alt=""></div><figcaption>Instagram</figcaption></figure>
+        <figure><img src="mark-ink.svg" height="96" alt=""><figcaption>one colour</figcaption></figure>
+        <figure><img src="icon.svg" width="64" height="64" alt=""><figcaption>64 px</figcaption></figure>
+        <figure><img src="icon-ink.svg" width="64" height="64" alt=""><figcaption>64 px</figcaption></figure>
+        <figure><img src="icon.svg" width="32" height="32" alt=""><figcaption>32 px</figcaption></figure>
+        <figure><img src="icon.svg" width="16" height="16" alt=""><figcaption>16 px</figcaption></figure>
+      </div>
+      <div class="tab"><img src="icon.svg" width="16" height="16" alt="">Stefano Doko, graphic designer</div>
+    </section>
+  </div>
+</body>
+</html>

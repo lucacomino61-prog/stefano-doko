@@ -1,0 +1,131 @@
+{
+  "title": "Choose the visual world for Stefano's site",
+  "question": "The roll dealt the press sheet. Keep it, take the pick or an alternate, or re-roll.",
+  "options": [
+    {
+      "id": "assigned",
+      "label": "Press Check",
+      "kicker": "THE ROLL",
+      "lineage": "offset press sheets on the proofing table",
+      "thesis": "The portfolio is a press sheet waiting for your OK: Stefano's work printed plate by plate.",
+      "palette": ["#F7F7F4", "#1A1A1A", "#00A3E0", "#E6007E", "#FFE500"],
+      "materials": ["coated press-sheet white", "registration and crop marks", "CMYK colour bars", "slug-line mono"],
+      "viewport": "Full-bleed sheet: STEFANO DOKO prints in four plates inside crop marks, a colour bar runs along the foot, and an 'OK to print' rubber stamp is the button to write to him.",
+      "risk": "Four process inks can turn into a rainbow; the ink laws below keep one plate in charge.",
+      "raised": [
+        {"from": "challenger-arcade", "raise": "Ink laws: cyan is anything you can click, magenta what you are touching, yellow only highlights, black carries the text."},
+        {"from": "challenger-drum-machine", "raise": "The colour bar along the sheet's foot is the page's progress: one lit patch marks where you are."},
+        {"from": "challenger-automata", "raise": "Only the thing in motion gets all four inks; everything at rest sits in black."},
+        {"from": "challenger-cyclorama", "raise": "Sections are press stages (plate, proof, press, fold) with named, linkable states."},
+        {"from": "challenger-skate", "raise": "The name lockup must read from billboard to favicon; the stamp mark is tested at 16px."}
+      ]
+    },
+    {
+      "id": "model-pick",
+      "label": "Shop Fronts",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "Albanian street fascias, lightboxes and painted signs",
+      "thesis": "The portfolio as a street of shop fronts: type your business name and see it on a sign.",
+      "palette": ["#0E2A47", "#FFFFFF", "#E30613", "#FFD200"],
+      "materials": ["acrylic lightboxes", "painted fascia boards", "neon open signs"],
+      "viewport": "A night street of lit fascias; the middle sign reads STEFANO DOKO and a blank sign waits for the visitor's own business name.",
+      "risk": "Familiar: the type-your-name-on-a-sign demo is a known trick, and street signage can read cheap."
+    },
+    {
+      "id": "challenger-broadside",
+      "label": "Penny Broadside",
+      "verdict": "competitive",
+      "lineage": "Posada relief-print broadsides",
+      "thesis": "Each project as the day's broadside: shouting wood type, an engraved band, two hard columns.",
+      "palette": ["#EFE6D2", "#141414", "#E23B2E"],
+      "materials": ["newsprint", "relief engraving", "wood type"],
+      "viewport": "One tall sheet: STEFANO DOKO in mixed wood type over an engraved band of his two businesses.",
+      "case": "Fuses cleanly with a designer who prints; holds on clarity, but Albanian business owners do not know the form.",
+      "risk": "Reads as costume if the engraving turns into clip-art.",
+      "hero": "https://impeccable.style/worlds/cards/posters-covers-sleeves-posada-calavera-broadside-hero.webp",
+      "board": "https://impeccable.style/worlds/cards/posters-covers-sleeves-posada-calavera-broadside.webp"
+    },
+    {
+      "id": "challenger-arcade",
+      "label": "Arcade Cabinet",
+      "verdict": "declined",
+      "lineage": "pixel-art arcade CRT screens",
+      "thesis": "The portfolio as a game screen of fat pixels and phosphor glow.",
+      "palette": ["#050505", "#F8F0C8", "#FF3D6E", "#35E0FF"],
+      "materials": ["scanlines", "phosphor bloom", "8x8 pixel caps"],
+      "viewport": "A score bar with STEFANO DOKO in pixel caps over a tiled playfield.",
+      "case": "Loses both axes: business owners do not hire a designer from an arcade.",
+      "kept": "Palette law: each colour reserved for one state.",
+      "risk": "Reads as a game studio, not a designer for businesses.",
+      "hero": "https://impeccable.style/worlds/cards/medium-native-crt-arcade-pixel-glow-hero.webp"
+    },
+    {
+      "id": "challenger-drum-machine",
+      "label": "Step Sequencer",
+      "verdict": "declined",
+      "lineage": "early-80s rhythm machines",
+      "thesis": "The portfolio as a sixteen-step row under a running chase light.",
+      "palette": ["#2A2A2A", "#E8412C", "#F28C28", "#F4D35E", "#F4F1E8"],
+      "materials": ["silkscreen panel", "lit step keys", "segment readout"],
+      "viewport": "A charcoal panel with sixteen candy keys; each project is a pattern bank.",
+      "case": "Loses both axes: playful for musicians, off-subject for business owners.",
+      "kept": "One unbroken line with a light that always says where now is.",
+      "risk": "Toy-like; the work would hide behind the instrument.",
+      "hero": "https://impeccable.style/worlds/cards/signals-instruments-drum-machine-step-row-hero.webp"
+    },
+    {
+      "id": "challenger-automata",
+      "label": "Paper Automata",
+      "verdict": "declined",
+      "lineage": "hand-cranked paper automata",
+      "thesis": "The portfolio as a cranked procession of folded paper figures.",
+      "palette": ["#C9A77A", "#FFFFFF", "#2B2B2B", "#C8102E"],
+      "materials": ["cut paper", "kraft board", "cast shadow"],
+      "viewport": "A crank line along the base; each project a paper figure that unfolds.",
+      "case": "Loses both axes: charming, but it says craft fair, not business design.",
+      "kept": "One colour reserved for the figure currently in motion.",
+      "risk": "Whimsy outweighs the proof.",
+      "hero": "https://impeccable.style/worlds/cards/kinetic-sculpture-automata-crank-paper-menagerie-hero.webp"
+    },
+    {
+      "id": "challenger-cyclorama",
+      "label": "Stage Cyclorama",
+      "verdict": "declined",
+      "lineage": "theatre lighting cycloramas",
+      "thesis": "The portfolio lit like a stage from night to day.",
+      "palette": ["#050608", "#1C3FAA", "#E7849B", "#F7F4EE"],
+      "materials": ["light bands", "stencil cue caps", "tabular numerals"],
+      "viewport": "A black stage; a cobalt horizon rises and the name appears in dawn light.",
+      "case": "Loses both axes: atmospheric, but nothing an owner recognises.",
+      "kept": "Named, linkable states along a cue timeline.",
+      "risk": "Mood over proof.",
+      "hero": "https://impeccable.style/worlds/cards/stagecraft-theater-lighting-cyclorama-dawn-hero.webp"
+    },
+    {
+      "id": "challenger-skate",
+      "label": "Skate Deck Wall",
+      "verdict": "declined",
+      "lineage": "skate-shop deck racks",
+      "thesis": "The portfolio as a rack of decks you pull and flip.",
+      "palette": ["#0B0B0B", "#1FD1C1", "#FF3FA4", "#F3EEE3"],
+      "materials": ["silkscreen on maple", "grip-tape black", "marker price tags"],
+      "viewport": "A wall of tall decks; each project flips from grip black to full art.",
+      "case": "Loses both axes: the wrong street for business owners.",
+      "kept": "Logotypes built to survive scale-down to sticker size.",
+      "risk": "Youth-brand costume on a business service.",
+      "hero": "https://impeccable.style/worlds/cards/pop-culture-shelf-skate-deck-wall-hero.webp"
+    }
+  ],
+  "reroll": {"registers": ["safer", "bolder"]},
+  "buildPath": {"value": "code", "toggle": false},
+  "canon": true,
+  "canonCard": {
+    "label": "The category standard",
+    "thesis": "A designer portfolio as everyone ships it: big name, work grid, about, contact.",
+    "palette": ["#0B0B0C", "#F2F2F2", "#8A8A8A"],
+    "materials": ["dark minimal grid", "large sans display", "project thumbnails"],
+    "viewport": "A huge name top-left, a grid of project thumbnails, a Let's talk button.",
+    "risk": "Indistinguishable from every other designer's site, by design."
+  },
+  "steer": true
+}
