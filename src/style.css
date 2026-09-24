@@ -154,7 +154,7 @@ ol, ul { padding: 0; list-style: none; }
 @media (hover: hover) and (pointer: fine) {
   .word:hover { text-decoration-color: var(--ink); text-decoration-thickness: 3px; }
 }
-.word[aria-pressed='true'], .word[aria-current='true'] { text-decoration-color: var(--ink); text-decoration-thickness: 4px; }
+.word[aria-pressed='true'], .word[aria-current='true'], .word:active { text-decoration-color: var(--ink); text-decoration-thickness: 4px; }
 .word.is-read { color: var(--fade); }
 
 .btn {
@@ -393,6 +393,10 @@ ol, ul { padding: 0; list-style: none; }
   .contents a:hover .contents__t { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 4px; }
 }
 .contents a.is-read .contents__t, .contents a.is-read .contents__l { color: var(--fade); }
+/* a tap: the thumbnail gives and the hand points, where there is no hover to say so */
+.contents__thumb { transition: scale 160ms var(--ease-out); }
+.contents a:active .contents__thumb { scale: 0.92; }
+.contents a:active .hand { opacity: 1; transform: translateX(4px); }
 
 /* ---------- marquee ---------- */
 .marquee {
@@ -420,27 +424,59 @@ ol, ul { padding: 0; list-style: none; }
 
 /* ---------- work sheet ---------- */
 .sheet--work { padding: 104px 0 40px; }
-.fan { position: relative; height: clamp(300px, 27vw, 392px); margin: 18px var(--m) 0; }
+/* isolated: the cards' order in the pile stays inside the fan, under the index and the tab bar */
+.fan { position: relative; isolation: isolate; height: clamp(300px, 27vw, 392px); margin: 18px var(--m) 0; }
+/* The card only moves: fan.js writes its place in the fan as one inline
+   transform, every frame of the deal, and the hover lifts it by the separate
+   translate property. Its paper is the sheet inside, whose style never
+   changes with it: restyled every frame, the paper (var(--stock)) was
+   repainted every frame. The card keeps the radius and an empty shadow so the
+   focus ring looks as it did when the card carried the paper. */
 .fan__card {
-  --rot: 0deg; --x: 0px; --y: 0px; --lift: 0px;
   position: absolute; left: 50%; bottom: 0;
   width: clamp(220px, 26vw, 400px);
-  display: grid; gap: 10px; text-decoration: none;
+  display: block; text-decoration: none; border-radius: 10px; box-shadow: none;
+  transform-origin: 50% 140%;
+  transform: translate(-50%, 0);
+  transition: scale 160ms var(--ease-out);
+  will-change: transform;
+}
+.fan__sheet {
+  display: grid; gap: 10px;
   padding: 8px 8px 12px; border-radius: 10px;
   background-color: var(--paper); background-image: var(--stock); background-size: var(--stock-size);
   box-shadow: inset 0 0 0 2px var(--ink), 0 22px 40px -22px rgb(20 20 20 / 0.55);
-  transform-origin: 50% 140%;
-  transform: translate(calc(-50% + var(--x)), calc(var(--y) - var(--lift))) rotate(var(--rot));
   transition: box-shadow 300ms ease;
-  will-change: transform;
 }
-.fan.is-dealt .fan__card { transition: transform 500ms var(--ease-out), box-shadow 300ms ease; }
+.fan.is-dealt .fan__card { transition: transform 500ms var(--ease-out), translate 500ms var(--ease-out), scale 160ms var(--ease-out); }
+/* a proof gives under the finger (the scale property composes with the fan's transform) */
+.fan__card:active { scale: 0.97; }
+/* phones: one proof at the front, moved by the finger or by the hands below;
+   the script drives every frame, so the transform itself does not ease */
+.fan--deck { touch-action: pan-y; }
+.fan--deck .fan__card, .fan--deck.is-dealt .fan__card {
+  transition: scale 160ms var(--ease-out);
+  -webkit-touch-callout: none; -webkit-user-select: none; user-select: none;
+}
+.fan--deck .fan__card img { -webkit-user-drag: none; pointer-events: none; }
+.fan__nav { display: flex; align-items: center; justify-content: center; gap: 18px; margin: 14px var(--m) 0; }
+.fan__nav[hidden] { display: none; }
+.fan__step {
+  display: grid; place-items: center; width: 48px; height: 44px; padding: 0; border: 0; border-radius: 6px;
+  background: none; color: var(--ink); cursor: pointer; touch-action: manipulation;
+  transition: scale 160ms var(--ease-out);
+}
+.fan__step:active { scale: 0.92; }
+.fan__step .hand { width: 34px; height: 17px; }
+.hand--back { transform: scaleX(-1); }
+.fan__count { min-width: 3.4em; text-align: center; font: 800 13px/1 var(--display); letter-spacing: 0.12em; font-variant-numeric: tabular-nums lining-nums; }
 .fan__card img { border-radius: 6px; box-shadow: 0 0 0 1px var(--ink); aspect-ratio: 1440 / 900; object-fit: cover; object-position: top; width: 100%; }
 .fan__card--tall { width: clamp(140px, 13.5vw, 205px); }
 .fan__card--tall img { aspect-ratio: 780 / 1300; }
 .fan__cap { font: 800 12px/1 var(--display); letter-spacing: 0.08em; text-transform: uppercase; padding: 0 4px; }
 @media (hover: hover) and (pointer: fine) {
-  .fan__card:hover { --lift: 28px; box-shadow: inset 0 0 0 2px var(--ink), 0 34px 50px -24px rgb(20 20 20 / 0.6); z-index: 5; }
+  .fan__card:hover { translate: 0 -28px; z-index: 5; }
+  .fan__card:hover .fan__sheet { box-shadow: inset 0 0 0 2px var(--ink), 0 34px 50px -24px rgb(20 20 20 / 0.6); }
 }
 
 /* ---------- the case stack ---------- */
@@ -507,6 +543,46 @@ ol, ul { padding: 0; list-style: none; }
   .case--preview .plate__mount img { width: auto; height: var(--plate-h); }
   .case--preview .plate--wide .plate__mount img { aspect-ratio: 1440 / 900; }
 }
+/* portrait tablets: side by side, the plates are held to the sheet's width
+   and the lower third of the held sheet was bare paper. Where the sheet is
+   tall enough, the plates are stacked and sized from the height left under
+   the head (the body is a size container): the desktop plate at the left
+   with its key beside it, since its rules leave by its right edge, and the
+   phone plate under it, a fifth taller, set with its key as one cut on the
+   sheet's axis. Greta has no key: its two plates go on the axis at one
+   height. A shorter sheet keeps them side by side, which is larger there. */
+@media (min-width: 768px) and (max-width: 1100px) and (orientation: portrait) {
+  .case__body {
+    container: case-body / size;
+    /* 112px: the gap between the plates, two mounts' padding, two captions */
+    --room: calc(100cqh - 112px);
+    /* 270px is kept for the key, its longest line in either language */
+    --h1: min(calc(var(--room) / 2.2), calc((100cqw - 310px) / 1.6));
+    --h2: min(calc(var(--room) - var(--h1)), calc(var(--h1) * 1.5));
+  }
+  .case--preview .case__body {
+    --h1: min(calc(var(--room) / 2), calc((100cqw - 14px) / 1.6));
+    --h2: var(--h1);
+    --plate-h: min(clamp(300px, calc(100dvh - 300px), 640px), calc((100cqw - 60px) / 2.0621));
+    flex-wrap: wrap;
+  }
+}
+@container case-body (max-aspect-ratio: 6 / 5) {
+  .case:not(.case--preview) .plate--wide { grid-column: 1 / -1; grid-row: 1; justify-self: start; }
+  .case:not(.case--preview) .plate--tall {
+    grid-column: 1 / -1; grid-row: 2; justify-self: start;
+    /* the plate and its key (about 170px, on its left) centred as one */
+    margin: 30px 0 0 calc(50cqw + (182px - var(--h2) * 0.4621) / 2);
+  }
+  .case:not(.case--preview) .plate--wide .plate__mount img { width: auto; height: var(--h1); aspect-ratio: 1440 / 900; }
+  .case:not(.case--preview) .plate--tall .plate__mount img { width: auto; height: var(--h2); }
+}
+@container case-body (max-aspect-ratio: 49 / 50) {
+  .case--preview .plate--wide { margin-inline: calc((100cqw - 14px - var(--h1) * 1.6) / 2); }
+  .case--preview .plate--tall { margin-inline: auto; }
+  .case--preview .plate--wide .plate__mount img { height: var(--h1); }
+  .case--preview .plate--tall .plate__mount img { height: var(--h2); }
+}
 .plate { display: grid; gap: 8px; min-height: 0; }
 .plate--wide { grid-column: 1; grid-row: 1; }
 .plate--tall { grid-column: 3; grid-row: 1; }
@@ -531,6 +607,16 @@ ol, ul { padding: 0; list-style: none; }
   background: var(--paper); padding: 2px 6px 2px 2px; border-radius: 4px;
 }
 .callout b { font: 400 15px/1 var(--fat); font-style: normal; }
+/* a label longer than its room wraps inside it. On tablets the column between
+   the plates is too narrow for the longer labels (in Albanian, "Menuja dhe
+   telefonata, krah për krah" ran on under the phone plate), and on desktops
+   up to about 1190px that label still ran into the gutter. cases.js measures
+   each label's room into --callout-w, draws a wrapped box in to its longest
+   line and meets its first line with the rule; a label that fits keeps its
+   one line. Balanced lines keep their breaks when the box is drawn in. */
+@media (min-width: 768px) {
+  .case__body > .callout { white-space: normal; text-wrap: balance; max-width: var(--callout-w, none); }
+}
 /* the read sheet's veil: its own element, so fading it restyles nothing else */
 .case__veil { position: absolute; inset: 0; background: var(--paper); opacity: 0; pointer-events: none; z-index: 6; will-change: opacity; }
 
@@ -696,6 +782,9 @@ ol, ul { padding: 0; list-style: none; }
 .next__line { display: block; flex: 1; min-width: 0; font: 900 100px/0.84 var(--display); text-transform: uppercase; white-space: nowrap; }
 .next__hand { flex: none; width: 112px; height: 56px; transition: transform 200ms var(--ease-out); }
 @media (hover: hover) and (pointer: fine) { .next__link:hover .next__hand { transform: translateX(10px); } }
+.next__line { transition: translate 160ms var(--ease-out); }
+.next__link:active .next__line { translate: 0 2px; }
+.next__link:active .next__hand { transform: translateX(10px); }
 
 /* the colophon at length: articles run in two columns under a column rule */
 .colophon-long {
@@ -764,6 +853,23 @@ ol, ul { padding: 0; list-style: none; }
 .telegram__status:empty { display: none; }
 .telegram__status p { margin: 0; }
 .telegram__fallback { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-top: 8px !important; font-size: 16px; }
+/* the counter's stamp, pressed onto the blank once the telegram has gone: a
+   rectangle rather than a circle (rings on an exact circle cost Chrome a
+   shader compile on first sight), in ink, printed unevenly like every inked
+   head. The status line under the blank says the same thing in words. */
+.telegram__stamp {
+  position: absolute; right: 30px; top: 70px; z-index: 3;
+  display: grid; justify-items: center; gap: 5px;
+  padding: 11px 18px 10px; border-radius: 6px;
+  color: var(--ink); opacity: 0; pointer-events: none;
+  box-shadow: inset 0 0 0 2.5px currentColor;
+  transform: rotate(-6deg);
+  -webkit-mask-image: var(--speckle, none); mask-image: var(--speckle, none);
+  -webkit-mask-size: 180px 180px; mask-size: 180px 180px;
+}
+.telegram__stamp::after { content: ''; position: absolute; inset: 5px; border: 1.5px solid currentColor; border-radius: 3px; }
+.telegram__stamp b { font: 900 30px/0.9 var(--display); font-stretch: 78%; letter-spacing: 0.08em; text-transform: uppercase; }
+.telegram__stamp i { font: 800 11px/1 var(--display); font-style: normal; letter-spacing: 0.14em; text-transform: uppercase; font-variant-numeric: tabular-nums lining-nums; }
 .privacy { max-width: 720px; margin: 56px var(--m) 0; }
 .privacy p { margin: 0; font-size: 17px; line-height: 1.55; }
 
@@ -805,6 +911,8 @@ ol, ul { padding: 0; list-style: none; }
   .measured__table th { font-size: 16px; }
   .measured__table td { font-size: 24px; }
   .telegram { margin-top: 32px; padding: 18px 16px 22px; }
+  .telegram__stamp { right: 14px; padding: 9px 13px 8px; }
+  .telegram__stamp b { font-size: 24px; }
   .telegram__row { grid-template-columns: minmax(0, 1fr); }
   .telegram__kind { font-size: 24px; }
 }
@@ -968,8 +1076,9 @@ ol, ul { padding: 0; list-style: none; }
   text-decoration: none;
   background-color: var(--paper); background-image: var(--stock); background-size: var(--stock-size);
   box-shadow: inset 0 0 0 2px var(--ink), 0 14px 26px -16px rgb(20 20 20 / 0.55);
-  transition: transform 220ms var(--ease-out), background-color 160ms ease;
+  transition: transform 220ms var(--ease-out), background-color 160ms ease, scale 160ms var(--ease-out);
 }
+.stack-menu__sheet:active { scale: 0.98; }
 .stack-menu__sheet b { font: 850 20px/1 var(--display); font-stretch: 84%; text-transform: uppercase; letter-spacing: 0.02em; }
 .stack-menu__sheet i { grid-column: 1; font: italic 400 15px/1.2 var(--text); }
 .stack-menu__sheet .hand { grid-row: 1 / span 2; grid-column: 2; width: 34px; height: 17px; }
@@ -1010,9 +1119,13 @@ html:not(.js) .intro, .no-motion .intro { display: none; }
 .odo__col span { height: 1em; line-height: 1; }
 .intro__pct { font-size: 0.42em; margin: 0.1em 0 0 0.06em; color: var(--alarm); }
 .intro__label { font: 700 13px/1 var(--display); letter-spacing: 0.3em; text-transform: uppercase; }
-/* the throwaway proof of the red sheet (extra.js): drawn once beneath the
-   intro, never seen, gone before the stamp opens */
+/* the throwaway proofs (warm.js): drawn once beneath the intro, never seen,
+   gone before the stamp opens. The red sheet fills the screen; the fan and a
+   plate lie over its middle, below its head and clear of its stamp, so every
+   part is drawn inside the screen at once */
 .warm { position: fixed; left: 0; top: 0; width: 100%; z-index: 69; pointer-events: none; }
+.warm__work { position: absolute; left: 0; right: 0; top: 36vh; }
+.warm__work > * { position: absolute; left: 0; right: 0; top: 0; }
 
 /* ---------- proof mode ---------- */
 .proof-note {
@@ -1101,7 +1214,8 @@ html:not(.js) .intro, .no-motion .intro { display: none; }
   .sheethead { white-space: normal; }
   .sheet__lede { font-size: 19px; }
   .fan { height: 96vw; margin-top: 28px; overflow-x: clip; }
-  .fan__card { width: 50vw; padding: 5px 5px 8px; }
+  .fan__card { width: 50vw; }
+  .fan__sheet { padding: 5px 5px 8px; }
   .fan__card--tall { width: 27vw; }
   .fan__cap { font-size: 10px; }
   .stack { margin-top: 40px; }
@@ -1139,7 +1253,12 @@ html:not(.js) .intro, .no-motion .intro { display: none; }
   .letter { grid-template-columns: minmax(0, 1fr); }
   .letter__pad { width: min(300px, 100%); height: auto; aspect-ratio: 1; }
   .foot { grid-template-columns: minmax(0, 1fr); gap: 12px; }
-  .stack-menu { top: auto; bottom: 84px; }
+  .stack-menu { top: auto; bottom: 84px; touch-action: none; }
+  /* the handle: pull the stack down to put it away */
+  .stack-menu::before {
+    content: ''; position: absolute; left: 50%; bottom: calc(100% + 20px); width: 38px; height: 5px; translate: -50% 0;
+    border-top: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink);
+  }
   .stack-menu__close { top: auto; bottom: calc(100% + 8px); }
   .proof-note { max-width: 200px; font-size: 14px; }
   .proof-note--mast { top: auto; bottom: -8px; right: var(--m); }

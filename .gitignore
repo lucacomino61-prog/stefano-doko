@@ -5,3 +5,4 @@ dist/
 __pycache__/
 .impeccable/perf/trace.json
 .impeccable/perf/regress-desktop.png
+.impeccable/perf/redsheet-trace.json

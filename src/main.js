@@ -17,7 +17,8 @@ import { createMarquee } from './ui/marquee.js';
 import { initFan } from './ui/fan.js';
 import { initCases } from './ui/cases.js';
 import { initVerse } from './ui/verse.js';
-import { initExtra, warmExtra } from './ui/extra.js';
+import { initExtra } from './ui/extra.js';
+import { warmSheets } from './ui/warm.js';
 import { initProof } from './ui/proof.js';
 import { initEdition, editionMeasure, editionUpdate } from './ui/edition.js';
 import { initGame } from './ui/game.js';
@@ -37,11 +38,14 @@ if (state.reduced) root.classList.add('no-motion');
 
 const tickers = [];
 gsap.ticker.lagSmoothing(0);
+// First on the ticker, ahead of GSAP's own tweens: the tick reads the page
+// before anything this frame writes to it. After the tweens, every read phase
+// forced a second style pass (the deal's cards, the flourish's strokes).
 gsap.ticker.add((time, deltaMs) => {
   const dt = Math.min(0.1, deltaMs / 1000);
   state.time = time;
   for (const f of tickers) f(time, dt);
-});
+}, false, true);
 
 // pointer, shared by the ink, the loupe and the lamp
 const P = state.pointer;
@@ -53,6 +57,8 @@ window.addEventListener('pointermove', (e) => {
   P.moved = 1;
 }, { passive: true });
 document.addEventListener('pointerleave', () => { P.x = P.y = -9999; });
+// iOS Safari shows :active (the press under a finger) only on a page that listens for touches
+document.addEventListener('touchstart', () => {}, { passive: true });
 
 function scrollToHash(hash, immediate = false) {
   if (hash === '#top') {
@@ -150,7 +156,7 @@ async function boot() {
   initVerse();
   const extra = initExtra();
   if (intro.covering()) {
-    const dropWarm = warmExtra();
+    const dropWarm = warmSheets();
     if (dropWarm) intro.onOpen(dropWarm);
   }
   const game = initGame();

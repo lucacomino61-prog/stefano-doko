@@ -56,6 +56,8 @@ export const STRINGS = {
     workHead: 'The work, live and in use.',
     workLine: 'Three sites, two of them open for business. Check those yourself, then look closer below.',
     fan: ['Elixir, home page', 'Elixir, on a phone', 'Bar Martiri, home page', 'Bar Martiri, on a phone', 'Dresses by Greta, on a phone'],
+    fanPrev: 'Previous screenshot',
+    fanNext: 'Next screenshot',
     loupeHint: 'Hold the loupe over a plate to read it up close.',
     elixirLine: 'An online perfume shop: designer, Arabic and niche fragrances, delivered across Albania.',
     elixirVisit: 'Visit elixir.al',
@@ -304,6 +306,8 @@ export const STRINGS = {
     ctSent: 'Received. The telegram is on its way to Stefano.',
     ctFailed: 'It did not go through. Try again, or write to the address below.',
     ctHanded: 'Your mail app now has the telegram, written out and addressed. Press send there.',
+    ctStampHanded: 'Handed in',
+    ctStampSent: 'Received',
     ctNoMail: 'No mail app opened?',
     ctCopy: 'Copy the telegram',
     ctCopied: 'Telegram copied',
@@ -371,6 +375,8 @@ export const STRINGS = {
     workHead: 'Puna, e gjallë dhe në përdorim.',
     workLine: 'Tri faqe, dy prej tyre në punë. Kontrolloji ato vetë, pastaj shiko më nga afër më poshtë.',
     fan: ['Elixir, faqja kryesore', 'Elixir, në telefon', 'Bar Martiri, faqja kryesore', 'Bar Martiri, në telefon', 'Dresses by Greta, në telefon'],
+    fanPrev: 'Pamja e mëparshme',
+    fanNext: 'Pamja tjetër',
     loupeHint: 'Mbaje lupën mbi një pamje për ta lexuar nga afër.',
     elixirLine: 'Një parfumeri online: aroma designer, arabe dhe nishe, me dërgesë në gjithë Shqipërinë.',
     elixirVisit: 'Vizito elixir.al',
@@ -618,6 +624,8 @@ export const STRINGS = {
     ctSent: 'U mor. Telegrami është rrugës për te Stefano.',
     ctFailed: 'Nuk shkoi. Provo sërish, ose shkruaj te adresa më poshtë.',
     ctHanded: 'Aplikacioni yt i emailit e ka tani telegramin, të shkruar dhe me adresë. Shtyp dërgo atje.',
+    ctStampHanded: 'Dorëzuar',
+    ctStampSent: 'Pranuar',
     ctNoMail: 'Nuk u hap aplikacioni i emailit?',
     ctCopy: 'Kopjo telegramin',
     ctCopied: 'Telegrami u kopjua',
@@ -662,8 +670,7 @@ export function rememberLang(lang) {
 const SQ_DAYS = ['e diel', 'e hënë', 'e martë', 'e mërkurë', 'e enjte', 'e premte', 'e shtunë'];
 const SQ_MONTHS = ['janar', 'shkurt', 'mars', 'prill', 'maj', 'qershor', 'korrik', 'gusht', 'shtator', 'tetor', 'nëntor', 'dhjetor'];
 
-export function albaniaNow(lang, short = false) {
-  const now = new Date();
+export function albaniaNow(lang, short = false, now = new Date()) {
   let date;
   if (lang === 'sq') {
     const parts = Object.fromEntries(new Intl.DateTimeFormat('en-GB', {

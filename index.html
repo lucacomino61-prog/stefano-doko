@@ -105,11 +105,17 @@
       <h2 class="sheethead" id="work-h" data-fit="head" data-ink="work"><span data-i18n="workHead">The work, live and in use.</span></h2>
       <p class="sheet__lede" data-feed data-i18n="workLine">Three sites, two of them open for business. Check those yourself, then look closer below.</p>
       <div class="fan" data-fan>
-        <a class="fan__card" href="#elixir" style="--i:0"><img src="/work/elixir-desktop.jpg" width="1440" height="900" alt="" loading="lazy" decoding="async"><span class="fan__cap" data-i18n-list="fan.0">Elixir, home page</span></a>
-        <a class="fan__card fan__card--tall" href="#elixir" style="--i:1"><img src="/work/elixir-phone.jpg" width="780" height="1688" alt="" loading="lazy" decoding="async"><span class="fan__cap" data-i18n-list="fan.1">Elixir, on a phone</span></a>
-        <a class="fan__card fan__card--tall" href="#greta" style="--i:2"><img src="/work/greta-phone.jpg" width="780" height="1688" alt="" loading="lazy" decoding="async"><span class="fan__cap" data-i18n-list="fan.4">Dresses by Greta, on a phone</span></a>
-        <a class="fan__card fan__card--tall" href="#martiri" style="--i:3"><img src="/work/martiri-phone.jpg" width="780" height="1688" alt="" loading="lazy" decoding="async"><span class="fan__cap" data-i18n-list="fan.3">Bar Martiri, on a phone</span></a>
-        <a class="fan__card" href="#martiri" style="--i:4"><img src="/work/martiri-desktop.jpg" width="1440" height="900" alt="" loading="lazy" decoding="async"><span class="fan__cap" data-i18n-list="fan.2">Bar Martiri, home page</span></a>
+        <a class="fan__card" href="#elixir" style="--i:0"><span class="fan__sheet"><img src="/work/elixir-desktop.jpg" width="1440" height="900" alt="" loading="lazy" decoding="async"><span class="fan__cap" data-i18n-list="fan.0">Elixir, home page</span></span></a>
+        <a class="fan__card fan__card--tall" href="#elixir" style="--i:1"><span class="fan__sheet"><img src="/work/elixir-phone.jpg" width="780" height="1688" alt="" loading="lazy" decoding="async"><span class="fan__cap" data-i18n-list="fan.1">Elixir, on a phone</span></span></a>
+        <a class="fan__card fan__card--tall" href="#greta" style="--i:2"><span class="fan__sheet"><img src="/work/greta-phone.jpg" width="780" height="1688" alt="" loading="lazy" decoding="async"><span class="fan__cap" data-i18n-list="fan.4">Dresses by Greta, on a phone</span></span></a>
+        <a class="fan__card fan__card--tall" href="#martiri" style="--i:3"><span class="fan__sheet"><img src="/work/martiri-phone.jpg" width="780" height="1688" alt="" loading="lazy" decoding="async"><span class="fan__cap" data-i18n-list="fan.3">Bar Martiri, on a phone</span></span></a>
+        <a class="fan__card" href="#martiri" style="--i:4"><span class="fan__sheet"><img src="/work/martiri-desktop.jpg" width="1440" height="900" alt="" loading="lazy" decoding="async"><span class="fan__cap" data-i18n-list="fan.2">Bar Martiri, home page</span></span></a>
+      </div>
+      <!-- phones: the fan shows one proof at a time; these hands deal for anyone who does not swipe -->
+      <div class="fan__nav" data-fan-nav hidden>
+        <button class="fan__step" type="button" data-fan-step="-1" aria-label="Previous screenshot" data-i18n-attr="aria-label:fanPrev"><svg class="hand hand--back" aria-hidden="true"><use href="#hand"/></svg></button>
+        <span class="fan__count" data-fan-count aria-hidden="true"></span>
+        <button class="fan__step" type="button" data-fan-step="1" aria-label="Next screenshot" data-i18n-attr="aria-label:fanNext"><svg class="hand" aria-hidden="true"><use href="#hand"/></svg></button>
       </div>
     </section>
 

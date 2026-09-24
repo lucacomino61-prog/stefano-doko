@@ -1,0 +1,179 @@
+{
+ "rows": [
+  {
+   "phase": "idle-front",
+   "frames": 157,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "stir-band",
+   "frames": 269,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll     0",
+   "frames": 88,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 33.3,
+   "over20": 1,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  1000",
+   "frames": 124,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.9,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  2000",
+   "frames": 122,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 33.6,
+   "over20": 1,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  3000",
+   "frames": 132,
+   "p50": 16.7,
+   "p95": 17,
+   "max": 33.3,
+   "over20": 1,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  4000",
+   "frames": 86,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 17.5,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  5000",
+   "frames": 74,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 17.4,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  6000",
+   "frames": 81,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 50,
+   "over20": 1,
+   "over34": 1
+  },
+  {
+   "phase": "scroll  7000",
+   "frames": 101,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 17,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  8000",
+   "frames": 88,
+   "p50": 16.7,
+   "p95": 16.9,
+   "max": 17.6,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  9000",
+   "frames": 111,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 33.4,
+   "over20": 1,
+   "over34": 0
+  },
+  {
+   "phase": "scroll 10000",
+   "frames": 62,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.9,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll 11000",
+   "frames": 63,
+   "p50": 16.7,
+   "p95": 16.7,
+   "max": 16.9,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll 12000",
+   "frames": 78,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.9,
+   "over20": 0,
+   "over34": 0
+  }
+ ],
+ "loaf": [
+  {
+   "start": 18050.599999904633,
+   "dur": 50.40000009536743,
+   "block": 0,
+   "render": 0.30000007152557373,
+   "style": 0,
+   "phase": "scroll-down",
+   "y": 900,
+   "scripts": []
+  },
+  {
+   "start": 23709.399999976158,
+   "dur": 50.10000002384186,
+   "block": 0,
+   "render": 0.20000004768371582,
+   "style": 0,
+   "phase": "scroll-down",
+   "y": 3420,
+   "scripts": []
+  },
+  {
+   "start": 27338.799999952316,
+   "dur": 63,
+   "block": 0,
+   "render": 19.600000023841858,
+   "style": 0.10000002384185791,
+   "phase": "scroll-down",
+   "y": 6000,
+   "scripts": [
+    {
+     "dur": 19,
+     "fn": "u",
+     "src": "paper-Bf9gvgh5.js",
+     "inv": "FrameRequestCallback",
+     "fsl": 0
+    }
+   ]
+  }
+ ]
+}

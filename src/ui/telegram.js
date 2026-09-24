@@ -4,7 +4,9 @@
 // visitor's own mail app, addressed to Stefano. Set ENDPOINT to post it
 // instead (on Netlify, '/' works as it is: the blank is marked for Netlify
 // Forms, with a honeypot field for bots).
+import gsap from 'gsap';
 import { state, bus } from '../state.js';
+import { albaniaNow } from '../i18n.js';
 import { judder, sound } from './press.js';
 
 const ENDPOINT = '';
@@ -94,6 +96,45 @@ export function initTelegram() {
     status.appendChild(row);
   }
 
+  // The counter's stamp, pressed onto the blank once the telegram has gone,
+  // with the Albanian time it went. It is decoration (aria-hidden): the
+  // status line says the same thing in words.
+  let stamp = null;
+  let stampedAt = null;
+  const paintStamp = () => {
+    if (!stamp) return;
+    const { date, time } = albaniaNow(state.lang, true, stampedAt);
+    stamp.firstChild.textContent = stamp.dataset.kind === 'sent' ? state.T.ctStampSent : state.T.ctStampHanded;
+    stamp.lastChild.textContent = `${time} · ${date}`;
+  };
+  function press(kind) {
+    if (!stamp) {
+      stamp = document.createElement('span');
+      stamp.className = 'telegram__stamp';
+      stamp.setAttribute('aria-hidden', 'true');
+      stamp.append(document.createElement('b'), document.createElement('i'));
+      form.appendChild(stamp);
+    }
+    stamp.dataset.kind = kind;
+    stampedAt = new Date();
+    paintStamp();
+    // under the addressee and the word count, not on them: across the strip's
+    // rule on a phone (the count sits on its own line at the left there), just
+    // below the rule on a wide blank, where the count sits at the right
+    const strip = form.querySelector('.telegram__strip');
+    if (strip) stamp.style.top = `${Math.round(strip.offsetTop + strip.offsetHeight + (state.mobile ? -10 : 12))}px`;
+    const land = () => {
+      judder(form, 0.9);
+      sound.press();
+      // a small knock under the thumb where phones allow it, and only with sound on
+      if (state.sound) navigator.vibrate?.(12);
+    };
+    if (state.reduced) { gsap.fromTo(stamp, { opacity: 0 }, { opacity: 1, duration: 0.15 }); land(); return 0.15; }
+    // it comes down onto the paper, so it gathers speed and stops dead
+    gsap.fromTo(stamp, { opacity: 0, scale: 1.32, rotation: -12 }, { opacity: 1, scale: 1, rotation: -6, duration: 0.17, ease: 'power2.in', onComplete: land });
+    return 0.32;
+  }
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     tried = true;
@@ -106,7 +147,6 @@ export function initTelegram() {
       return;
     }
     const { subject, body } = compose();
-    sound.press();
     if (ENDPOINT) {
       say(state.T.ctSending);
       try {
@@ -118,18 +158,23 @@ export function initTelegram() {
         if (!res.ok) throw new Error(String(res.status));
         form.classList.add('is-sent');
         say(state.T.ctSent);
+        press('sent');
       } catch {
         say(state.T.ctFailed);
       }
       return;
     }
-    // no form service yet: the telegram leaves through the visitor's own mail app
+    // no form service yet: the telegram leaves through the visitor's own mail
+    // app, once the stamp has landed (on a phone the mail app takes the screen)
     form.classList.add('is-handed');
     say(state.T.ctHanded, `${to()}\n${subject}\n\n${body}`);
-    location.href = `mailto:${to()}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    gsap.delayedCall(press('handed'), () => {
+      location.href = `mailto:${to()}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    });
   });
 
   bus.on('lang', () => {
+    paintStamp();
     recount();
     if (tried && Object.keys(lastErrs).length) check();
   });

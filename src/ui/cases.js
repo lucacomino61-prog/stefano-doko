@@ -60,6 +60,27 @@ export function initCases(stage) {
       return p;
     });
 
+    // a label's size, and how far its lines hang below the first one. Where
+    // it wraps (longer than its room, style.css) its box is drawn in to its
+    // longest line, and a label left of its plate is set flush right, so the
+    // rule that meets its right edge meets the words of its first line.
+    const range = document.createRange();
+    function measure(l) {
+      const text = l.el.lastChild;
+      text.style.textAlign = '';
+      const lh = parseFloat(getComputedStyle(text).lineHeight) || 18;
+      l.extra = (Math.max(1, Math.round(text.offsetHeight / lh)) - 1) * lh;
+      if (l.extra) {
+        range.selectNodeContents(text);
+        const ends = [...range.getClientRects()].map((r) => r.right);
+        const pad = parseFloat(getComputedStyle(l.el).paddingRight) || 0;
+        l.el.style.width = `${Math.ceil(Math.max(...ends) - l.el.getBoundingClientRect().left + pad)}px`;
+        if (l.a[2] < 0) text.style.textAlign = 'right';
+      }
+      l.h = l.el.offsetHeight || 20;
+      l.w = l.el.offsetWidth || 120;
+    }
+
     // lay the labels out beside their details and draw the rules to them
     function layout() {
       if (state.mobile) {
@@ -70,26 +91,38 @@ export function initCases(stage) {
       const wide = plates[0].fig.querySelector('img').getBoundingClientRect();
       const tall = plates[1]?.fig.querySelector('img').getBoundingClientRect();
       const colL = wide.right + 26 - br.left, colR = (tall ? tall.left - br.left : br.width) - 26;
+      // a label's room: the column between the plates, or, where the phone
+      // plate stands under the desktop one (portrait tablets), the measure on
+      // its own plate's side. A longer label wraps inside it.
+      const stacked = tall && tall.top >= wide.bottom;
+      const roomL = stacked ? 0 : colL, roomR = stacked ? br.width : colR;
       // one column holds every label, so they queue in one line down it
       labels.forEach((l) => {
         const img = l.pl.fig.querySelector('img').getBoundingClientRect();
         l.ay = img.top - br.top + l.a[1] * img.height;
         l.ax = (l.a[2] > 0 ? img.right : img.left) - br.left;
+        // measured at the start of its room, at the width its words take
+        const right = l.a[2] < 0;
+        l.el.style.left = `${right ? roomL : colL}px`;
+        l.el.style.width = '';
+        l.el.style.setProperty('--callout-w', `${right ? colR - roomL : roomR - colL}px`);
       });
+      labels.forEach(measure);
+      // a rule meets its label's first line; the lines under it push the next label down
       const sorted = [...labels].sort((a, b) => a.ay - b.ay);
       let last = -Infinity;
-      sorted.forEach((l) => { l.y = Math.max(l.ay, last + 32); last = l.y; });
+      sorted.forEach((l) => { l.y = Math.max(l.ay, last + 32); last = l.y + l.extra; });
       const over = last - (br.height - 16);
       if (over > 0) {
         let floor = br.height - 16;
-        for (let i = sorted.length - 1; i >= 0; i--) { sorted[i].y = Math.min(sorted[i].y, floor); floor = sorted[i].y - 32; }
+        for (let i = sorted.length - 1; i >= 0; i--) { sorted[i].y = Math.min(sorted[i].y, floor - sorted[i].extra); floor = sorted[i].y - 32; }
       }
       labels.forEach((l, i) => {
-        const h = l.el.offsetHeight || 20, w = l.el.offsetWidth || 120;
+        const { h, w } = l;
         const right = l.a[2] < 0;
         const x = right ? colR - w : colL;
         l.el.style.left = `${x}px`;
-        l.el.style.top = `${l.y - h / 2}px`;
+        l.el.style.top = `${l.y - (h - l.extra) / 2}px`;
         const x1 = right ? x + w + 4 : x - 4;
         const mid = l.ax + (right ? -12 : 12);
         leaders[i].setAttribute('d', `M${l.ax.toFixed(1)} ${l.ay.toFixed(1)}H${mid.toFixed(1)}L${(x1 + (right ? 10 : -10)).toFixed(1)} ${l.y.toFixed(1)}H${x1.toFixed(1)}`);
@@ -172,7 +205,8 @@ export function initCases(stage) {
           onUpdate: (st) => { pl.develop = clamp(st.progress * 1.4); pl.leader = 0; },
         });
       });
-      gsap.fromTo(facts, { x: 120, rotation: 12, opacity: 0 }, { x: 0, rotation: 0, opacity: 1, duration: 0.6, ease: 'power3.out', stagger: 0.08, scrollTrigger: { trigger: caseEl.querySelector('.facts'), start: 'top 85%' } });
+      // a sheet shown by name and preview only has no facts to deal
+      if (facts.length) gsap.fromTo(facts, { x: 120, rotation: 12, opacity: 0 }, { x: 0, rotation: 0, opacity: 1, duration: 0.6, ease: 'power3.out', stagger: 0.08, scrollTrigger: { trigger: caseEl.querySelector('.facts'), start: 'top 85%' } });
     } else {
       plates.forEach((pl) => { pl.develop = 1; pl.leader = 1; });
       apply(1);

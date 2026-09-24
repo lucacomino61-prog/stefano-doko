@@ -1,0 +1,150 @@
+{
+ "rows": [
+  {
+   "phase": "idle-front",
+   "frames": 152,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 17,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "stir-band",
+   "frames": 219,
+   "p50": 16.7,
+   "p95": 16.9,
+   "max": 33.5,
+   "over20": 1,
+   "over34": 0
+  },
+  {
+   "phase": "scroll     0",
+   "frames": 65,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 17,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  1000",
+   "frames": 60,
+   "p50": 16.7,
+   "p95": 16.9,
+   "max": 17.1,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  2000",
+   "frames": 71,
+   "p50": 16.7,
+   "p95": 33.4,
+   "max": 50,
+   "over20": 11,
+   "over34": 1
+  },
+  {
+   "phase": "scroll  3000",
+   "frames": 55,
+   "p50": 16.7,
+   "p95": 33.1,
+   "max": 33.4,
+   "over20": 3,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  4000",
+   "frames": 55,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 17,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  5000",
+   "frames": 49,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  6000",
+   "frames": 56,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  7000",
+   "frames": 68,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.9,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  8000",
+   "frames": 47,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 17,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  9000",
+   "frames": 66,
+   "p50": 16.7,
+   "p95": 33.1,
+   "max": 33.4,
+   "over20": 4,
+   "over34": 0
+  },
+  {
+   "phase": "scroll 10000",
+   "frames": 63,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 17,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll 11000",
+   "frames": 119,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  }
+ ],
+ "loaf": [
+  {
+   "start": 16998.299999952316,
+   "dur": 50.39999997615814,
+   "block": 0,
+   "render": 12.5,
+   "style": 0.2999999523162842,
+   "phase": "stir-band",
+   "y": 0,
+   "scripts": [
+    {
+     "dur": 10,
+     "fn": "u",
+     "src": "paper-BeaAB8CT.js",
+     "inv": "FrameRequestCallback",
+     "fsl": 0
+    }
+   ]
+  }
+ ]
+}

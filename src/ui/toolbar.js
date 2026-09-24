@@ -133,15 +133,70 @@ export function initMenu(scrollTo) {
     document.addEventListener('keydown', onKey);
     document.addEventListener('pointerdown', onOutside, true);
   }
-  function close(returnFocus = true) {
+  // how far the stack has been pulled down by a finger (phones)
+  const pull = { y: 0 };
+  const paintPull = () => { menu.style.translate = pull.y ? `0 ${pull.y.toFixed(1)}px` : ''; };
+  function close(returnFocus = true, flung = false) {
     if (!state.menuOpen) return;
     state.menuOpen = false;
     openers.forEach((b) => b.setAttribute('aria-expanded', 'false'));
     document.removeEventListener('keydown', onKey);
     document.removeEventListener('pointerdown', onOutside, true);
-    const done = () => { menu.hidden = true; if (returnFocus) trigger?.focus(); };
+    const done = () => {
+      menu.hidden = true;
+      pull.y = 0; paintPull(); menu.style.opacity = '';
+      if (returnFocus) trigger?.focus();
+    };
     if (state.reduced) done();
+    // pulled away: the stack carries on down the way the finger sent it
+    else if (flung) gsap.to(pull, { y: Math.max(pull.y + 160, menu.offsetHeight * 0.8), duration: 0.24, ease: 'power2.out', onUpdate: () => { paintPull(); menu.style.opacity = String(1 - Math.min(1, pull.y / (menu.offsetHeight * 0.9))); }, onComplete: done });
     else gsap.to(sheets(), { opacity: 0, y: state.mobile ? 24 : -24, duration: 0.18, ease: 'power2.in', stagger: 0.015, onComplete: done });
+  }
+  // phones: the index is a stack at the foot of the screen; pull it down to put it away
+  if (state.mobile) {
+    let drag = null;
+    let swallowClick = false;
+    menu.addEventListener('pointerdown', (e) => {
+      // a new touch is a new choice (a finger's pull is followed by no click to swallow)
+      swallowClick = false;
+      if (drag || !state.menuOpen || e.button > 0 || e.target.closest('[data-menu-close]')) return;
+      gsap.killTweensOf(pull);
+      drag = { id: e.pointerId, x0: e.clientX, y0: e.clientY - pull.y, on: false, trail: [[e.timeStamp, e.clientY]] };
+    });
+    menu.addEventListener('pointermove', (e) => {
+      if (!drag || e.pointerId !== drag.id) return;
+      const dy = e.clientY - drag.y0;
+      if (!drag.on) {
+        if (Math.abs(dy) < 8 || Math.abs(dy) < Math.abs(e.clientX - drag.x0)) return;
+        drag.on = true;
+        menu.setPointerCapture(e.pointerId);
+      }
+      // down follows the finger; up gives only a little
+      pull.y = dy > 0 ? dy : -(1 - 1 / (1 - dy * 0.02)) * 18;
+      paintPull();
+      drag.trail.push([e.timeStamp, e.clientY]);
+      if (drag.trail.length > 6) drag.trail.shift();
+    });
+    const release = (e) => {
+      if (!drag || e.pointerId !== drag.id) return;
+      const d = drag;
+      drag = null;
+      if (!d.on) return;
+      swallowClick = true;
+      const [t0, y0] = d.trail[0];
+      const v = (e.clientY - y0) / Math.max(1, e.timeStamp - t0); // px per ms, down is positive
+      if (pull.y > 70 || v > 0.11) close(false, true);
+      else gsap.to(pull, { y: 0, duration: state.reduced ? 0 : 0.3, ease: 'power3.out', onUpdate: paintPull });
+    };
+    menu.addEventListener('pointerup', release);
+    menu.addEventListener('pointercancel', release);
+    // a pull is not a choice: the sheet under the finger is not opened
+    menu.addEventListener('click', (e) => {
+      if (!swallowClick) return;
+      swallowClick = false;
+      e.preventDefault();
+      e.stopPropagation();
+    }, true);
   }
   function onKey(e) {
     if (e.key === 'Escape') { e.preventDefault(); close(); }

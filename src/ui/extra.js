@@ -5,29 +5,8 @@ import gsap from 'gsap';
 import { state, bus } from '../state.js';
 import { judder, sound } from './press.js';
 
-// A proof pulled once, under the intro, and thrown away before the stamp opens.
-// Drawing the red sheet makes Chrome compile GPU shaders nothing earlier on
-// the page needs (the stamp's rings beside the outlined head); on a first
-// visit that cost a dropped frame mid-scroll. Drawn here, the counter hides it.
-export function warmExtra() {
-  const src = document.querySelector('.sheet--extra');
-  if (!src || state.reduced) return null;
-  const box = document.createElement('div');
-  box.className = 'warm';
-  box.setAttribute('aria-hidden', 'true');
-  box.inert = true;
-  const copy = src.cloneNode(true);
-  copy.removeAttribute('id');
-  copy.classList.add('is-fed');
-  copy.querySelectorAll('*').forEach((el) => {
-    el.removeAttribute('id');
-    [...el.attributes].forEach((a) => { if (a.name.startsWith('data-')) el.removeAttribute(a.name); });
-  });
-  box.append(copy);
-  document.body.append(box);
-  return () => box.remove();
-}
-
+// A copy of this sheet is drawn once under the intro, so the GPU has seen it
+// before the reader does (warm.js).
 export function initExtra() {
   const sheet = document.querySelector('.sheet--extra');
   if (!sheet) return () => {};

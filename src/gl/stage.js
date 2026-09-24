@@ -10,6 +10,7 @@ import { createPlates } from './plates.js';
 import { createFluid } from './fluid.js';
 import { state, bus, clamp } from '../state.js';
 import { roller } from '../ui/ink.js';
+import { sound } from '../ui/press.js';
 
 const compositeFrag = /* glsl */ `
   uniform sampler2D tScene;
@@ -170,6 +171,22 @@ export function createStage(canvas) {
   const p = state.pointer;
   const bands = [];
   const live = [];
+
+  // With no pointer to stir it (a phone), a tap on the band flicks the wet
+  // ink outward from the fingertip. The events only note the tap; the frame
+  // splats it, so the one clock stays the only thing that draws.
+  const taps = [];
+  if (fluid && !state.fine) {
+    let down = null;
+    window.addEventListener('pointerdown', (e) => {
+      down = e.pointerType === 'touch' && !state.reduced && e.target.closest?.('[data-gl="band"]') ? { x: e.clientX, y: e.clientY, t: e.timeStamp } : null;
+    }, { passive: true });
+    window.addEventListener('pointerup', (e) => {
+      if (down && Math.hypot(e.clientX - down.x, e.clientY - down.y) < 10 && e.timeStamp - down.t < 350) taps.push([e.clientX, e.clientY]);
+      down = null;
+    }, { passive: true });
+    window.addEventListener('pointercancel', () => { down = null; }, { passive: true });
+  }
   let lastScroll = -1, lastRX = NaN, lastRY = NaN, lastRV = false, bandAcc = 1, forced = 2;
   bus.on('refit', () => { forced = 2; bandAcc = 1; });
   bus.on('resize', () => { forced = 2; bandAcc = 1; });
@@ -207,6 +224,22 @@ export function createStage(canvas) {
           break;
         }
       }
+    }
+    if (taps.length) {
+      // a ring of pushes outward from the tap, over four frames and fading,
+      // the way a mouse stirs over many (one push in one frame barely shows)
+      for (const tap of taps) {
+        if (tap[2] === undefined) { tap[2] = 4; sound.splat(); }
+        const [x, y, left] = tap;
+        const k = left / 4;
+        for (let i = 0; i < 10; i++) {
+          const a = (i / 10) * Math.PI * 2, ox = Math.cos(a), oy = Math.sin(a);
+          fluid.splat((x + ox * 9) / vw, 1 - (y + oy * 9) / vh, ox * 52 * k, -oy * 52 * k);
+        }
+        tap[2] = left - 1;
+      }
+      for (let i = taps.length - 1; i >= 0; i--) if (taps[i][2] <= 0) taps.splice(i, 1);
+      stirred = true;
     }
     const stirring = fluid ? fluid.step(dt) : false;
     const vel = fluid && (stirring || fluid.awake) ? fluid.texture : blank;

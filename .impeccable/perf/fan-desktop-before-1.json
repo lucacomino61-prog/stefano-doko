@@ -1,0 +1,151 @@
+{
+ "rows": [
+  {
+   "phase": "idle-front",
+   "frames": 161,
+   "p50": 16.7,
+   "p95": 16.9,
+   "max": 18.9,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "stir-band",
+   "frames": 413,
+   "p50": 16.7,
+   "p95": 16.9,
+   "max": 18.7,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll     0",
+   "frames": 74,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.9,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  1000",
+   "frames": 59,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 33.2,
+   "over20": 1,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  2000",
+   "frames": 70,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 50.1,
+   "over20": 1,
+   "over34": 1
+  },
+  {
+   "phase": "scroll  3000",
+   "frames": 85,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  4000",
+   "frames": 84,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 33.3,
+   "over20": 1,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  5000",
+   "frames": 82,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  6000",
+   "frames": 79,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 33.3,
+   "over20": 1,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  7000",
+   "frames": 82,
+   "p50": 16.7,
+   "p95": 16.7,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  8000",
+   "frames": 84,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  9000",
+   "frames": 86,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll 10000",
+   "frames": 86,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll 11000",
+   "frames": 79,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "loupe",
+   "frames": 241,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  }
+ ],
+ "loaf": [
+  {
+   "start": 21736.199999928474,
+   "dur": 52.300000071525574,
+   "block": 0,
+   "render": 3.899999976158142,
+   "style": 1.100000023841858,
+   "phase": "scroll-down",
+   "y": 2325,
+   "scripts": []
+  }
+ ]
+}
