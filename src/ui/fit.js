@@ -4,6 +4,10 @@
 import { state, bus } from '../state.js';
 
 const S = 100; // measuring size in px; widths scale linearly with size
+// The names (the cases, the EXTRA, a case edition's title) were in a fat face;
+// since the modern edition (2026-09-25) they are Anybody at its heaviest, set
+// wide: fitted by size alone, at this one width (style.css --fat-w).
+const FAT_W = 118;
 
 // Per-role settings. prefer = the width the face looks most like itself at.
 export const ROLES = {
@@ -23,6 +27,7 @@ let meter;
 function measurer() {
   if (meter) return meter;
   meter = document.createElement('span');
+  meter.className = 'fit-meter'; // named so the print stylesheet leaves it measuring
   meter.setAttribute('aria-hidden', 'true');
   Object.assign(meter.style, {
     position: 'absolute', left: '-9999px', top: '0', visibility: 'hidden', whiteSpace: 'nowrap',
@@ -34,9 +39,9 @@ function measurer() {
 
 function width(text, role, size, stretch) {
   const m = measurer();
-  m.style.fontFamily = role.face === 'fat' ? 'Ultra' : 'Anybody';
-  m.style.fontWeight = role.face === 'fat' ? '400' : String(role.weight);
-  m.style.fontStretch = role.face === 'fat' ? '100%' : `${stretch}%`;
+  m.style.fontFamily = 'Anybody';
+  m.style.fontWeight = role.face === 'fat' ? '900' : String(role.weight);
+  m.style.fontStretch = role.face === 'fat' ? `${FAT_W}%` : `${stretch}%`;
   m.style.textTransform = role.lower ? 'none' : 'uppercase';
   m.style.fontSize = `${size}px`;
   m.textContent = text;
@@ -58,7 +63,7 @@ export function fitText(text, role, target) {
   const max = val(role.max), min = val(role.min);
   if (role.face === 'fat') {
     const size = Math.max(min, Math.min(max, (S * target) / width(text, role, S)));
-    return { size, stretch: 100 };
+    return { size, stretch: FAT_W };
   }
   let stretch = role.prefer;
   let size = (S * target) / width(text, role, S, stretch);
@@ -156,7 +161,7 @@ export function fitElement(el) {
     const span = document.createElement('span');
     span.className = `fit-line${inked ? ' ink' : ''}`;
     span.style.fontSize = `${size.toFixed(2)}px`;
-    if (role.face !== 'fat') span.style.fontStretch = `${stretch.toFixed(2)}%`;
+    span.style.fontStretch = `${stretch.toFixed(2)}%`;
     if (lines.length > 1 || state.mobile) span.style.display = 'block';
     if (inked) {
       const outline = document.createElement('span');

@@ -47,7 +47,7 @@ export function initLetter() {
     // a ghost of the letter to trace, and the guide lines
     ctx.fillStyle = colors.ink;
     ctx.globalAlpha = 0.07;
-    ctx.font = `400 ${size * 0.72}px Ultra, serif`;
+    ctx.font = `900 ${size * 0.72}px Anybody, sans-serif`;
     ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
     ctx.fillText(ch.toUpperCase(), size / 2, size * BASE);
     ctx.globalAlpha = 0.55;

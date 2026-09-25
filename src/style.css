@@ -14,37 +14,20 @@
   font-stretch: 50% 150%;
   font-display: swap;
 }
+/* the modern edition (2026-09-25): what is read is set in Inter, the brand's
+   face (brand/final); Anybody keeps the heads, the labels and, set wide, the
+   names that were in a fat face */
 @font-face {
-  font-family: 'Ultra';
-  src: url('/fonts/Ultra-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Old Standard';
-  src: url('/fonts/OldStandard-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Old Standard';
-  src: url('/fonts/OldStandard-Italic.woff2') format('woff2');
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Old Standard';
-  src: url('/fonts/OldStandard-Bold.woff2') format('woff2');
-  font-weight: 700;
+  font-family: 'Inter';
+  src: url('/fonts/Inter-VF-latin.woff2') format('woff2');
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
 
 /* Registered so PRINT and PROOF cross-fade as colours, not as a jump */
 @property --paper { syntax: '<color>'; inherits: true; initial-value: #EFE6D2; }
-@property --aged  { syntax: '<color>'; inherits: true; initial-value: #E3D6BA; }
+@property --aged  { syntax: '<color>'; inherits: true; initial-value: #E6DCC6; }
 @property --ink   { syntax: '<color>'; inherits: true; initial-value: #141414; }
 @property --fade  { syntax: '<color>'; inherits: true; initial-value: #5F584F; }
 @property --alarm { syntax: '<color>'; inherits: true; initial-value: #E23B2E; }
@@ -52,21 +35,38 @@
 
 :root {
   --paper: #EFE6D2;
-  --aged: #E3D6BA;
+  --aged: #E6DCC6;
   --ink: #141414;
   --fade: #5F584F;
   --alarm: #E23B2E;
-  --m: clamp(16px, 3.2vw, 48px);
+  /* a hairline for loose surfaces: the edge of a card, a plate, a bar */
+  --line: color-mix(in srgb, var(--ink) 17%, transparent);
+  /* the side margin; on a phone held sideways it also clears the notch and the
+     rounded corners (viewport-fit=cover lets the paper run under them) */
+  --m: max(clamp(16px, 3.2vw, 48px), env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-io: cubic-bezier(0.77, 0, 0.175, 1);
   --display: 'Anybody', 'Arial Narrow', sans-serif;
-  --fat: 'Ultra', 'Anybody', serif;
-  --text: 'Old Standard', 'Times New Roman', serif;
+  /* the names (cases, EXTRA, the 404): Anybody at its heaviest, set wide */
+  --fat: 'Anybody', 'Arial Black', sans-serif;
+  --fat-w: 118%;
+  --text: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   --pill-h: 58px;
-  --stock: var(--grain, none), var(--mottle, none);
-  --stock-size: 256px 256px, 640px 640px;
-  color-scheme: light;
+  /* a fine grain only: the coarse mottle of old newsprint is gone */
+  --stock: var(--grain, none);
+  --stock-size: 256px 256px;
+  color-scheme: only light;
   transition: --paper 0.8s var(--ease-io), --aged 0.8s var(--ease-io), --ink 0.8s var(--ease-io), --fade 0.8s var(--ease-io);
+}
+/* The night edition (src/ui/night.js): the sheet printed in newsprint ink on a
+   dark stock, the same fade in and out as PROOF. Before the proof's rule, so the
+   proof keeps its own paper. */
+:root.is-night {
+  --paper: #16140F;
+  --aged: #26221B;
+  --ink: #ECE3CE;
+  --fade: #9C927F;
+  color-scheme: dark;
 }
 :root.is-proof {
   --paper: #E4E2DA;
@@ -88,9 +88,10 @@ body {
   background-image: var(--stock);
   background-size: var(--stock-size);
   color: var(--ink);
-  font: 400 18px/1.5 var(--text);
+  font: 400 16px/1.6 var(--text);
+  letter-spacing: -0.011em;
   font-kerning: normal;
-  font-variant-numeric: oldstyle-nums proportional-nums;
+  font-variant-numeric: normal;
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;
 }
@@ -110,8 +111,14 @@ html { scrollbar-color: var(--ink) var(--aged); scrollbar-width: thin; }
   border-radius: 6px;
 }
 .sheet--extra :focus-visible { box-shadow: 0 0 0 5px var(--paper); }
+/* rounded things keep their own shape under the focus ring */
+:is(.btn, .lang__btn, .langpop__btn, .skip, .stack-menu__q, .setline__in):focus-visible { border-radius: 999px; }
+:is(.tabbar__item, .fan__card, .stack-menu__sheet, .fan__step):focus-visible { border-radius: 16px; }
+/* fitted type is measured with no tracking (src/ui/fit.js) */
+[data-fit] { letter-spacing: 0; }
 
 img { display: block; max-width: 100%; height: auto; }
+a, button, summary, label, input, textarea, select, [role='button'] { -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
 a { color: inherit; }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
 h1, h2, h3, p, figure, ol, ul { margin: 0; }
@@ -123,7 +130,7 @@ ol, ul { padding: 0; list-style: none; }
 }
 .skip {
   position: fixed; left: 12px; top: 12px; z-index: 80;
-  padding: 12px 16px; border-radius: 6px;
+  padding: 12px 18px; border-radius: 999px;
   background: var(--ink); color: var(--paper);
   font: 800 14px/1 var(--display); letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none;
   transform: translateY(-160%);
@@ -134,7 +141,7 @@ ol, ul { padding: 0; list-style: none; }
 
 /* ---------- ornaments ---------- */
 .orn { width: 0.9em; height: 0.9em; fill: currentColor; flex: none; }
-.hand { width: 40px; height: 20px; flex: none; fill: currentColor; --hand-line: var(--paper); }
+.hand { width: 40px; height: 20px; flex: none; fill: currentColor; --hand-line: var(--paper); --arrow-w: 1.8px; transition: translate 200ms var(--ease-out); }
 .hand-line { fill: none; stroke: var(--hand-line); stroke-width: 2.4; stroke-linecap: round; }
 .btn--ink .hand, .tabbar__item--ink .hand { --hand-line: var(--ink); }
 
@@ -160,8 +167,8 @@ ol, ul { padding: 0; list-style: none; }
 .btn {
   --h: 48px;
   display: inline-flex; align-items: center; justify-content: center; gap: 12px;
-  height: var(--h); padding: 0 20px 0 22px;
-  border-radius: 6px;
+  height: var(--h); padding: 0 22px;
+  border-radius: 999px;
   font: 800 15px/1 var(--display);
   font-stretch: 92%;
   letter-spacing: 0.05em;
@@ -173,40 +180,33 @@ ol, ul { padding: 0; list-style: none; }
 .btn:active { transform: translateY(1px) scale(0.97); }
 .btn[disabled] { opacity: 0.45; cursor: not-allowed; }
 .btn[disabled]:active { transform: none; }
-.btn--ink {
-  background: var(--ink); color: var(--paper);
-  box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 0 4px color-mix(in srgb, var(--paper) 60%, transparent);
-}
-.btn--line {
-  background: transparent; color: var(--ink);
-  box-shadow: inset 0 0 0 2px var(--ink), inset 0 0 0 4px var(--paper), inset 0 0 0 5px var(--ink);
-}
+.btn--ink { background: var(--ink); color: var(--paper); box-shadow: none; }
+.btn--line { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
 @media (hover: hover) and (pointer: fine) {
-  .btn--ink:hover { box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 0 5.5px var(--paper); }
-  .btn--line:not([disabled]):hover { background: var(--aged); box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 0 5px var(--aged), inset 0 0 0 6.5px var(--ink); }
+  .btn--ink:hover { background: color-mix(in srgb, var(--ink) 84%, var(--paper)); }
+  .btn--line:not([disabled]):hover { background: var(--ink); color: var(--paper); }
+  .btn:not([disabled]):hover .hand { translate: 3px 0; }
 }
-.btn--sm { --h: 38px; padding: 0 14px; font-size: 13px; }
-.btn--lg { --h: 58px; padding: 0 26px 0 28px; font-size: 17px; }
-.btn .hand { width: 34px; height: 17px; }
+.btn--sm { --h: 38px; padding: 0 16px; font-size: 13px; }
+.btn--lg { --h: 58px; padding: 0 30px; font-size: 17px; }
+.btn .hand { width: 24px; height: 12px; }
 
 /* ---------- toolbar ---------- */
 .toolbar {
   position: relative;
   display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 28px;
   height: 78px; margin: 0 var(--m);
-  border-top: 6px solid var(--ink);
-  border-bottom: 2px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
 }
-.toolbar::before { content: ''; position: absolute; left: 0; right: 0; top: 4px; border-top: 1.5px solid var(--ink); }
-.lockup { display: grid; gap: 5px; text-decoration: none; padding-right: 28px; border-right: 1px solid var(--ink); align-self: stretch; align-content: center; }
+.lockup { display: grid; gap: 5px; text-decoration: none; padding-right: 28px; align-self: stretch; align-content: center; }
 .lockup__name { font: 900 30px/0.86 var(--display); font-stretch: 68%; text-transform: uppercase; letter-spacing: 0.005em; }
 .lockup__role { display: flex; align-items: center; gap: 8px; font: 700 10.5px/1 var(--display); font-stretch: 110%; letter-spacing: 0.28em; text-transform: uppercase; }
-.lockup__role .orn { width: 9px; height: 9px; }
+.lockup__role .orn { display: none; }
 .toolbar__nav { display: flex; gap: 36px; justify-content: center; }
-.toolbar__end { display: flex; align-items: center; gap: 18px; padding-left: 28px; border-left: 1px solid var(--ink); align-self: stretch; }
-.lang { display: inline-flex; border-radius: 6px; box-shadow: inset 0 0 0 2px var(--ink); padding: 3px; gap: 2px; }
+.toolbar__end { display: flex; align-items: center; gap: 18px; padding-left: 28px; align-self: stretch; }
+.lang { display: inline-flex; border-radius: 999px; box-shadow: inset 0 0 0 1.5px var(--ink); padding: 3px; gap: 2px; }
 .lang__btn {
-  height: 34px; min-width: 44px; padding: 0 10px; border-radius: 4px;
+  height: 34px; min-width: 44px; padding: 0 10px; border-radius: 999px;
   font: 800 13px/1 var(--display); font-stretch: 95%; letter-spacing: 0.08em;
   transition: background-color 160ms ease, color 160ms ease;
 }
@@ -217,11 +217,12 @@ ol, ul { padding: 0; list-style: none; }
 .pill {
   position: fixed; z-index: 40; top: 12px; left: 50%;
   display: flex; align-items: center; gap: 22px;
-  height: var(--pill-h); padding: 0 8px 0 10px;
-  background-color: var(--paper);
-  background-image: var(--stock); background-size: var(--stock-size);
-  border-radius: 10px;
-  box-shadow: inset 0 0 0 2px var(--ink), inset 0 0 0 4px var(--paper), inset 0 0 0 5px var(--ink), 0 10px 24px -12px rgb(20 20 20 / 0.45);
+  height: var(--pill-h); padding: 0 8px 0 14px;
+  background-color: color-mix(in srgb, var(--paper) 80%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  backdrop-filter: blur(18px) saturate(1.3);
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px var(--line), 0 14px 32px -16px rgb(20 20 20 / 0.4);
   transform: translate(-50%, calc(-100% - 24px));
   visibility: hidden;
   transition: transform 320ms var(--ease-out), visibility 0s linear 320ms;
@@ -229,8 +230,8 @@ ol, ul { padding: 0; list-style: none; }
 .pill.is-on { transform: translate(-50%, 0); visibility: visible; transition: transform 320ms var(--ease-out), visibility 0s; }
 .pill::after {
   will-change: transform;
-  content: ''; position: absolute; left: 12px; right: 12px; bottom: 7px; height: 2px;
-  background: var(--ink); transform-origin: left; transform: scaleX(var(--read, 0));
+  content: ''; position: absolute; left: 28px; right: 28px; bottom: 5px; height: 2px; border-radius: 2px;
+  background: var(--alarm); transform-origin: left; transform: scaleX(var(--read, 0));
 }
 .pill__mark {
   display: grid; place-items: center; width: 40px; height: 40px; border-radius: 6px;
@@ -238,9 +239,17 @@ ol, ul { padding: 0; list-style: none; }
   font: 400 17px/1 var(--fat); letter-spacing: -0.02em;
 }
 .pill__nav { display: flex; gap: 22px; align-items: center; }
+/* a section's word stays on one line on the bars, even where it is two ("Chi è") */
+.toolbar__nav .word, .pill__nav .word { white-space: nowrap; }
+
+@media (prefers-reduced-transparency: reduce) {
+  .pill, .tabbar { background-color: var(--paper) !important; -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+}
 
 /* ---------- phone tab bar ---------- */
 .tabbar { display: none; }
+.langpop, .langpop[hidden] { display: none; }
+@media (max-width: 767px) { .langpop:not([hidden]) { display: grid; } }
 
 /* ---------- front sheet ---------- */
 .sheet { position: relative; }
@@ -252,29 +261,34 @@ ol, ul { padding: 0; list-style: none; }
   font: 700 12px/1 var(--display); font-stretch: 100%; letter-spacing: 0.12em; text-transform: uppercase;
 }
 .dateline > * { padding: 0 16px; display: flex; align-items: center; height: 100%; }
-.dateline > * + * { border-left: 1px solid var(--ink); }
+.dateline > * + * { border-left: 1px solid var(--line); }
 .dateline > :first-child { padding-left: 0; }
 .dateline__price, .dateline__clock { justify-content: center; }
 .dateline__clock .clock { margin-left: 8px; font-variant-numeric: tabular-nums lining-nums; }
 .dateline__ctrl { gap: 18px; padding-right: 0; }
 .dateline__ctrl .word { font-size: 12px; }
+/* the night edition's switch among the date line's words: a sun, or a moon */
+.dateline__night { display: inline-grid; place-items: center; padding: 4px; margin: -4px; border-radius: 6px; color: var(--ink); transition: scale 160ms var(--ease-out); }
+.dateline__night svg { display: block; width: 18px; height: 18px; fill: currentColor; }
+.dateline__night:active { scale: 0.88; }
+/* the engraving's sun (or moon) as a button: the stage sets it over the body
+   (src/gl/stage.js); over the canvas, so its focus ring shows */
+.band__sky { position: absolute; z-index: 32; left: 0; top: 0; width: 48px; height: 48px; border-radius: 50%; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.band__sky:focus-visible { border-radius: 50%; }
 
 .mast {
   position: relative;
   display: grid;
-  grid-template-columns: 24px minmax(0, 60fr) minmax(0, 27fr) auto 24px;
-  align-items: end; column-gap: 22px;
+  grid-template-columns: minmax(0, 62fr) minmax(0, 27fr);
+  align-items: end; column-gap: 28px;
   margin: 0 var(--m); padding: 22px 0 18px;
   font-family: var(--display); font-weight: 900; text-transform: uppercase;
 }
-.mast::before, .mast::after { content: ''; position: absolute; top: 22px; bottom: 18px; border-left: 1px solid var(--ink); }
-.mast::before { left: 11.5px; }
-.mast::after { right: 11.5px; }
-.mast__star { position: relative; z-index: 1; align-self: start; width: 24px; height: 24px; background: var(--paper); padding: 2px 0; }
+.mast__star { display: none; }
 .mast__name { display: block; line-height: 0.8; white-space: nowrap; }
 .mast__side { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; align-self: end; padding-bottom: 2px; }
 .mast__line { display: block; font-weight: 800; line-height: 0.84; white-space: nowrap; }
-.mast__hand { width: 96px; height: 48px; align-self: end; margin-bottom: 4px; transform: scaleX(-1); }
+.mast__hand { display: none; }
 
 .js [data-fit] { visibility: hidden; }
 .fitted [data-fit] { visibility: visible; }
@@ -293,9 +307,11 @@ ol, ul { padding: 0; list-style: none; }
 /* Accents take ink too: the dots of Albanian Ë stand well above these caps,
    so the window reaches half an em above the line, and the fill is padded up
    to meet it, since its speckle mask only covers the fill's own box. */
+/* The window is ink, not a target: reaching up half an em, a page head's window
+   lay over the date line's words and took their clicks (contact, how it was made). */
 .ink__win {
   position: absolute; left: 0; right: -0.04em; top: -0.5em; bottom: -0.3em;
-  overflow: hidden;
+  overflow: hidden; pointer-events: none;
   transform: translateX(calc((var(--p, 1) - 1) * 100%));
   will-change: transform;
 }
@@ -305,10 +321,6 @@ ol, ul { padding: 0; list-style: none; }
   color: var(--ink);
   transform: translateX(calc((1 - var(--p, 1)) * 100%));
   will-change: transform;
-  -webkit-mask-image: var(--speckle, none);
-  mask-image: var(--speckle, none);
-  -webkit-mask-size: 180px 180px;
-  mask-size: 180px 180px;
 }
 .is-proof .ink__fill { opacity: 0; transition: opacity 0.5s ease; }
 
@@ -317,21 +329,28 @@ ol, ul { padding: 0; list-style: none; }
   height: clamp(230px, 35vh, 360px);
   margin: 0 var(--m);
   background: var(--alarm);
-  border-top: 3px solid var(--ink);
-  border-bottom: 3px solid var(--ink);
+  /* a rounded cut: the stage reads this radius and rounds the engraving to it */
+  border-radius: 22px;
+  overflow: hidden;
 }
 .band__poster { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.4s ease; }
 .gl-on .band__poster { opacity: 0; }
+/* the caption flows under the band, set to its right edge; it grows a line
+   for the band's sun, and on an iPhone for the tilt word */
+.band-fig { margin: 0; }
 .band__cap {
-  position: absolute; right: 0; top: calc(100% + 8px);
-  font: italic 400 14px/1.3 var(--text); color: var(--ink);
+  width: fit-content; max-width: calc(100% - var(--m) * 2); margin: 10px var(--m) 0 auto;
+  font: 400 13px/1.45 var(--text); color: var(--fade);
 }
+/* a phone's or a tablet's word to let the tilt move the light (src/ui/tilt.js), on
+   its own line; its hit area is kept inside the caption, clear of the rule below */
+.band__tilt:not([hidden]) { display: block; margin: -4px 0 0; font-style: normal; }
 
 .front {
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 1fr);
-  margin: 38px var(--m) 0;
-  border-top: 2px solid var(--ink);
-  border-bottom: 2px solid var(--ink);
+  margin: 12px var(--m) 0;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
 }
 .front > * { position: relative; padding: 24px 30px 36px; }
 .front > :first-child { padding-left: 0; }
@@ -342,28 +361,28 @@ ol, ul { padding: 0; list-style: none; }
   font: 850 17px/1 var(--display); font-stretch: 96%; letter-spacing: 0.04em; text-transform: uppercase;
   margin-bottom: 18px;
 }
-.colhead .orn { width: 15px; height: 15px; }
+.colhead .orn { width: 14px; height: 14px; fill: var(--alarm); }
 .feature { display: grid; gap: 14px; text-decoration: none; }
 .feature__plate {
-  display: block; aspect-ratio: 4 / 3.4; overflow: hidden; border-radius: 10px;
-  box-shadow: inset 0 0 0 2px var(--ink);
-  padding: 6px;
+  display: block; aspect-ratio: 4 / 3.4; overflow: hidden; border-radius: 20px;
+  box-shadow: inset 0 0 0 1px var(--line);
+  padding: 8px;
   background: var(--aged);
 }
 .feature__plate img {
   width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%;
-  border-radius: 6px; box-shadow: 0 0 0 1px var(--ink);
+  border-radius: 13px;
   transition: transform 600ms var(--ease-out);
 }
 @media (hover: hover) and (pointer: fine) { .feature:hover .feature__plate img { transform: scale(1.03); } }
-.feature__cap { font: 400 17px/1.4 var(--text); }
+.feature__cap { font: 400 15px/1.5 var(--text); }
 
 .front__stand { display: grid; align-content: start; gap: 18px; }
 .stand__head {
   font: 850 clamp(26px, 2.5vw, 38px)/0.98 var(--display); font-stretch: 78%; text-transform: uppercase; letter-spacing: 0.005em;
   text-wrap: balance;
 }
-.stand__body { font-size: 19px; line-height: 1.5; max-width: 42ch; }
+.stand__body { font-size: 17px; line-height: 1.6; max-width: 44ch; }
 .stand__actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 4px; }
 
 .contents { display: grid; }
@@ -373,8 +392,8 @@ ol, ul { padding: 0; list-style: none; }
   padding: 12px 0; text-decoration: none;
 }
 .contents__thumb {
-  grid-row: span 2; width: 52px; height: 52px; border-radius: 6px;
-  box-shadow: inset 0 0 0 1.5px var(--ink);
+  grid-row: span 2; width: 52px; height: 52px; border-radius: 14px;
+  box-shadow: inset 0 0 0 1px var(--line);
   background-color: var(--aged); background-size: cover;
   display: grid; place-items: center;
 }
@@ -382,12 +401,12 @@ ol, ul { padding: 0; list-style: none; }
 .contents__thumb--martiri { background-image: url('/work/martiri-phone.jpg'); background-size: 240%; background-position: 50% 80%; }
 /* the sequined skirt, below the site's own wordmark */
 .contents__thumb--greta { background-image: url('/work/greta-phone.jpg'); background-size: 240%; background-position: 50% 78%; }
-.contents__thumb svg { width: 22px; height: 22px; fill: var(--ink); }
-.contents__thumb--write svg { width: 34px; height: 17px; --hand-line: var(--aged); }
+.contents__thumb svg { width: 20px; height: 20px; fill: var(--ink); }
+.contents__thumb--write svg { width: 26px; height: 13px; --hand-line: var(--aged); }
 .contents__thumb--code svg { width: 26px; height: 26px; fill: none; stroke: var(--ink); stroke-width: 1.5; }
 .contents__t { font: 850 18px/1.05 var(--display); font-stretch: 86%; text-transform: uppercase; letter-spacing: 0.02em; align-self: end; }
-.contents__l { font: italic 400 15px/1.3 var(--text); align-self: start; }
-.contents .hand { grid-row: 1 / span 2; grid-column: 3; width: 30px; height: 15px; opacity: 0.35; transition: opacity 200ms ease, transform 200ms var(--ease-out); }
+.contents__l { font: 400 13.5px/1.35 var(--text); color: var(--fade); align-self: start; }
+.contents .hand { grid-row: 1 / span 2; grid-column: 3; width: 24px; height: 12px; opacity: 0.35; transition: opacity 200ms ease, transform 200ms var(--ease-out); }
 @media (hover: hover) and (pointer: fine) {
   .contents a:hover .hand { opacity: 1; transform: translateX(4px); }
   .contents a:hover .contents__t { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 4px; }
@@ -399,19 +418,21 @@ ol, ul { padding: 0; list-style: none; }
 .contents a:active .hand { opacity: 1; transform: translateX(4px); }
 
 /* ---------- marquee ---------- */
+/* the running line is a bridge across the whole width: the road (src/ui/road.js)
+   and its van pass under it, as through a tunnel, rather than over its type */
 .marquee {
-  position: relative; overflow: hidden;
-  margin: 64px 0 0; padding: 18px 0 34px;
-  border-top: 2px solid var(--ink);
-  border-bottom: 2px solid var(--ink);
+  position: relative; z-index: 34; overflow: hidden;
+  background-color: var(--paper); background-image: var(--stock); background-size: var(--stock-size);
+  margin: 64px 0 0; padding: 22px 0 24px;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
 }
-.marquee::before { content: ''; position: absolute; left: 0; right: 0; top: 4px; border-top: 1px solid var(--ink); }
 .marquee__track { display: flex; width: max-content; align-items: center; will-change: transform; }
 .marquee__item { display: flex; align-items: center; gap: 36px; padding-right: 36px; white-space: nowrap; }
 .marquee__a { font: 900 76px/1 var(--display); font-stretch: 62%; text-transform: uppercase; }
-.marquee__b { font: italic 400 64px/1 var(--text); }
-.marquee__item .orn { width: 30px; height: 30px; }
-.marquee__flourish { position: absolute; left: 50%; bottom: 6px; width: min(420px, 60vw); height: 22px; transform: translateX(-50%); overflow: visible; }
+.marquee__b { font: 300 60px/1 var(--text); letter-spacing: -0.035em; }
+.marquee__item .orn { width: 26px; height: 26px; fill: var(--alarm); }
+.marquee__flourish { display: none; }
 .marquee__flourish { color: var(--ink); }
 #fleuron .fl-line { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
 
@@ -420,7 +441,7 @@ ol, ul { padding: 0; list-style: none; }
   display: block; margin: 0 var(--m);
   font: 900 100px/0.84 var(--display); text-transform: uppercase; white-space: nowrap;
 }
-.sheet__lede { margin: 22px var(--m) 0; max-width: 46ch; font: italic 400 23px/1.4 var(--text); }
+.sheet__lede { margin: 22px var(--m) 0; max-width: 44ch; font: 400 20px/1.45 var(--text); letter-spacing: -0.017em; }
 
 /* ---------- work sheet ---------- */
 .sheet--work { padding: 104px 0 40px; }
@@ -435,7 +456,7 @@ ol, ul { padding: 0; list-style: none; }
 .fan__card {
   position: absolute; left: 50%; bottom: 0;
   width: clamp(220px, 26vw, 400px);
-  display: block; text-decoration: none; border-radius: 10px; box-shadow: none;
+  display: block; text-decoration: none; border-radius: 16px; box-shadow: none;
   transform-origin: 50% 140%;
   transform: translate(-50%, 0);
   transition: scale 160ms var(--ease-out);
@@ -443,9 +464,9 @@ ol, ul { padding: 0; list-style: none; }
 }
 .fan__sheet {
   display: grid; gap: 10px;
-  padding: 8px 8px 12px; border-radius: 10px;
-  background-color: var(--paper); background-image: var(--stock); background-size: var(--stock-size);
-  box-shadow: inset 0 0 0 2px var(--ink), 0 22px 40px -22px rgb(20 20 20 / 0.55);
+  padding: 8px 8px 12px; border-radius: 16px;
+  background-color: var(--paper);
+  box-shadow: inset 0 0 0 1px var(--line), 0 22px 40px -22px rgb(20 20 20 / 0.45);
   transition: box-shadow 300ms ease;
 }
 .fan.is-dealt .fan__card { transition: transform 500ms var(--ease-out), translate 500ms var(--ease-out), scale 160ms var(--ease-out); }
@@ -462,41 +483,49 @@ ol, ul { padding: 0; list-style: none; }
 .fan__nav { display: flex; align-items: center; justify-content: center; gap: 18px; margin: 14px var(--m) 0; }
 .fan__nav[hidden] { display: none; }
 .fan__step {
-  display: grid; place-items: center; width: 48px; height: 44px; padding: 0; border: 0; border-radius: 6px;
+  display: grid; place-items: center; width: 48px; height: 44px; padding: 0; border: 0; border-radius: 14px;
   background: none; color: var(--ink); cursor: pointer; touch-action: manipulation;
   transition: scale 160ms var(--ease-out);
 }
 .fan__step:active { scale: 0.92; }
-.fan__step .hand { width: 34px; height: 17px; }
+.fan__step .hand { width: 26px; height: 13px; }
 .hand--back { transform: scaleX(-1); }
 .fan__count { min-width: 3.4em; text-align: center; font: 800 13px/1 var(--display); letter-spacing: 0.12em; font-variant-numeric: tabular-nums lining-nums; }
-.fan__card img { border-radius: 6px; box-shadow: 0 0 0 1px var(--ink); aspect-ratio: 1440 / 900; object-fit: cover; object-position: top; width: 100%; }
+.fan__card img { border-radius: 10px; aspect-ratio: 1440 / 900; object-fit: cover; object-position: top; width: 100%; }
 .fan__card--tall { width: clamp(140px, 13.5vw, 205px); }
 .fan__card--tall img { aspect-ratio: 780 / 1300; }
 .fan__cap { font: 800 12px/1 var(--display); letter-spacing: 0.08em; text-transform: uppercase; padding: 0 4px; }
 @media (hover: hover) and (pointer: fine) {
   .fan__card:hover { translate: 0 -28px; z-index: 5; }
-  .fan__card:hover .fan__sheet { box-shadow: inset 0 0 0 2px var(--ink), 0 34px 50px -24px rgb(20 20 20 / 0.6); }
+  .fan__card:hover .fan__sheet { box-shadow: inset 0 0 0 1px var(--line), 0 34px 50px -24px rgb(20 20 20 / 0.5); }
 }
 
 /* ---------- the case stack ---------- */
 .stack { position: relative; margin-top: 56px; }
-.case { position: sticky; top: 0; height: 100vh; height: 100dvh; min-height: 680px; }
+.case { position: sticky; top: 0; height: 100vh; height: 100dvh; min-height: 680px; isolation: isolate; }
+/* The sheet's paper, its top rule, its rounded top and its shadow, on a layer
+   of their own behind it: rounded on the sheet itself, its overflow clip was
+   rounded too, and every composited thing on the sheet was clipped by a
+   rounded mask while the stack slid (frames of 33 to 50ms over the cases).
+   The sheet keeps a plain rectangular clip. */
+.case::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none;
+  background-color: var(--paper); background-image: var(--stock); background-size: var(--stock-size);
+  border-top: 1px solid var(--ink);
+  border-radius: 28px 28px 0 0;
+  box-shadow: 0 -26px 48px -30px rgb(20 20 20 / 0.45);
+}
 .stack__dwell { height: 120vh; }
 .case__sheet {
   position: relative; height: 100%;
   display: grid; grid-template-rows: auto 1fr;
   padding: calc(var(--pill-h) + 34px) var(--m) 30px;
-  background-color: var(--paper); background-image: var(--stock); background-size: var(--stock-size);
-  border-top: 2px solid var(--ink);
-  box-shadow: 0 -26px 48px -30px rgb(20 20 20 / 0.5);
   overflow: hidden;
 }
-.case__sheet::before { content: ''; position: absolute; left: 0; right: 0; top: 4px; border-top: 1px solid var(--ink); }
 .case__head { display: grid; grid-template-columns: minmax(0, 1fr) 250px; grid-template-rows: auto auto; column-gap: 44px; row-gap: 16px; align-items: end; }
-.case__title { grid-column: 1; grid-row: 1; font: 400 120px/0.82 var(--fat); text-transform: uppercase; white-space: nowrap; }
+.case__title { grid-column: 1; grid-row: 1; font: 900 120px/0.82 var(--fat); font-stretch: var(--fat-w); text-transform: uppercase; white-space: nowrap; }
 .case__meta { grid-column: 1; grid-row: 2; display: flex; align-items: center; justify-content: space-between; gap: 28px; }
-.case__line { font: italic 400 22px/1.35 var(--text); max-width: 52ch; }
+.case__line { font: 400 19px/1.45 var(--text); letter-spacing: -0.015em; max-width: 50ch; }
 .case__visit { flex: none; }
 .case__body {
   position: relative; min-height: 0;
@@ -506,14 +535,11 @@ ol, ul { padding: 0; list-style: none; }
 .facts { grid-column: 2; grid-row: 1 / span 2; align-self: center; display: grid; gap: 10px; position: relative; z-index: 2; }
 .fact {
   will-change: transform, opacity;
-  padding: 12px 14px; border-radius: 10px;
-  background-color: var(--paper); background-image: var(--stock); background-size: var(--stock-size);
-  box-shadow: inset 0 0 0 2px var(--ink), inset 0 0 0 4px var(--paper), inset 0 0 0 5px var(--ink), 0 12px 22px -14px rgb(20 20 20 / 0.5);
-  font: 850 15px/1.15 var(--display); font-stretch: 88%; text-transform: uppercase; letter-spacing: 0.03em;
+  padding: 10px 16px; border-radius: 999px; justify-self: start;
+  background-color: var(--paper);
+  box-shadow: inset 0 0 0 1px var(--ink), 0 12px 22px -16px rgb(20 20 20 / 0.4);
+  font: 850 14px/1.15 var(--display); font-stretch: 88%; text-transform: uppercase; letter-spacing: 0.04em;
 }
-.fact:nth-child(1) { rotate: -2.2deg; }
-.fact:nth-child(2) { rotate: 1.6deg; margin-left: 10px; }
-.fact:nth-child(3) { rotate: -0.8deg; }
 /* tablets (768 to 1100px): beside the facts, the name's column is too narrow
    for the line, the button and the link, and the row ran on under the cards.
    So the facts are dealt beside the name only, at 14px so each card keeps to
@@ -523,7 +549,7 @@ ol, ul { padding: 0; list-style: none; }
    on the sheet. */
 @media (min-width: 768px) and (max-width: 1100px) {
   .facts { grid-row: 1; }
-  .fact { font-size: 14px; padding: 10px 13px; }
+  .fact { font-size: 13.5px; padding: 9px 14px; }
   .case__meta { grid-column: 1 / -1; }
 }
 @media (min-width: 768px) and (max-width: 1100px) and (orientation: portrait) {
@@ -587,14 +613,14 @@ ol, ul { padding: 0; list-style: none; }
 .plate--wide { grid-column: 1; grid-row: 1; }
 .plate--tall { grid-column: 3; grid-row: 1; }
 .plate__mount {
-  position: relative; padding: 7px; border-radius: 10px;
+  position: relative; padding: 8px; border-radius: 20px;
   background: var(--aged);
-  box-shadow: inset 0 0 0 2px var(--ink), inset 0 0 0 7px var(--aged), inset 0 0 0 8px var(--ink);
-  clip-path: polygon(14px 0, calc(100% - 14px) 0, 100% 14px, 100% calc(100% - 14px), calc(100% - 14px) 100%, 14px 100%, 0 calc(100% - 14px), 0 14px);
+  box-shadow: inset 0 0 0 1px var(--line);
 }
-.plate__mount img { width: 100%; border-radius: 3px; }
+/* the stage rounds the engraved picture to the same 12px (src/gl/plates.js) */
+.plate__mount img { width: 100%; border-radius: 12px; }
 .plate--tall .plate__mount img { aspect-ratio: 780 / 1688; object-fit: cover; }
-.plate__cap { font: italic 400 14px/1.3 var(--text); }
+.plate__cap { font: 400 13px/1.4 var(--text); color: var(--fade); }
 .gl-on .plate.is-gl .plate__mount img { opacity: 0; }
 .plate__mount img { cursor: crosshair; }
 .callouts { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; z-index: 3; will-change: transform; }
@@ -603,10 +629,10 @@ ol, ul { padding: 0; list-style: none; }
 .callout {
   will-change: opacity;
   position: absolute; z-index: 4; display: flex; align-items: baseline; gap: 8px;
-  font: italic 400 15px/1.2 var(--text); white-space: nowrap;
-  background: var(--paper); padding: 2px 6px 2px 2px; border-radius: 4px;
+  font: 400 14px/1.3 var(--text); white-space: nowrap;
+  background: var(--paper); padding: 2px 8px 2px 3px; border-radius: 8px;
 }
-.callout b { font: 400 15px/1 var(--fat); font-style: normal; }
+.callout b { font: 900 15px/1 var(--fat); font-stretch: var(--fat-w); font-style: normal; }
 /* a label longer than its room wraps inside it. On tablets the column between
    the plates is too narrow for the longer labels (in Albanian, "Menuja dhe
    telefonata, krah për krah" ran on under the phone plate), and on desktops
@@ -622,14 +648,13 @@ ol, ul { padding: 0; list-style: none; }
 
 /* ---------- about: the verse ---------- */
 .sheet--about { padding: 136px 0 56px; }
-.verse__end { display: block; width: min(420px, 70%); height: 24px; margin: 44px auto 0; color: var(--ink); overflow: visible; }
+.verse__end { display: none; }
 .verse {
   position: relative;
   margin: 48px var(--m) 0;
   columns: 2; column-gap: 76px;
-  font-size: clamp(20px, 1.78vw, 27px); line-height: 1.45;
-  text-align: justify; text-justify: inter-word; hyphens: manual; -webkit-hyphens: manual; text-wrap: pretty;
-  font-variant-numeric: oldstyle-nums;
+  font-size: clamp(18px, 1.56vw, 23.5px); line-height: 1.5; letter-spacing: -0.017em;
+  text-align: left; hyphens: manual; -webkit-hyphens: manual; text-wrap: pretty;
 }
 .verse p { margin: 0; }
 .verse .w { color: var(--fade); transition: color 200ms linear; }
@@ -639,14 +664,14 @@ ol, ul { padding: 0; list-style: none; }
 .verse__line { position: absolute; left: 10px; top: 26px; width: 2px; height: calc(100% - 52px); overflow: visible; }
 .verse__line line { stroke: var(--ink); stroke-width: 1.3; vector-effect: non-scaling-stroke; stroke-dasharray: 1; stroke-dashoffset: 1; }
 .no-motion .verse__line line { stroke-dashoffset: 0; }
-.verse__star { position: absolute; left: 2px; width: 18px; height: 18px; fill: var(--ink); }
+.verse__star { display: none; }
 .verse__star--t { top: 0; }
 .verse__star--b { bottom: 0; }
 .cut {
   display: inline-block; width: 2.05em; height: 1.02em; vertical-align: -0.15em;
-  margin: 0 0.12em; border-radius: 6px;
+  margin: 0 0.12em; border-radius: 999px;
   background-size: cover; background-color: var(--aged);
-  box-shadow: inset 0 0 0 1.5px var(--ink), inset 0 0 0 3px var(--paper), inset 0 0 0 4px var(--ink);
+  box-shadow: inset 0 0 0 1px var(--line);
 }
 /* A cut opens from a thin line as its words take ink. It is its own layer and
    opens by transform: a rounded clip-path here made Chrome compile GPU shaders
@@ -661,27 +686,27 @@ ol, ul { padding: 0; list-style: none; }
 .svc {
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
   margin: 40px var(--m) 0;
-  border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink);
+  border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
 }
 .svc > * { padding: 24px 30px 30px; }
 .svc > :first-child { padding-left: 0; }
 .svc > :last-child { padding-right: 0; }
 .svc > * + * { border-left: 1px solid var(--ink); }
-.svc__body { margin: 0; font-size: 19px; line-height: 1.5; max-width: 38ch; }
+.svc__body { margin: 0; font-size: 17px; line-height: 1.6; max-width: 40ch; }
 
 .langs { position: relative; margin: 56px var(--m) 0; }
 /* the tray: aged stock, double-ringed like a plate mount */
 .typecase {
-  padding: 8px; border-radius: 10px; background: var(--aged);
-  box-shadow: inset 0 0 0 2px var(--ink), inset 0 0 0 5px var(--aged), inset 0 0 0 6px var(--ink);
+  border-radius: 20px; overflow: hidden; background: var(--paper);
+  box-shadow: inset 0 0 0 1px var(--ink);
 }
 /* One sheet of newsprint ruled into compartments. Taken in page order, the
    boxes tile the grid exactly: 12 columns by 6 rows, or 6 by 12 below 1100px. */
 .typecase__grid {
   list-style: none; margin: 0; padding: 0;
   display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-auto-rows: 64px;
-  border-top: 1px solid var(--ink); border-left: 1px solid var(--ink);
-  background-color: var(--paper); background-image: var(--stock); background-size: var(--stock-size);
+  /* the tray's own ring is the outer edge: the last boxes' rules run out under it */
+  margin: 0 -1px -1px 0;
 }
 .typecase__box {
   display: flex; flex-direction: column-reverse; justify-content: space-between; gap: 6px;
@@ -696,10 +721,10 @@ ol, ul { padding: 0; list-style: none; }
 }
 .typecase__box--b .typecase__name { font-size: clamp(17px, 1.75vw, 28px); font-stretch: 80%; }
 .typecase__box--a .typecase__name { font-size: clamp(30px, 3.6vw, 58px); font-weight: 900; font-stretch: 72%; line-height: 0.84; }
-.typecase__use { font: italic 400 15px/1.25 var(--text); }
+.typecase__use { font: 400 13.5px/1.35 var(--text); color: var(--fade); }
 /* Anybody's plus sits at x-height; beside a capital C it reads as a subscript */
 .typecase__up { display: inline-block; font-size: 1.12em; transform: translateY(-0.2em); margin-left: 0.02em; }
-.langs__cap { margin: 12px 0 0; font: italic 400 15px/1.3 var(--text); }
+.langs__cap { margin: 12px 0 0; font: 400 13.5px/1.45 var(--text); color: var(--fade); }
 .proof-note--langs { position: static; display: none; margin-top: 8px; }
 .is-proof .proof-note--langs { display: block; }
 /* the first time the case is seen, the sorts drop into their boxes */
@@ -717,31 +742,45 @@ ol, ul { padding: 0; list-style: none; }
 }
 @media (min-width: 768px) and (max-width: 1100px) {
   .svc > * { padding: 22px 20px 26px; }
-  .svc__body { font-size: 17.5px; }
+  .svc__body { font-size: 16px; }
 }
 @media (max-width: 767px) {
-  .sheet--code { padding: 88px 0 64px; }
+  .sheet--code { padding: 56px 0 48px; }
   .svc { grid-template-columns: minmax(0, 1fr); margin-top: 32px; }
   .svc > * { padding: 22px 0 26px; }
   .svc > * + * { border-left: 0; border-top: 1px solid var(--ink); }
-  .svc__body { font-size: 18px; }
+  .svc__body { font-size: 16.5px; }
   .langs { margin-top: 44px; }
-  .typecase { padding: 6px; }
   .typecase__box { padding: 7px 6px 6px; }
   .typecase__box--a { padding: 9px 10px; }
-  .typecase__use { font-size: 13px; }
+  .typecase__use { font-size: 12.5px; }
+}
+/* the narrowest phones: a plain box's name ("Haskell") a little narrower, to stay in its box */
+@media (max-width: 400px) {
+  .typecase__name { font-stretch: 76%; }
+}
+/* and the date line's three controls a little smaller, so each keeps its one line at 320px */
+@media (max-width: 360px) {
+  .dateline__ctrl { gap: 10px; }
+  .dateline__ctrl .word { font-size: 11px; letter-spacing: 0.03em; }
 }
 
-/* ---------- the other sheets: the case editions, the colophon at length,
-   the telegraph counter. Each opens under the same toolbar and dateline. ---------- */
+/* ---------- the other sheets: the work, about and the websites on pages of
+   their own, the case editions, the colophon at length, the telegraph counter.
+   Each opens under the same toolbar and dateline. ---------- */
 .sheethead--page { margin-top: 30px; }
-.mast--edition .mast__name { font-family: var(--fat); font-weight: 400; }
+/* a part of the front page leading its own page: the dateline is its top, so
+   the room it keeps above itself on the front page goes (every width) */
+.sheet.sheet--lead { padding-top: 0; }
+/* the word of the page you are on stays inked, as a part being read does on the front page */
+.word[aria-current='page'] { text-decoration-color: var(--ink); text-decoration-thickness: 4px; }
+.mast--edition .mast__name { font-family: var(--fat); font-weight: 900; }
 .case__more, .colophon__more { flex: none; }
 .colophon__more { margin-left: 6px; }
 
 .edition-lede {
   display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 20px 40px;
-  margin: 6px var(--m) 0; padding-bottom: 28px; border-bottom: 2px solid var(--ink);
+  margin: 6px var(--m) 0; padding-bottom: 28px; border-bottom: 1px solid var(--ink);
 }
 .edition-lede .sheet__lede { margin: 0; }
 .edition-lede__actions { display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
@@ -770,17 +809,16 @@ ol, ul { padding: 0; list-style: none; }
 /* the letters pinned on a plate where the key is a list under it */
 .folio__pin { display: none; }
 
-.does { margin: 84px var(--m) 0; padding-top: 22px; border-top: 2px solid var(--ink); }
+.does { margin: 84px var(--m) 0; padding-top: 22px; border-top: 1px solid var(--ink); }
 .does__list { margin: 0; padding: 0; list-style: none; columns: 2; column-gap: 64px; column-rule: 1px solid var(--ink); }
-.does__list li { break-inside: avoid; padding: 12px 0 13px; border-bottom: 1px solid var(--ink); font-size: 19px; line-height: 1.42; }
-.does__note { margin: 12px 0 0; font: italic 400 14px/1.3 var(--text); }
+.does__list li { break-inside: avoid; padding: 12px 0 13px; border-bottom: 1px solid var(--line); font-size: 17px; line-height: 1.5; }
+.does__note { margin: 12px 0 0; font: 400 13px/1.4 var(--text); color: var(--fade); }
 
 /* the way on: the next sheet's name, fitted across the measure */
-.next { position: relative; margin: 88px var(--m) 0; padding: 26px 0 8px; border-top: 6px solid var(--ink); }
-.next::before { content: ''; position: absolute; left: 0; right: 0; top: 4px; border-top: 1.5px solid var(--ink); }
+.next { position: relative; margin: 88px var(--m) 0; padding: 26px 0 8px; border-top: 1px solid var(--ink); }
 .next__link { display: flex; align-items: center; gap: 28px; text-decoration: none; color: var(--ink); }
 .next__line { display: block; flex: 1; min-width: 0; font: 900 100px/0.84 var(--display); text-transform: uppercase; white-space: nowrap; }
-.next__hand { flex: none; width: 112px; height: 56px; transition: transform 200ms var(--ease-out); }
+.next__hand { flex: none; width: 96px; height: 48px; --arrow-w: 3.5px; transition: transform 200ms var(--ease-out); }
 @media (hover: hover) and (pointer: fine) { .next__link:hover .next__hand { transform: translateX(10px); } }
 .next__line { transition: translate 160ms var(--ease-out); }
 .next__link:active .next__line { translate: 0 2px; }
@@ -788,68 +826,90 @@ ol, ul { padding: 0; list-style: none; }
 
 /* the colophon at length: articles run in two columns under a column rule */
 .colophon-long {
-  margin: 48px var(--m) 0; padding-top: 6px; border-top: 2px solid var(--ink);
-  columns: 2; column-gap: 64px; column-rule: 1px solid var(--ink);
+  margin: 48px var(--m) 0; padding-top: 6px; border-top: 1px solid var(--ink);
+  columns: 2; column-gap: 64px; column-rule: 1px solid var(--line);
 }
-.colophon-long section { break-inside: avoid; padding: 20px 0 26px; border-bottom: 1px solid var(--ink); }
-.colophon-long p { margin: 0; font-size: 19px; line-height: 1.55; max-width: 62ch; }
+.colophon-long section { break-inside: avoid; padding: 20px 0 26px; border-bottom: 1px solid var(--line); }
+.colophon-long p { margin: 0; font-size: 17px; line-height: 1.6; max-width: 64ch; }
+/* two paragraphs under one head (privacy: a telegram, then where it came from) */
+.colophon-long p + p { margin-top: 0.7em; }
 .measured { margin: 72px var(--m) 0; }
-.measured__table { width: 100%; border-collapse: collapse; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); }
-.measured__table th { padding: 14px 24px 14px 0; border-bottom: 1px solid var(--ink); text-align: left; font: italic 400 19px/1.35 var(--text); }
-.measured__table td { padding: 14px 0; border-bottom: 1px solid var(--ink); text-align: right; white-space: nowrap; font: 900 34px/1 var(--display); font-stretch: 78%; font-variant-numeric: tabular-nums lining-nums; }
-.measured__note { margin: 12px 0 0; font: italic 400 14px/1.3 var(--text); }
-.setline { margin: 72px var(--m) 0; padding: 26px 0 22px; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); }
+.measured__table { width: 100%; border-collapse: collapse; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+.measured__table th { padding: 14px 24px 14px 0; border-bottom: 1px solid var(--line); text-align: left; font: 400 17px/1.45 var(--text); }
+.measured__table td { padding: 14px 0; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; font: 900 34px/1 var(--display); font-stretch: 78%; font-variant-numeric: tabular-nums lining-nums; }
+.measured__note { margin: 12px 0 0; font: 400 13px/1.4 var(--text); color: var(--fade); }
+.setline { margin: 72px var(--m) 0; padding: 26px 0 22px; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
 /* the next sheet's double rule closes it; a second rule above would leave an empty ruled slot */
 .setline:has(+ .next) { border-bottom: 0; padding-bottom: 0; }
 .setline__label { display: block; margin-bottom: 8px; font: 800 13px/1 var(--display); letter-spacing: 0.12em; text-transform: uppercase; }
 .setline__in {
-  width: min(560px, 100%); height: 52px; padding: 0 14px; border: 0; border-radius: 6px;
-  background: var(--paper); box-shadow: inset 0 0 0 2px var(--ink);
-  font: 400 22px/1 var(--text); color: var(--ink);
+  width: min(560px, 100%); height: 52px; padding: 0 22px; border: 0; border-radius: 999px;
+  background: var(--paper); box-shadow: inset 0 0 0 1.5px var(--ink);
+  font: 400 19px/1 var(--text); color: var(--ink);
 }
-.setline__out { margin: 26px 0 10px; font-family: var(--display); font-weight: 900; line-height: 0.84; text-transform: uppercase; white-space: nowrap; overflow: hidden; }
-.setline__how { margin: 0; font: italic 400 15px/1.3 var(--text); }
+/* room above the capitals for Albanian's Ë and below them for Ç's cedilla, which
+   the clipping box had cut off; the margins give most of it back, so the line
+   sits where it did */
+.setline__out { margin: max(0px, 26px - 0.13em) 0 max(0px, 10px - 0.14em); padding: 0.13em 0 0.14em; font-family: var(--display); font-weight: 900; line-height: 0.84; text-transform: uppercase; white-space: nowrap; overflow: hidden; }
+.setline__how { margin: 0; font: 400 13.5px/1.45 var(--text); color: var(--fade); }
+/* the press: the line printed as a poster (src/ui/poster.js), which comes off it
+   in a plate's mount, with the words to save it or share it */
+.setline__press { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; margin-top: 24px; }
+.setline__status { margin: 0; font: 400 13.5px/1.45 var(--text); }
+.setline__poster { display: grid; grid-template-columns: minmax(0, 340px) auto; align-items: end; gap: 18px 30px; margin: 28px 0 0; transition: opacity 320ms var(--ease-out), translate 320ms var(--ease-out); }
+@starting-style { .setline__poster { opacity: 0; translate: 0 16px; } }
+.no-motion .setline__poster { transition: none; }
+.setline__img {
+  display: block; width: 100%; height: auto; padding: 8px; border-radius: 20px; background: var(--aged);
+  box-shadow: inset 0 0 0 1px var(--line), 0 14px 26px -14px rgb(20 20 20 / 0.4);
+}
+.setline__take { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.setline__poster[hidden], .setline__take [hidden] { display: none !important; }
+@media (max-width: 767px) {
+  .setline__poster { grid-template-columns: minmax(0, 1fr); }
+  .setline__take { flex-direction: row; flex-wrap: wrap; }
+}
 
 /* the telegraph counter: a blank lying on the sheet */
 .telegram {
-  position: relative; max-width: 980px; margin: 44px var(--m) 0; padding: 24px 30px 28px; border-radius: 10px;
-  background-color: var(--paper); background-image: var(--stock); background-size: var(--stock-size);
-  box-shadow: inset 0 0 0 2px var(--ink), inset 0 0 0 4px var(--paper), inset 0 0 0 5px var(--ink), 0 14px 26px -14px rgb(20 20 20 / 0.5);
+  position: relative; max-width: 980px; margin: 44px var(--m) 0; padding: 26px 32px 30px; border-radius: 26px;
+  background-color: var(--paper);
+  box-shadow: inset 0 0 0 1px var(--line), 0 20px 44px -24px rgb(20 20 20 / 0.45);
 }
 .telegram__trap { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 .telegram__strip {
   display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 10px 24px;
-  padding-bottom: 12px; border-bottom: 2px solid var(--ink);
+  padding-bottom: 12px; border-bottom: 1px solid var(--ink);
   font: 800 13px/1 var(--display); letter-spacing: 0.12em; text-transform: uppercase;
 }
-.telegram__kind { font: 400 30px/1 var(--fat); letter-spacing: 0.02em; }
+.telegram__kind { font: 900 28px/1 var(--fat); font-stretch: var(--fat-w); letter-spacing: 0.01em; }
 .telegram__count b { font-variant-numeric: tabular-nums lining-nums; }
 .telegram__row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 30px; }
-.telegram__field { display: grid; align-content: start; gap: 6px; min-width: 0; margin: 0; padding: 16px 0 12px; border: 0; border-bottom: 1px solid var(--ink); }
+.telegram__field { display: grid; align-content: start; gap: 6px; min-width: 0; margin: 0; padding: 16px 0 12px; border: 0; border-bottom: 1px solid var(--line); }
 .telegram__label { padding: 0; font: 800 12px/1 var(--display); letter-spacing: 0.12em; text-transform: uppercase; }
 .telegram input[type='text'], .telegram textarea {
   width: 100%; padding: 4px 0; border: 0; border-radius: 0; background: transparent;
-  font: 400 21px/1.5 var(--text); color: var(--ink);
+  font: 400 18px/1.5 var(--text); color: var(--ink);
 }
 .telegram textarea {
   resize: vertical; min-height: 9em; line-height: 1.5em;
   background-image: repeating-linear-gradient(to bottom, transparent 0 calc(1.5em - 1px), color-mix(in srgb, var(--ink) 26%, transparent) calc(1.5em - 1px) 1.5em);
   background-attachment: local;
 }
-.telegram input::placeholder, .telegram textarea::placeholder { color: var(--fade); font-style: italic; opacity: 1; }
+.telegram input::placeholder, .telegram textarea::placeholder { color: var(--fade); opacity: 1; }
 .telegram input:focus-visible, .telegram textarea:focus-visible { outline: 2px solid var(--ink); outline-offset: 5px; border-radius: 2px; }
 /* a line that still needs filling in carries the proof-reader's red mark */
 .telegram [aria-invalid='true'] { box-shadow: 0 3px 0 -1px var(--alarm); }
-.telegram__err { font: italic 400 15px/1.3 var(--text); }
+.telegram__err { font: 400 13.5px/1.45 var(--text); }
 .telegram__err:empty { display: none; }
-.telegram__note { font: italic 400 14px/1.3 var(--text); color: var(--fade); }
+.telegram__note { font: 400 13px/1.4 var(--text); color: var(--fade); }
 .telegram__langs { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; }
 .telegram__langs legend { float: left; width: 100%; margin-bottom: 4px; }
-.telegram__choice { display: inline-flex; align-items: center; gap: 8px; font: 400 20px/1.2 var(--text); cursor: pointer; }
+.telegram__choice { display: inline-flex; align-items: center; gap: 8px; font: 400 17px/1.3 var(--text); cursor: pointer; }
 .telegram__choice input { width: 18px; height: 18px; margin: 0; accent-color: var(--ink); }
 .telegram__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 30px; margin-top: 24px; }
-.telegram__direct { margin: 0; font: italic 400 17px/1.4 var(--text); }
-.telegram__status { margin-top: 16px; font: italic 400 18px/1.4 var(--text); }
+.telegram__direct { margin: 0; font: 400 15px/1.5 var(--text); }
+.telegram__status { margin-top: 16px; font: 400 16px/1.5 var(--text); }
 .telegram__status:empty { display: none; }
 .telegram__status p { margin: 0; }
 .telegram__fallback { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-top: 8px !important; font-size: 16px; }
@@ -871,7 +931,43 @@ ol, ul { padding: 0; list-style: none; }
 .telegram__stamp b { font: 900 30px/0.9 var(--display); font-stretch: 78%; letter-spacing: 0.08em; text-transform: uppercase; }
 .telegram__stamp i { font: 800 11px/1 var(--display); font-style: normal; letter-spacing: 0.14em; text-transform: uppercase; font-variant-numeric: tabular-nums lining-nums; }
 .privacy { max-width: 720px; margin: 56px var(--m) 0; }
-.privacy p { margin: 0; font-size: 17px; line-height: 1.55; }
+.privacy p { margin: 0; font-size: 15.5px; line-height: 1.6; }
+.privacy .privacy__more { margin-top: 12px; }
+
+/* questions (contact): ruled like the rest of the sheet; an answer opens under
+   its question, the + turning to a × as it does */
+.faq { max-width: 980px; margin: 56px var(--m) 0; }
+.faq__list { margin-top: 14px; border-top: 1px solid var(--ink); }
+.faq__item { border-bottom: 1px solid var(--line); }
+.faq__q {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 20px;
+  padding: 16px 0 14px; cursor: pointer; list-style: none;
+  font: 850 17px/1.2 var(--display); font-stretch: 86%; letter-spacing: 0.02em; text-transform: uppercase;
+}
+.faq__q::-webkit-details-marker { display: none; }
+.faq__q::after { content: '+'; flex: none; font: 300 30px/0.7 var(--text); transition: rotate 200ms var(--ease-out); }
+.faq__item[open] .faq__q::after { rotate: 45deg; }
+.faq__a { margin: 0 0 18px; max-width: 62ch; font: 400 16px/1.6 var(--text); }
+.faq__item[open] .faq__a { transition: opacity 220ms var(--ease-out), translate 220ms var(--ease-out); }
+@starting-style { .faq__item[open] .faq__a { opacity: 0; translate: 0 -6px; } }
+.no-motion .faq__q::after, .no-motion .faq__item[open] .faq__a { transition: none; }
+@media (hover: hover) and (pointer: fine) {
+  .faq__q:hover > span { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; }
+}
+
+/* privacy and terms: the colophon's ruled sections, and the day the text last changed */
+.legal__changed { margin: 26px var(--m) 0; font: 400 13.5px/1.45 var(--text); color: var(--fade); }
+
+/* phones: the tab bar's foot fills with the reading, as the pill's does on a
+   wider screen, run by the scroll itself (a CSS scroll timeline, no script) */
+@supports (animation-timeline: scroll()) {
+  .tabbar::after {
+    content: ''; position: absolute; left: 24px; right: 24px; bottom: 5px; height: 2px; border-radius: 2px;
+    background: var(--alarm); transform-origin: left; transform: scaleX(0); pointer-events: none;
+    animation: tabbar-read linear both; animation-timeline: scroll(root);
+  }
+  @keyframes tabbar-read { to { transform: scaleX(1); } }
+}
 
 .foot__nav { grid-column: 1 / -1; grid-row: 2; display: flex; flex-wrap: wrap; gap: 10px 28px; }
 
@@ -891,7 +987,7 @@ ol, ul { padding: 0; list-style: none; }
   .folio .callout b, .folio__pin {
     display: grid; place-items: center; flex: none; width: 20px; height: 20px; border-radius: 9.9px;
     background: var(--paper); box-shadow: inset 0 0 0 1.5px var(--ink);
-    font: 400 11px/1 var(--fat); color: var(--ink);
+    font: 900 10.5px/1 var(--fat); font-stretch: var(--fat-w); color: var(--ink);
   }
   /* above the stage canvas (30), under the toolbar and the tab bar (40) */
   .folio__pin { position: absolute; z-index: 31; margin: -10px 0 0 -10px; pointer-events: none; }
@@ -906,15 +1002,265 @@ ol, ul { padding: 0; list-style: none; }
   .folio-pair { grid-template-columns: minmax(0, 1fr); gap: 56px; }
   .folio--tall .plate { max-width: 72%; }
   .does__list, .colophon-long { columns: 1; }
-  .next { margin-top: 64px; }
-  .next__hand { width: 64px; height: 32px; }
-  .measured__table th { font-size: 16px; }
-  .measured__table td { font-size: 24px; }
-  .telegram { margin-top: 32px; padding: 18px 16px 22px; }
+  /* running text on a phone: one reading size, 18px, a little under the desktop's */
+  .does__list li, .colophon-long p { font-size: 16.5px; line-height: 1.6; }
+  .next { margin-top: 56px; }
+  .next__hand { width: 64px; height: 32px; --arrow-w: 2.5px; }
+  /* a figure under its description rather than beside it: beside it, the
+     description ran four words to a line and the longest figure ("73, from
+     about 370") pushed past the screen's edge at 320px */
+  .measured__table, .measured__table tbody { display: block; }
+  .measured__table tr { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; padding: 14px 0 15px; border-bottom: 1px solid var(--line); }
+  .measured__table tr:last-child { border-bottom: 0; }
+  .measured__table th, .measured__table td { padding: 0; border-bottom: 0; }
+  .measured__table th { font-size: 15.5px; }
+  .measured__table td { text-align: left; white-space: normal; font-size: 28px; }
+  .telegram { margin-top: 32px; padding: 20px 18px 24px; border-radius: 22px; }
   .telegram__stamp { right: 14px; padding: 9px 13px 8px; }
   .telegram__stamp b { font-size: 24px; }
   .telegram__row { grid-template-columns: minmax(0, 1fr); }
-  .telegram__kind { font-size: 24px; }
+  .telegram__kind { font-size: 22px; }
+}
+
+/* ---------- the optional parts, switched on in the admin (src/ui/site.js).
+   Each is built into the page hidden; the Worker's settings unhide it, and
+   what it shows was typed in the admin. ---------- */
+
+/* hidden means hidden: a .btn, a .plate or a .case__meta sets its own display,
+   which would otherwise bring a part that is switched off back onto the sheet */
+:is([data-optional], [data-whatsapp], [data-whatsapp-line], [data-avail], [data-print], [data-greta-meta], [data-setfront-send], [data-rates-note], [data-portrait-cap], [data-calc-send], [data-vcard-qr])[hidden] { display: none !important; }
+
+/* availability: one line of the CV, set in the words' type after a star */
+.avail { display: flex; align-items: flex-start; gap: 9px; margin: 16px 0 0; font: 800 13px/1.25 var(--display); letter-spacing: 0.1em; text-transform: uppercase; }
+.avail .orn { margin-top: 0.14em; fill: var(--alarm); }
+.avail + .stand__actions { margin-top: 16px; }
+.avail--page { margin: 18px var(--m) 0; }
+
+/* four ways to write once WhatsApp is on: the buttons go two by two, and the line keeps its measure */
+.extra__row:has([data-whatsapp]:not([hidden])) { grid-template-columns: minmax(0, 1fr) minmax(0, 560px); }
+
+/* Greta's visit link sits beside her name, so the held sheet keeps its height */
+.case--preview .case__head:has([data-greta-meta]:not([hidden])) { grid-template-columns: minmax(0, 1fr) auto; }
+.case--preview [data-greta-meta] { grid-column: 2; grid-row: 1; align-self: end; margin-bottom: 10px; }
+
+/* readers write: letters to the editor, two columns under a rule
+   (.reader, not .letter: that is the letter-cutting game's) */
+.sheet--quotes { padding: 104px 0 40px; }
+.readers { margin: 34px var(--m) 0; border-top: 1px solid var(--ink); columns: 2; column-gap: 64px; column-rule: 1px solid var(--line); }
+.reader { break-inside: avoid; margin: 0; padding: 22px 0 24px; border-bottom: 1px solid var(--line); }
+.reader__text { margin: 0; max-width: 58ch; font: 400 18.5px/1.55 var(--text); letter-spacing: -0.014em; white-space: pre-line; }
+.reader__who { margin-top: 12px; font: 800 13px/1.3 var(--display); letter-spacing: 0.08em; text-transform: uppercase; }
+.reader__who::before { content: '\2014\00a0'; }
+.reader__tr { display: block; margin-top: 4px; font: 400 13px/1.4 var(--text); letter-spacing: 0; text-transform: none; color: var(--fade); }
+
+/* the rates: a telegraph office's tariff, a loose sheet like the telegram blank */
+.sheet--rates { padding: 104px 0 40px; }
+.ratecard {
+  max-width: 920px; margin: 34px var(--m) 0; padding: 24px 32px 28px; border-radius: 26px;
+  background-color: var(--paper);
+  box-shadow: inset 0 0 0 1px var(--line), 0 20px 44px -24px rgb(20 20 20 / 0.45);
+}
+.ratecard__strip {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 24px;
+  margin: 0; padding-bottom: 12px; border-bottom: 1px solid var(--ink);
+  font: 800 13px/1 var(--display); letter-spacing: 0.12em; text-transform: uppercase;
+}
+.ratecard__kind { font: 900 28px/1 var(--fat); font-stretch: var(--fat-w); letter-spacing: 0.01em; }
+.ratecard__list { margin: 0; padding: 0; list-style: none; }
+/* a name that runs to two lines is led from its last line to the price */
+.rate { display: grid; grid-template-columns: auto minmax(24px, 1fr) auto; align-items: last baseline; gap: 4px 12px; padding: 15px 0 14px; border-bottom: 1px solid var(--line); }
+.rate__name { font: 850 19px/1.15 var(--display); font-stretch: 86%; letter-spacing: 0.02em; text-transform: uppercase; }
+.rate__leader { align-self: end; margin-bottom: 6px; border-bottom: 2px dotted color-mix(in srgb, var(--ink) 40%, transparent); }
+.rate__price { font: 900 26px/1 var(--display); font-stretch: 78%; font-variant-numeric: tabular-nums lining-nums; white-space: nowrap; }
+.rate__desc { grid-column: 1 / -1; font: 400 14.5px/1.5 var(--text); color: var(--fade); }
+.ratecard__note { margin: 14px 0 0; font: 400 13.5px/1.5 var(--text); color: var(--fade); }
+
+/* the portrait: a plate beside the verse, engraved by the stage; the sheet holds it */
+.sheet--about:has(> .portrait:not([hidden])) { display: flow-root; }
+.sheet--about .portrait { float: right; width: min(300px, 30%); margin: 34px var(--m) 18px 40px; }
+
+/* the calculator: the rate card's lines to tick, and what they add up to,
+   ruled off under a double line like a tariff's total */
+.calc { max-width: 920px; margin: 34px var(--m) 0; }
+.calc__how { margin: 8px 0 14px; max-width: 58ch; font: 400 15.5px/1.5 var(--text); }
+.calc__list { min-width: 0; margin: 0; padding: 0; border: 0; border-top: 1px solid var(--ink); }
+.calc__item { display: grid; grid-template-columns: 22px auto minmax(24px, 1fr) auto; align-items: last baseline; gap: 4px 12px; padding: 13px 0 12px; border-bottom: 1px solid var(--line); cursor: pointer; }
+.calc__item input { width: 20px; height: 20px; margin: 0; align-self: center; accent-color: var(--ink); cursor: pointer; }
+.calc__name { font: 850 17px/1.15 var(--display); font-stretch: 86%; letter-spacing: 0.02em; text-transform: uppercase; }
+.calc__leader { align-self: end; margin-bottom: 5px; border-bottom: 2px dotted color-mix(in srgb, var(--ink) 40%, transparent); }
+.calc__price { font: 900 21px/1 var(--display); font-stretch: 78%; font-variant-numeric: tabular-nums lining-nums; white-space: nowrap; }
+.calc__total {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 20px;
+  margin: 16px 0 0; padding-bottom: 12px; border-bottom: 2px solid var(--ink);
+  font: 800 13px/1 var(--display); letter-spacing: 0.12em; text-transform: uppercase;
+}
+.calc__sum { font: 900 34px/1 var(--display); font-stretch: 76%; letter-spacing: 0; text-transform: none; font-variant-numeric: tabular-nums lining-nums; }
+.calc__note { margin: 12px 0 18px; max-width: 62ch; font: 400 13.5px/1.5 var(--text); color: var(--fade); }
+
+/* graphic work: plates on a sheet of their own after the websites, each in its own
+   shape (a logo square, a poster tall), in columns that start level */
+.sheet--graphic { padding: 104px 0 40px; }
+.gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: 48px 40px; margin: 40px var(--m) 0; }
+.piece .plate__mount img { display: block; height: auto; }
+.piece__cap { max-width: 44ch; }
+.piece__title { font-style: normal; font-weight: 700; }
+.contents__thumb--graphic svg { width: 22px; height: 22px; }
+
+/* his card (contact page): the button for this phone, and the code for a phone
+   to read off a wider screen */
+.card { max-width: 980px; margin: 56px var(--m) 0; }
+.card__body { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 20px 44px; margin-top: 14px; padding-top: 18px; border-top: 1px solid var(--ink); }
+.card__line { margin: 0 0 16px; max-width: 46ch; font: 400 17px/1.55 var(--text); }
+.card__qr { display: grid; justify-items: center; gap: 8px; margin: 0; }
+.card__code { display: block; width: 176px; height: 176px; padding: 10px; border-radius: 18px; background: var(--paper); box-shadow: inset 0 0 0 1px var(--line); }
+.card__code path { fill: var(--ink); }
+/* a code stays dark on light at night: not every phone reads one the other way round */
+.is-night .card__code { background: #EFE6D2; }
+.is-night .card__code path { fill: #141414; }
+.card__scan { font: 400 13px/1.4 var(--text); color: var(--fade); }
+
+/* his profiles: words like the rest of the foot, on their own line */
+.links { display: inline-flex; flex-wrap: wrap; gap: 6px 18px; }
+.foot__links { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin: 0; font: 400 14.5px/1.4 var(--text); }
+
+@media (max-width: 1100px) {
+  .gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 767px) {
+  .calc__item { grid-template-columns: 22px minmax(0, 1fr) auto; }
+  .calc__leader { display: none; }
+  .calc__price { font-size: 19px; }
+  .sheet--graphic { padding-top: 56px; }
+  .gallery { grid-template-columns: minmax(0, 1fr); gap: 36px; margin-top: 28px; }
+  .card__body { grid-template-columns: minmax(0, 1fr); }
+  .card__line { font-size: 16px; }
+  .card__qr { display: none; }
+}
+
+/* your business on the front page (contact): a masthead under a double rule */
+.setfront { max-width: 980px; margin: 44px var(--m) 0; }
+.setfront .setline__label { margin-top: 16px; }
+.setfront__sheet { position: relative; margin: 20px 0 16px; padding: 12px 0 14px; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+.setfront__dateline {
+  display: flex; justify-content: space-between; gap: 12px; margin: 6px 0 12px; padding-bottom: 7px; border-bottom: 1px solid var(--ink);
+  font: 800 12px/1 var(--display); letter-spacing: 0.12em; text-transform: uppercase;
+}
+/* the room above is for Albanian capitals: the dots of Ë and the like stand over the cap height */
+.setfront__mast { position: relative; margin: 8px 0 10px; padding-top: 0.13em; font-family: var(--display); font-weight: 900; line-height: 0.84; text-transform: uppercase; white-space: nowrap; }
+.setfront__outline { color: transparent; -webkit-text-stroke: 1.4px var(--ink); paint-order: stroke fill; }
+.setfront__mast.is-blank .setfront__outline { -webkit-text-stroke-color: var(--fade); }
+/* the ink goes on from the left, as the roller would lay it (a plain inset: no rounded clip to compile) */
+.setfront__fill { position: absolute; left: 0; top: 0.13em; color: var(--ink); clip-path: inset(-15% 100% -15% 0); transition: clip-path 620ms var(--ease-out); }
+.setfront__mast.is-inked .setfront__fill { clip-path: inset(-15% 0 -15% 0); }
+.setfront__sub { margin: 0; font: 400 13.5px/1.45 var(--text); color: var(--fade); }
+
+/* the phone magnifier: a long press is the loupe's, not the phone's picture menu */
+html[data-features~='magnifier'] :is([data-plate], .portrait) { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
+.folio__pin { transition: opacity 120ms ease; }
+.is-looking .folio__pin { opacity: 0; }
+
+@media (max-width: 1100px) {
+  html[data-features~='magnifier'] .folio__key .callout { cursor: pointer; }
+  /* beside the verse, its two justified columns would run too narrow: the portrait heads the verse instead */
+  .sheet--about .portrait { float: none; width: min(340px, 46%); margin: 34px var(--m) 0; }
+}
+@media (max-width: 767px) {
+  .case--preview [data-greta-meta] { grid-column: 1; grid-row: auto; margin-bottom: 0; }
+  .sheet--quotes, .sheet--rates { padding-top: 56px; }
+  .readers { columns: 1; }
+  .reader__text { font-size: 17px; }
+  .extra__row:has([data-whatsapp]:not([hidden])) { grid-template-columns: minmax(0, 1fr); }
+  .ratecard { padding: 20px 18px 24px; border-radius: 22px; }
+  .ratecard__kind { font-size: 22px; }
+  /* on a narrow card the name has its own line, and the leader runs to the price under it */
+  .rate { grid-template-columns: minmax(24px, 1fr) auto; }
+  .rate__name { grid-column: 1 / -1; }
+  .rate__price { font-size: 22px; }
+  .sheet--about .portrait { float: none; width: min(calc(100% - 2 * var(--m)), 340px); margin: 26px var(--m) 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .setfront__fill { transition: none; }
+}
+
+/* ---------- stop the press (the dateline's switch, main.js): a reader's own
+   "reduced motion". The sheet takes the form it has for a system that asks for
+   less motion, and what would still ease into place is set at once ---------- */
+.no-motion .setfront__fill, .no-motion [data-feed] { transition: none; }
+.no-motion .marquee__track { transform: none !important; }
+html.no-motion { scroll-behavior: auto; }
+html.no-motion::view-transition-new(root) { animation: none; }
+
+/* ---------- hit areas (WCAG 2.2, 2.5.8): a word is 14px of type, but it is
+   pressed on 24px under a mouse and 44px under a finger. The padding grows the
+   area, and an equal negative margin takes it back out of the layout ---------- */
+.word { padding-block: 5px; margin-block: -5px; }
+.word--btn { padding-block: 6px; margin-block: 0; }
+.skip { padding-block: 15px; }
+.telegram__choice input { width: 24px; height: 24px; }
+/* the bots' line: off the page for people, and out of reach of anything that measures it */
+.telegram__trap { visibility: hidden; }
+.colophon__lic a { padding-block: 5px; margin-block: -5px; }
+@media (pointer: coarse) {
+  .word { padding-block: 15px; margin-block: -15px; }
+  .word--btn { padding-block: 16px; margin-block: -10px; min-width: 44px; }
+  .dateline__night { padding: 13px; margin: -13px; }
+  button.specimen { padding-block: 14.5px; margin-block: -8.5px; }
+  .colophon__lic a { padding-block: 15px; margin-block: -15px; }
+  .telegram input[type='text'] { min-height: 44px; }
+  .telegram__choice { min-height: 44px; }
+  /* the language keys, 44px with their frame, for a tablet's finger */
+  .lang__btn { height: 38px; }
+}
+/* printing is for a desk; on a phone the dateline keeps its room for the other words */
+@media (max-width: 767px) {
+  .dateline__ctrl [data-print] { display: none; }
+}
+
+/* ---------- the print edition (src/ui/print.js): with it switched on, the front
+   page prints as one broadside on A4; without it, the sheet prints as it reads,
+   minus the parts that only make sense on a screen ---------- */
+.print-sheet { display: none; }
+@media print {
+  @page { size: A4 portrait; margin: 12mm; }
+  html, body { background: #fff !important; }
+  /* the night edition prints as the day's: black ink on white */
+  :root.is-night { --paper: #EFE6D2; --aged: #E3D6BA; --ink: #141414; --fade: #5F584F; color-scheme: light; }
+  .gl, .gl-page, .gl-case, .toolbar, .pill, .tabbar, .intro, .stack-menu, .tiles, .warm, .skip, .proof-note, .fan__nav, .stack__dwell, .dateline__ctrl { display: none !important; }
+  .gl-on .band__poster, .gl-on .plate.is-gl .plate__mount img { opacity: 1 !important; }
+  .case { position: static !important; height: auto !important; min-height: 0 !important; }
+  .case::before { display: none; }
+  [data-feed] { clip-path: none !important; }
+  /* everything but the broadside goes; the fitting's meter stays (hidden, still measuring) */
+  body:has(> .print-sheet) > :not(.print-sheet, .fit-meter) { display: none !important; }
+  /* one page tall, the imprint at its foot (A4 less the margins is 273mm) */
+  .print-sheet { display: flex !important; flex-direction: column; min-height: 272mm; color: #111; font: 400 10.5pt/1.4 var(--text); }
+  .ps-lead { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 0 14pt; align-items: start; margin: 0 0 9pt; }
+  .ps-lead__head { margin: 0; font: 900 21pt/0.98 var(--display); font-stretch: 80%; text-transform: uppercase; }
+  .ps-lead__body { margin: 0; font: 400 12.5pt/1.42 var(--text); }
+  .ps-rule { border-top: 4pt solid #111; border-bottom: 1pt solid #111; padding-top: 2pt; }
+  .ps-dateline { display: flex; justify-content: space-between; margin: 5pt 0 6pt; padding-bottom: 4pt; border-bottom: 0.75pt solid #111; font: 800 7.5pt/1 var(--display); letter-spacing: 0.12em; text-transform: uppercase; }
+  .ps-mast { margin: 4pt 0 0; font-family: var(--display); font-weight: 900; line-height: 0.82; text-transform: uppercase; white-space: nowrap; }
+  .ps-side { margin: 5pt 0 8pt; font: 800 9pt/1.2 var(--display); letter-spacing: 0.08em; text-transform: uppercase; }
+  .ps-band { display: block; width: 100%; height: 46mm; margin: 0 0 8pt; object-fit: cover; border-top: 2pt solid #111; border-bottom: 2pt solid #111; }
+  .ps-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1.5pt solid #111; }
+  .ps-col { padding: 8pt 10pt 6pt 0; }
+  .ps-col + .ps-col { padding-left: 10pt; border-left: 0.75pt solid #111; }
+  .ps-head { margin: 0 0 6pt; font: 900 12pt/1 var(--display); font-stretch: 80%; text-transform: uppercase; }
+  .ps-item { margin: 0 0 6pt; }
+  .ps-where { font: 800 7.5pt/1.2 var(--display); letter-spacing: 0.1em; text-transform: uppercase; }
+  .ps-avail { margin: 0 0 6pt; }
+  .ps-contact { margin: 0 0 4pt; font: 900 12pt/1.15 var(--display); font-stretch: 84%; overflow-wrap: anywhere; }
+  .ps-whole { white-space: nowrap; }
+  .ps-qr { display: block; width: 26mm; height: 26mm; margin: 6pt 0 4pt; }
+  .ps-qr path { fill: #111; }
+  .ps-rates { margin-top: 6pt; padding-top: 6pt; border-top: 1.5pt solid #111; }
+  .ps-rates__list { margin: 0; padding: 0; list-style: none; columns: 2; column-gap: 14pt; }
+  .ps-rate { display: flex; align-items: baseline; gap: 6pt; padding: 3pt 0; break-inside: avoid; }
+  .ps-rate__name { font: 850 9pt/1.2 var(--display); text-transform: uppercase; }
+  .ps-rate__leader { flex: 1; border-bottom: 1pt dotted #111; }
+  .ps-rate__price { font: 900 11pt/1 var(--display); font-variant-numeric: tabular-nums lining-nums; white-space: nowrap; }
+  .ps-cols, .ps-rates { margin-bottom: 10pt; }
+  .ps-foot { margin-top: auto; padding-top: 4pt; border-top: 0.75pt solid #111; font: 400 8pt/1.3 var(--text); }
 }
 
 /* one sheet replaces the last: the next page feeds in through a slit */
@@ -932,12 +1278,12 @@ ol, ul { padding: 0; list-style: none; }
 /* ---------- extra: the red sheet ---------- */
 .sheet--extra {
   margin-top: 40px; padding: 96px var(--m) 110px;
-  background-color: var(--alarm); background-image: var(--grain, none);
-  border-top: 4px solid var(--ink); border-bottom: 4px solid var(--ink);
+  background-color: var(--alarm);
   overflow: hidden;
 }
-.sheet--extra::before { content: ''; position: absolute; left: 0; right: 0; top: 5px; border-top: 1px solid var(--ink); }
-.extra__head { position: relative; display: block; margin-right: 250px; font: 400 200px/0.8 var(--fat); text-transform: uppercase; white-space: nowrap; }
+/* the red flood keeps its black ink in the night edition: light type on red would not read */
+.is-night .sheet--extra { --paper: #EFE6D2; --aged: #E3D6BA; --ink: #141414; --fade: #5F584F; color: var(--ink); }
+.extra__head { position: relative; display: block; margin-right: 250px; font: 900 200px/0.8 var(--fat); font-stretch: var(--fat-w); text-transform: uppercase; white-space: nowrap; }
 .slice { display: block; }
 .slice--2, .slice--3 { position: absolute; left: 0; right: 0; top: 0; bottom: 0; visibility: hidden; }
 .extra__head.is-sliced .slice--2, .extra__head.is-sliced .slice--3 { visibility: visible; }
@@ -957,7 +1303,7 @@ ol, ul { padding: 0; list-style: none; }
 }
 @media (hover: hover) and (pointer: fine) { .extra__mail:hover::after { transform: scaleY(1); } }
 .extra__row { display: grid; grid-template-columns: minmax(0, 1.1fr) auto; gap: 26px 40px; align-items: end; margin-top: 44px; max-width: 1180px; }
-.extra__line { font: 400 27px/1.35 var(--text); max-width: 34ch; }
+.extra__line { font: 400 23px/1.4 var(--text); letter-spacing: -0.02em; max-width: 34ch; }
 .extra__actions { display: flex; gap: 14px; flex-wrap: wrap; }
 .sheet--extra .btn--line { background: var(--paper); }
 .extra__clock { grid-column: 1 / -1; font: 800 19px/1 var(--display); letter-spacing: 0.08em; text-transform: uppercase; font-variant-numeric: tabular-nums lining-nums; }
@@ -979,62 +1325,61 @@ ol, ul { padding: 0; list-style: none; }
 .badge__ring { position: absolute; inset: 0; width: 100%; height: 100%; will-change: transform; }
 .badge__text { font: 800 15.5px/1 var(--display); font-stretch: 110%; letter-spacing: 0.16em; text-transform: uppercase; fill: var(--ink); }
 .badge__ring use { fill: var(--ink); }
-.badge__hand { width: 84px; height: 42px; color: var(--ink); }
+.badge__hand { width: 64px; height: 32px; --arrow-w: 3px; color: var(--ink); }
 
 /* ---------- back page ---------- */
 .sheet--back { padding: 120px 0 64px; }
 .amuse {
   display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-  margin: 44px var(--m) 0; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink);
+  margin: 44px var(--m) 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink);
 }
 .amuse > * { padding: 26px 30px 34px; }
 .amuse > :first-child { padding-left: 0; }
 .amuse > :last-child { padding-right: 0; border-left: 1px solid var(--ink); }
-.amuse__how { font: italic 400 17px/1.4 var(--text); margin: -6px 0 18px; max-width: 48ch; }
+.amuse__how { font: 400 15px/1.5 var(--text); color: var(--fade); margin: -6px 0 18px; max-width: 48ch; }
 .game { position: relative; }
 .game__canvas {
-  display: block; width: 100%; height: 220px; border-radius: 10px;
+  display: block; width: 100%; height: 220px; border-radius: 20px;
   background: var(--aged);
-  box-shadow: inset 0 0 0 2px var(--ink), inset 0 0 0 5px var(--aged), inset 0 0 0 6px var(--ink);
+  box-shadow: inset 0 0 0 1px var(--line);
   cursor: pointer; touch-action: manipulation;
 }
 .game__score { margin-top: 10px; font: 800 13px/1 var(--display); letter-spacing: 0.1em; text-transform: uppercase; font-variant-numeric: tabular-nums lining-nums; }
 .game__score b { font-weight: 900; margin: 0 14px 0 4px; }
 .letter { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 24px; align-items: start; }
 .letter__pad {
-  display: block; width: 260px; height: 260px; border-radius: 10px;
+  display: block; width: 260px; height: 260px; border-radius: 20px;
   background: var(--paper);
-  box-shadow: inset 0 0 0 2px var(--ink), inset 0 0 0 5px var(--paper), inset 0 0 0 6px var(--ink);
+  box-shadow: inset 0 0 0 1.5px var(--ink);
   touch-action: none; cursor: crosshair;
 }
 .letter__side { display: grid; gap: 14px; align-content: start; }
-.letter__char { display: flex; align-items: center; gap: 12px; font: italic 400 17px/1.2 var(--text); }
+.letter__char { display: flex; align-items: center; gap: 12px; font: 400 15.5px/1.3 var(--text); }
 .letter__char input {
-  width: 56px; height: 48px; text-align: center; border: 0; border-radius: 6px;
+  width: 56px; height: 48px; text-align: center; border: 0; border-radius: 14px;
   background: var(--paper); color: var(--ink);
-  box-shadow: inset 0 0 0 2px var(--ink);
-  font: 400 26px/1 var(--fat);
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+  font: 900 24px/1 var(--fat); font-stretch: var(--fat-w);
 }
 .letter__char input:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 .letter__btns { display: flex; gap: 10px; flex-wrap: wrap; }
-.letter__msg { min-height: 1.3em; font: italic 400 15px/1.3 var(--text); }
+.letter__msg { min-height: 1.3em; font: 400 13.5px/1.45 var(--text); }
 .letter__preview-label { font: 800 12px/1 var(--display); letter-spacing: 0.1em; text-transform: uppercase; }
 .letter__preview { font: 900 44px/1 var(--display); font-stretch: 70%; text-transform: uppercase; min-height: 1em; overflow-wrap: anywhere; }
 
-.colophon { display: grid; gap: 14px; margin: 44px var(--m) 0; max-width: 72ch; font-size: 17px; }
+.colophon { display: grid; gap: 14px; margin: 44px var(--m) 0; max-width: 72ch; font-size: 15.5px; }
 .specimens { display: flex; gap: 22px; flex-wrap: wrap; }
 .specimens li { position: relative; }
 .specimen {
   font: 800 15px/1 var(--display); letter-spacing: 0.06em; text-transform: uppercase;
   text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 6px; padding: 6px 0;
 }
-.specimen[data-face='ultra'] { font-family: var(--fat); font-weight: 400; letter-spacing: 0.02em; }
-.specimen[data-face='oldstandard'] { font-family: var(--text); font-style: italic; font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 18px; }
+.specimen[data-face='inter'] { font-family: var(--text); font-weight: 600; text-transform: none; letter-spacing: -0.01em; font-size: 16px; }
 .specimen__card {
   position: absolute; left: 0; bottom: calc(100% + 12px); z-index: 20;
-  width: 290px; padding: 16px 18px; border-radius: 10px;
-  background-color: var(--paper); background-image: var(--stock); background-size: var(--stock-size);
-  box-shadow: inset 0 0 0 2px var(--ink), inset 0 0 0 4px var(--paper), inset 0 0 0 5px var(--ink), 0 18px 32px -18px rgb(20 20 20 / 0.55);
+  width: 290px; padding: 18px 20px; border-radius: 20px;
+  background-color: var(--paper);
+  box-shadow: inset 0 0 0 1px var(--line), 0 18px 32px -18px rgb(20 20 20 / 0.45);
   display: grid; gap: 8px;
   opacity: 0; transform: translateY(6px) scale(0.97); transform-origin: 20% 100%;
   visibility: hidden;
@@ -1045,19 +1390,21 @@ ol, ul { padding: 0; list-style: none; }
 }
 .specimen__big { font-size: 64px; line-height: 1; }
 .specimen__big--anybody { font-family: var(--display); font-weight: 900; font-stretch: 70%; }
-.specimen__big--ultra { font-family: var(--fat); }
-.specimen__big--os { font-family: var(--text); }
-.specimen__meta { font: italic 400 14px/1.35 var(--text); }
-.colophon__lic { font: italic 400 15px/1.4 var(--text); }
+.specimen__big--inter { font-family: var(--text); font-weight: 500; letter-spacing: -0.03em; }
+.specimen__meta { font: 400 13px/1.45 var(--text); color: var(--fade); }
+.colophon__lic { font: 400 13.5px/1.45 var(--text); color: var(--fade); }
 
 .foot {
   display: grid; grid-template-columns: 1fr auto auto; gap: 28px; align-items: center;
   margin: 56px var(--m) 0; padding: 18px 0 30px;
-  border-top: 6px solid var(--ink);
+  border-top: 1px solid var(--ink);
   position: relative;
 }
-.foot::before { content: ''; position: absolute; left: 0; right: 0; top: 3px; border-top: 1px solid var(--ink); }
-.foot__line { font: italic 400 16px/1.3 var(--text); }
+.foot__line { font: 400 14.5px/1.45 var(--text); }
+/* sharing the sheet, and the day it was last set */
+.foot__meta { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 24px; margin: 0; }
+.foot__status, .foot__updated { font: 400 13.5px/1.4 var(--text); color: var(--fade); }
+.foot__updated:empty { display: none; }
 
 /* The next edition: a copy of the front page's head so the sheet runs on */
 .edition { margin-top: 90px; pointer-events: none; }
@@ -1072,16 +1419,32 @@ ol, ul { padding: 0; list-style: none; }
 .stack-menu__list { display: grid; }
 .stack-menu__sheet {
   display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 12px;
-  margin-top: -6px; padding: 14px 18px 14px 20px; border-radius: 10px;
+  margin-top: -6px; padding: 14px 18px 14px 22px; border-radius: 20px;
   text-decoration: none;
-  background-color: var(--paper); background-image: var(--stock); background-size: var(--stock-size);
-  box-shadow: inset 0 0 0 2px var(--ink), 0 14px 26px -16px rgb(20 20 20 / 0.55);
+  background-color: var(--paper);
+  box-shadow: inset 0 0 0 1px var(--line), 0 14px 26px -16px rgb(20 20 20 / 0.45);
   transition: transform 220ms var(--ease-out), background-color 160ms ease, scale 160ms var(--ease-out);
 }
 .stack-menu__sheet:active { scale: 0.98; }
+/* the site search, above the sheets; not on phones, where the index stands at
+   the foot of the screen and the keyboard would cover the field */
+.stack-menu__search { margin-bottom: 12px; }
+.stack-menu__q {
+  display: block; width: 100%; height: 46px; padding: 0 20px; border: 0; border-radius: 999px;
+  background-color: var(--paper); color: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--ink), 0 14px 26px -16px rgb(20 20 20 / 0.45);
+  font: 400 16px/1 var(--text);
+}
+.stack-menu__q::placeholder { color: var(--fade); opacity: 1; }
+.stack-menu__q::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+.stack-menu__none {
+  padding: 14px 20px; border-radius: 20px; background-color: var(--paper); box-shadow: inset 0 0 0 1px var(--line);
+  font: 400 14.5px/1.4 var(--text);
+}
+@media (max-width: 767px) { .stack-menu__search { display: none; } }
 .stack-menu__sheet b { font: 850 20px/1 var(--display); font-stretch: 84%; text-transform: uppercase; letter-spacing: 0.02em; }
-.stack-menu__sheet i { grid-column: 1; font: italic 400 15px/1.2 var(--text); }
-.stack-menu__sheet .hand { grid-row: 1 / span 2; grid-column: 2; width: 34px; height: 17px; }
+.stack-menu__sheet i { grid-column: 1; font: 400 13.5px/1.3 var(--text); color: var(--fade); }
+.stack-menu__sheet .hand { grid-row: 1 / span 2; grid-column: 2; width: 24px; height: 12px; }
 @media (hover: hover) and (pointer: fine) {
   .stack-menu__sheet:hover { background-color: var(--aged); transform: translateX(-6px) rotate(0deg) !important; }
 }
@@ -1095,6 +1458,16 @@ ol, ul { padding: 0; list-style: none; }
 
 /* ---------- WebGL layer ---------- */
 .gl { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 30; pointer-events: none; }
+/* On a phone the canvas is part of the page (stage.js, onPage): the phone
+   scrolls it with the type, so the band and the plates never trail the page.
+   The holder is as tall as the page (set by the stage) and clips the canvas,
+   so it never makes the page longer; the stage moves the canvas down it. */
+.gl-page { position: absolute; left: 0; top: 0; width: 100%; height: 0; overflow: hidden; overflow: clip; z-index: 30; pointer-events: none; }
+.gl-page > .gl { position: absolute; inset: auto; left: 0; top: 0; width: 100%; will-change: transform; }
+/* A tablet's case sheets are held while read, so each draws its plates on a
+   canvas of its own (stage.js): inside the sheet it moves with the sheet, and
+   the next sheet laid over it covers it. Above the veil, as the page's canvas is. */
+.gl-case { position: absolute; left: 0; top: 0; width: 100%; height: 100%; z-index: 7; pointer-events: none; }
 
 /* ---------- intro ---------- */
 .intro {
@@ -1130,7 +1503,7 @@ html:not(.js) .intro, .no-motion .intro { display: none; }
 /* ---------- proof mode ---------- */
 .proof-note {
   position: absolute; z-index: 35; max-width: 240px;
-  font: italic 400 15px/1.3 var(--text); color: var(--ink); text-transform: none; letter-spacing: 0;
+  font: 400 13.5px/1.4 var(--text); color: var(--ink); text-transform: none; letter-spacing: 0;
   opacity: 0; visibility: hidden; transform: translateY(4px);
   transition: opacity 300ms var(--ease-out), transform 300ms var(--ease-out), visibility 0s linear 300ms;
   pointer-events: none;
@@ -1164,9 +1537,14 @@ html:not(.js) .intro, .no-motion .intro { display: none; }
 /* ---------- phones ---------- */
 @media (max-width: 767px) {
   html { scroll-padding-top: 16px; }
-  body { font-size: 17px; padding-bottom: 86px; }
+  /* room under the last line for the tab bar: its 60px, where it stands (above
+     an iPhone's home bar when there is one) and 16px of paper */
+  body { font-size: 17px; padding-bottom: calc(max(10px, env(safe-area-inset-bottom, 0px)) + 76px); }
   .toolbar { grid-template-columns: minmax(0, 1fr) auto; height: 66px; gap: 12px; }
-  .lockup__role { letter-spacing: 0.14em; font-size: 9.5px; gap: 6px; }
+  /* 10.5px keeps one line in all three languages from 341px; the Italian
+     ("Designer e sviluppatore") needs 10px below that */
+  .lockup__role { letter-spacing: 0.14em; font-size: 10.5px; gap: 6px; }
+  @media (max-width: 340px) { .lockup__role { font-size: 10px; } }
   .lockup { border-right: 0; padding-right: 0; }
   .lockup__name { font-size: 26px; }
   .toolbar__nav, .toolbar .lang { display: none; }
@@ -1176,57 +1554,99 @@ html:not(.js) .intro, .no-motion .intro { display: none; }
   .pill { display: none; }
   .tabbar {
     position: fixed; z-index: 40; left: 10px; right: 10px; bottom: max(10px, env(safe-area-inset-bottom));
-    display: grid; grid-template-columns: repeat(5, 1fr); align-items: stretch;
-    height: 60px; padding: 6px; border-radius: 10px;
-    background-color: var(--paper); background-image: var(--stock); background-size: var(--stock-size);
-    box-shadow: inset 0 0 0 2px var(--ink), inset 0 0 0 4px var(--paper), inset 0 0 0 5px var(--ink), 0 12px 26px -12px rgb(20 20 20 / 0.5);
+    /* the ink button carries a word and a hand: the Albanian "Shkruaj" filled
+       an equal fifth to its edges, so it takes more of the bar, and the
+       language toggle (two letters) less */
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.4fr) minmax(0, 0.8fr) minmax(0, 1fr); align-items: stretch;
+    height: 60px; padding: 6px; border-radius: 22px;
+    background-color: color-mix(in srgb, var(--paper) 84%, transparent);
+    -webkit-backdrop-filter: blur(18px) saturate(1.3);
+    backdrop-filter: blur(18px) saturate(1.3);
+    box-shadow: inset 0 0 0 1px var(--line), 0 14px 32px -14px rgb(20 20 20 / 0.4);
   }
   .tabbar__item {
-    display: grid; place-items: center; border-radius: 6px; text-decoration: none;
+    display: grid; place-items: center; min-width: 0; border-radius: 16px; text-decoration: none; white-space: nowrap;
     font: 850 12px/1 var(--display); font-stretch: 90%; letter-spacing: 0.06em; text-transform: uppercase;
   }
   .tabbar__item--ink { background: var(--ink); color: var(--paper); display: flex; align-items: center; justify-content: center; gap: 6px; }
-  .tabbar__item--ink .hand { width: 22px; height: 11px; }
-  .tabbar__item[aria-current='true'] { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 5px; }
+  .tabbar__item--ink .hand { width: 18px; height: 9px; --arrow-w: 1.6px; }
+  @media (max-width: 400px) {
+    .tabbar__item--ink { gap: 4px; letter-spacing: 0.03em; }
+    .tabbar__item--ink .hand { width: 14px; height: 7px; }
+  }
+  @media (max-width: 767px) {
+  body:has(:is(input:not([type='checkbox'], [type='radio'], [type='range'], [type='button'], [type='submit'], [type='hidden']), textarea, select):focus) :is(.tabbar, .van) { display: none; }
+}
+/* the three languages, a small sheet raised over the tab bar's language word */
+  .langpop {
+    position: fixed; z-index: 45; right: 10px; bottom: calc(max(10px, env(safe-area-inset-bottom)) + 68px);
+    display: grid; gap: 4px; min-width: 164px; padding: 6px; border-radius: 22px;
+    background-color: var(--paper);
+    box-shadow: inset 0 0 0 1px var(--line), 0 14px 32px -14px rgb(20 20 20 / 0.45);
+    transition: opacity 160ms var(--ease-out), translate 160ms var(--ease-out);
+  }
+  @starting-style { .langpop { opacity: 0; translate: 0 8px; } }
+  .no-motion .langpop { transition: none; }
+  .langpop__btn {
+    min-height: 44px; padding: 0 16px; border: 0; border-radius: 999px; background: none; color: var(--ink); text-align: left; cursor: pointer;
+    font: 850 14px/1 var(--display); font-stretch: 90%; letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .langpop__btn[aria-pressed='true'] { background: var(--ink); color: var(--paper); }
+  .tabbar__item[aria-current='true'], .tabbar__item[aria-current='page'] { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 5px; }
   .tabbar__item:active { transform: scale(0.96); }
-  .dateline { grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: 34px 34px; height: auto; font-size: 11px; letter-spacing: 0.08em; }
+  /* 12px: the date and the clock keep 23px between them at 320px, in the longest language */
+  .dateline { grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: 34px 34px; height: auto; font-size: 12px; letter-spacing: 0.08em; }
   .dateline > * { padding: 0; }
   .dateline > * + * { border-left: 0; }
   .dateline__price { display: none; }
   .dateline__clock { justify-content: flex-end; }
   .dateline__ctrl { grid-column: 1 / -1; border-top: 1px solid var(--ink); justify-content: space-between; }
+  /* each control keeps its one line (Italian's run longest: "Ferma le rotative") */
+  .dateline__ctrl .word { white-space: nowrap; }
   .mast { grid-template-columns: minmax(0, 1fr); padding: 16px 0 14px; row-gap: 10px; }
   .mast::before, .mast::after, .mast__star, .mast__hand { display: none; }
   .mast__name { white-space: normal; line-height: 0.82; }
   .mast__name .fit-line { display: block; }
-  .band { height: max(320px, 92vw); margin: 0; border-left: 0; border-right: 0; }
-  .band__cap { right: var(--m); left: var(--m); }
-  .front { grid-template-columns: minmax(0, 1fr); margin-top: 52px; }
+  .band { height: max(320px, 92vw); margin: 0; border-radius: 0; }
+  .band__cap { width: auto; max-width: none; margin: 8px var(--m) 0; }
+  .front { grid-template-columns: minmax(0, 1fr); margin-top: 16px; }
   .front > * { padding: 22px 0 28px; }
   .front > * + * { border-left: 0; border-top: 1px solid var(--ink); }
   .feature__plate { aspect-ratio: 4 / 3; }
-  .stand__body { font-size: 18px; }
+  .stand__body { font-size: 16.5px; }
   .marquee__a { font-size: 44px; }
-  .marquee__b { font-size: 38px; }
+  .marquee__b { font-size: 36px; }
   .marquee__item { gap: 22px; padding-right: 22px; }
-  .marquee__item .orn { width: 20px; height: 20px; }
-  .sheet--work { padding-top: 72px; }
+  .marquee__item .orn { width: 18px; height: 18px; }
+  /* Phone rhythm: every sheet opens 56px under the last and closes 48px after
+     its last line, so the breaks between sheets read as one measure (they ran
+     from 88 to 168px, with holes under the verse and above the case stack) */
+  .marquee { margin-top: 48px; }
+  .sheet--work { padding: 56px 0 32px; }
   .sheethead { white-space: normal; }
-  .sheet__lede { font-size: 19px; }
-  .fan { height: 96vw; margin-top: 28px; overflow-x: clip; }
-  .fan__card { width: 50vw; }
+  .sheet__lede { font-size: 17.5px; }
+  /* The deck's box is the room the dealt proofs take on the screen, whichever
+     is in front: the front proof is scaled up and the rest swing down around a
+     point below them, so the deck hung under its 96vw box (over the hands and
+     the count) and left up to 180px of bare paper above it. Hit-tested in the
+     three languages from 320 to 430px (the captions are fixed type, hence px
+     plus vw): what shows rises at most 254-304px over the proofs' floor and
+     hangs 40px under it, so the floor stands 40px up the box */
+  .fan { height: calc(152px + 45.5vw); margin-top: 28px; overflow-x: clip; }
+  .fan__card { width: 50vw; bottom: 40px; }
   .fan__sheet { padding: 5px 5px 8px; }
   .fan__card--tall { width: 27vw; }
-  .fan__cap { font-size: 10px; }
+  .fan__cap { font-size: 11px; }
   .stack { margin-top: 40px; }
   .case { position: relative; height: auto; min-height: 0; }
   .stack__dwell { display: none; }
-  .case__sheet { padding: 44px var(--m) 40px; box-shadow: none; overflow: visible; }
+  .case__sheet { padding: 44px var(--m) 40px; overflow: visible; }
+  .case::before { border-radius: 24px 24px 0 0; box-shadow: none; }
   .case__head { grid-template-columns: minmax(0, 1fr); row-gap: 18px; }
   .case__meta { grid-column: 1; grid-row: auto; flex-direction: column; align-items: flex-start; gap: 16px; }
   .facts { display: flex; flex-wrap: wrap; gap: 8px; grid-row: auto; }
-  .fact { font-size: 13px; padding: 10px 12px; }
-  .case__line { font-size: 19px; }
+  .fact { font-size: 12.5px; padding: 8px 13px; }
+  .case__line { font-size: 17px; }
   .case__body { grid-template-columns: minmax(0, 1fr); row-gap: 22px; margin-top: 22px; }
   .plate--wide, .plate--tall, .facts { grid-column: 1; grid-row: auto; }
   .plate--tall { max-width: 62%; }
@@ -1234,46 +1654,179 @@ html:not(.js) .intro, .no-motion .intro { display: none; }
   .callout { position: static; display: flex; margin: -14px 0 0; background: none; opacity: 1 !important; font-size: 16px; }
   .callout b { display: none; }
   .callout::before { content: ''; width: 14px; height: 1px; background: var(--ink); align-self: center; flex: none; }
-  .sheet--about { padding: 88px 0 80px; }
-  .verse { columns: 1; font-size: 21px; margin-top: 34px; text-align: left; hyphens: manual; }
+  .sheet--about { padding: 56px 0 48px; }
+  .verse { columns: 1; font-size: clamp(16.5px, 4.5vw, 18.5px); margin-top: 34px; text-align: left; hyphens: manual; }
   .verse__rule { display: none; }
-  .sheet--extra { padding: 64px var(--m) 70px; }
+  .sheet--extra { padding: 56px var(--m) 64px; }
   .extra__head { margin-right: 0; }
   .extra__mail { --reserve: 0px; }
   .extra__row { grid-template-columns: minmax(0, 1fr); margin-top: 34px; }
-  .extra__line { font-size: 23px; }
+  .extra__line { font-size: 19.5px; }
   .extra__actions { display: grid; }
   .badge { position: relative; right: auto; top: auto; margin: 36px 0 0 auto; width: 150px; height: 150px; box-shadow: inset 0 0 0 3px var(--ink), inset 0 0 0 30px var(--paper), inset 0 0 0 31px var(--ink); }
   .badge__text { font-size: 17px; }
-  .badge__hand { width: 60px; height: 30px; }
-  .sheet--back { padding-top: 88px; }
+  .badge__hand { width: 48px; height: 24px; }
+  .sheet--back { padding: 56px 0 48px; }
   .amuse { grid-template-columns: minmax(0, 1fr); }
   .amuse > * { padding: 22px 0 28px; }
   .amuse > :last-child { border-left: 0; border-top: 1px solid var(--ink); }
   .letter { grid-template-columns: minmax(0, 1fr); }
   .letter__pad { width: min(300px, 100%); height: auto; aspect-ratio: 1; }
-  .foot { grid-template-columns: minmax(0, 1fr); gap: 12px; }
-  .stack-menu { top: auto; bottom: 84px; touch-action: none; }
+  .foot { grid-template-columns: minmax(0, 1fr); gap: 20px; margin-top: 48px; }
+  /* the foot's pages two to a row, each word on a 44px line of its own: wrapped
+     on 24px lines, a finger's reach on one word ran over the words above and below */
+  .foot__nav { display: grid; grid-template-columns: repeat(2, minmax(0, max-content)); justify-content: start; column-gap: 32px; row-gap: 0; }
+  .foot__nav .word { padding-block: 15px; margin-block: 0; justify-self: start; }
+  .foot__nav { margin-block: -9px; }
+  /* above the tab bar, wherever the tab bar stands */
+  .stack-menu { top: auto; bottom: calc(max(10px, env(safe-area-inset-bottom, 0px)) + 74px); touch-action: none; }
+  /* a button's words take a second line rather than run off a narrow screen
+     (the Italian "Manda il telegramma" at 320px ran 24px past its edge) */
+  .btn { max-width: 100%; height: auto; min-height: var(--h); padding-block: 8px; white-space: normal; text-align: center; line-height: 1.1; }
   /* the handle: pull the stack down to put it away */
   .stack-menu::before {
-    content: ''; position: absolute; left: 50%; bottom: calc(100% + 20px); width: 38px; height: 5px; translate: -50% 0;
-    border-top: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink);
+    content: ''; position: absolute; left: 50%; bottom: calc(100% + 20px); width: 40px; height: 5px; translate: -50% 0;
+    border-radius: 3px; background: color-mix(in srgb, var(--ink) 32%, transparent);
   }
   .stack-menu__close { top: auto; bottom: calc(100% + 8px); }
   .proof-note { max-width: 200px; font-size: 14px; }
   .proof-note--mast { top: auto; bottom: -8px; right: var(--m); }
   .proof-note--clock { right: 0; }
-  .proof-note--stand { position: static; display: block; }
-  .proof-note--cta { position: static; display: block; }
+  /* in the column, shown only in proof: kept in the flow while hidden they
+     left a blank under the stand's head and under its buttons */
+  .proof-note--stand, .proof-note--cta { position: static; display: none; }
+  .is-proof .proof-note--stand, .is-proof .proof-note--cta { display: block; }
 }
 
+/* ---------- the amusements on a tablet or a phone held sideways: one under
+   the other. Beside the game, the letter's words had a column of 37px at
+   844px (and under 150px on a tablet), so they ran off the screen; the letter
+   box stands over its words wherever its own column is narrow ---------- */
 @media (min-width: 768px) and (max-width: 1100px) {
-  .toolbar__nav { gap: 22px; }
+  .amuse { grid-template-columns: minmax(0, 1fr); }
+  .amuse > * { padding: 24px 0 32px; }
+  .amuse > :last-child { border-left: 0; border-top: 1px solid var(--ink); }
+}
+/* the red sheet's line over its buttons, not beside them: the three buttons
+   take 680-780px in a row, so beside them the line had 0px at 768 and 820px
+   (an iPad upright), 12px at 844 and 140-180px at 1024, a letter or a word to
+   a line; from 1251px the pair has its room */
+@media (min-width: 768px) and (max-width: 1250px) {
+  .extra__row, .extra__row:has([data-whatsapp]:not([hidden])) { grid-template-columns: minmax(0, 1fr); }
+}
+/* a case edition's masthead on the narrowest tablets: the fat face has no
+   narrower cut, and at its 44px floor "Bar Martiri" needs 367px, 31px more than
+   its column had at 768px (it ran into the lines beside it). The hand goes and
+   its room passes to the name */
+@media (min-width: 768px) and (max-width: 819px) {
+  .mast--edition { grid-template-columns: minmax(0, 60fr) minmax(0, 27fr); }
+  .mast--edition .mast__hand { display: none; }
+}
+/* the lede beside its buttons ran 20 to 29 letters a line on a tablet: over them instead */
+@media (min-width: 768px) and (max-width: 1100px) {
+  .edition-lede { grid-template-columns: minmax(0, 1fr); }
+}
+/* two columns of the colophon at length are under 30 letters a line below 900px */
+@media (min-width: 768px) and (max-width: 900px) {
+  .colophon-long { columns: 1; }
+}
+.amuse__letter { container-type: inline-size; }
+@container (max-width: 480px) {
+  .letter { grid-template-columns: minmax(0, 1fr); }
+  .letter__pad { width: min(300px, 100%); height: auto; aspect-ratio: 1; }
+}
+
+/* ---------- a phone held sideways (a touch screen at least 768px wide and
+   under 560px tall). Held on screen while read, a case sheet is at least
+   680px tall, so on a 390px screen its plates never came into view: here the
+   sheets are laid one after another and each is read as it passes (state.short,
+   src/ui/cases.js). The pinned bar sits a little lower and slimmer, the index
+   scrolls inside the screen, and its search goes, as on a phone: the keyboard
+   would cover the rest ---------- */
+@media (min-width: 768px) and (max-height: 560px) and (pointer: coarse) {
+  :root { --pill-h: 50px; }
+  html { scroll-padding-top: 72px; }
+  .pill { top: 8px; }
+  .case { position: relative; height: auto; min-height: 0; }
+  .stack__dwell { display: none; }
+  .case__sheet { height: auto; padding-top: 44px; }
+  .case::before { box-shadow: none; }
+  .stack-menu { top: calc(8px + var(--pill-h) + 10px); }
+  .stack-menu__search { display: none; }
+  .stack-menu__list { max-height: calc(100dvh - var(--pill-h) - 40px); overflow-y: auto; overscroll-behavior: contain; padding: 6px 4px 12px; }
+  /* the phone's rhythm between sheets: the desktop's 96-136px openings were
+     half of a 390px screen of bare paper */
+  .marquee { margin-top: 48px; }
+  .sheet--work, .sheet--graphic, .sheet--quotes, .sheet--rates { padding-top: 64px; }
+  .sheet--about, .sheet--code, .sheet--back { padding-top: 64px; padding-bottom: 56px; }
+  .sheet--extra { padding-top: 64px; padding-bottom: 72px; }
+  .next { margin-top: 64px; }
+  .foot { margin-top: 48px; }
+}
+
+/* The toolbar keeps its one line. At full spacing its parts need about
+   1250px (English, with its three language keys), so a narrower window
+   closes them up in turn and the lockup never wraps into the rules or onto
+   the dateline: first the spacing, from 1136px the descriptor's tracking
+   (as on phones) and the hand, from 1030px the ink button, which the pill
+   carries once the head has gone by, and from 850px the gaps once more and
+   a smaller mark. */
+@media (min-width: 768px) and (max-width: 1250px) {
+  .toolbar { gap: 16px; }
+  .lockup { padding-right: 16px; }
+  .toolbar__end { padding-left: 16px; gap: 14px; }
+  .toolbar__nav { gap: 18px; }
+}
+@media (min-width: 768px) and (max-width: 1136px) {
+  .lockup__role { letter-spacing: 0.14em; font-size: 9.5px; gap: 6px; }
+  .toolbar__end .btn .hand { display: none; }
+}
+@media (min-width: 768px) and (max-width: 1100px) {
   .front { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); }
   .front__contents { grid-column: 1 / -1; border-left: 0 !important; border-top: 1px solid var(--ink); padding-left: 0; }
   .dateline__price { display: none; }
   .dateline { grid-template-columns: 1.3fr 1fr auto; }
+  /* the controls close up, so the date keeps its one line beside the night switch */
+  .dateline__ctrl { gap: 12px; }
   .case__body { grid-template-columns: minmax(0, 6fr) minmax(0, 2.8fr) minmax(0, 2.2fr); column-gap: 20px; }
+}
+@media (min-width: 768px) and (max-width: 1030px) {
+  .toolbar__end .btn { display: none; }
+}
+/* the narrowest tablets: the date takes more of the date line than the clock
+   (the Italian "venerdì 25 settembre 2026" is the longest) */
+@media (min-width: 768px) and (max-width: 800px) {
+  .dateline { grid-template-columns: 1.6fr 1fr auto; }
+  .dateline__date, .dateline__clock { padding-inline: 10px; }
+}
+@media (min-width: 768px) and (max-width: 850px) {
+  .toolbar { gap: 12px; }
+  /* scoped to the toolbar: the mark's own rules come later in this file */
+  .toolbar .lockup { padding-right: 12px; column-gap: 10px; }
+  .toolbar .lockup__mark { width: 46px; height: 32px; }
+  .lockup__role { letter-spacing: 0.1em; }
+  .toolbar__end { padding-left: 12px; }
+  .toolbar__nav { gap: 12px; }
+}
+/* Albanian words are longer ("Punimet", "Shërbimet", "Shkruaji Stefanos"),
+   so its toolbar takes each step about 45px sooner */
+@media (min-width: 1251px) and (max-width: 1292px) {
+  html:lang(sq) .toolbar { gap: 16px; }
+  html:lang(sq) .lockup { padding-right: 16px; }
+  html:lang(sq) .toolbar__end { padding-left: 16px; gap: 14px; }
+  html:lang(sq) .toolbar__nav { gap: 18px; }
+}
+@media (min-width: 1137px) and (max-width: 1178px) {
+  html:lang(sq) .lockup__role { letter-spacing: 0.14em; font-size: 9.5px; gap: 6px; }
+  html:lang(sq) .toolbar__end .btn .hand { display: none; }
+}
+@media (min-width: 1031px) and (max-width: 1078px) {
+  html:lang(sq) .toolbar__end .btn { display: none; }
+}
+/* and at the narrowest it closes up its words once more */
+@media (min-width: 768px) and (max-width: 790px) {
+  html:lang(sq) .toolbar__nav { gap: 10px; }
+  html:lang(sq) .lockup__role { letter-spacing: 0.06em; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1284,22 +1837,66 @@ html:not(.js) .intro, .no-motion .intro { display: none; }
 /* ---------- 404: the pied sheet ---------- */
 .toolbar--lost { grid-template-columns: auto 1fr auto; }
 .lost__main { display: grid; gap: 22px; margin: 0 var(--m); padding: 40px 0 72px; }
-.lost__code { font: 400 clamp(120px, 24vw, 340px)/0.8 var(--fat); letter-spacing: -0.01em; }
-.lost__line { font: italic 400 clamp(20px, 2.2vw, 28px)/1.3 var(--text); max-width: 40ch; }
-.pie { position: relative; height: clamp(220px, 30vw, 360px); border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); overflow: hidden; }
+.lost__code { font: 900 clamp(110px, 22vw, 320px)/0.8 var(--fat); font-stretch: var(--fat-w); letter-spacing: -0.01em; }
+.lost__line { font: 400 clamp(18px, 1.9vw, 24px)/1.4 var(--text); letter-spacing: -0.017em; max-width: 40ch; }
+.pie { position: relative; height: clamp(220px, 30vw, 360px); border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); overflow: hidden; }
 .pie__line { position: absolute; left: 0; top: 50%; transform: translateY(-50%); display: flex; }
 .sort {
   display: inline-grid; place-items: center; min-width: 0.72em; height: 1.12em; padding: 0 0.06em; margin-right: 3px;
-  font: 400 clamp(22px, 5.6vw, 70px)/1 var(--fat);
-  background: var(--paper); border-radius: 4px;
-  box-shadow: inset 0 0 0 1.5px var(--ink), 0 6px 10px -6px rgb(20 20 20 / 0.5);
+  font: 900 clamp(22px, 5.2vw, 64px)/1 var(--fat); font-stretch: var(--fat-w);
+  background: var(--paper); border-radius: 10px;
+  box-shadow: inset 0 0 0 1px var(--ink), 0 6px 10px -6px rgb(20 20 20 / 0.45);
 }
 .sort--space { background: transparent; box-shadow: none; min-width: 0.34em; }
 .lost__actions { display: flex; gap: 14px; flex-wrap: wrap; }
+/* the sheets a lost reader may have been looking for */
+.lost__pages { display: flex; flex-wrap: wrap; gap: 10px 28px; }
 @media (max-width: 767px) {
   .toolbar--lost .btn { display: none; }
   .lost__main { padding-top: 28px; }
 }
+
+/* ---------- the road (src/ui/road.js): the Elixir van drives down the sheet as
+   it is read, the road it has driven painted red behind it and the way ahead
+   dotted in. Laid over the page (above the plates' canvas, under the bars), in
+   the margins and across the clear strips between parts; moved with the scroll
+   on the compositor. Never a target. ---------- */
+@property --safe-l { syntax: '<length>'; inherits: true; initial-value: 0px; }
+:root { --safe-l: env(safe-area-inset-left, 0px); }
+.road { position: absolute; left: 0; top: 0; z-index: 31; pointer-events: none; overflow: clip; contain: strict; }
+.road[hidden], .van[hidden] { display: none; }
+.road__ahead, .road__reveal, .road__inner, .road__done { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; }
+/* the painted road shows down to the van: a box whose foot is the van's
+   height, and the road inside it held still (the ink window's trick) */
+.road__reveal { overflow: hidden; transform: translateY(-100%); will-change: transform; }
+.road__inner { transform: translateY(100%); will-change: transform; }
+.road path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.road__dots { stroke: color-mix(in srgb, var(--ink) 30%, transparent); stroke-width: 1.6; stroke-dasharray: 0.1 7; }
+.road__casing { stroke: var(--paper); stroke-width: 7; }
+.road__line { stroke: var(--alarm); stroke-width: 3; }
+.road__start { fill: var(--paper); stroke: var(--alarm); stroke-width: 2.5; }
+.road__end { fill: var(--alarm); stroke: var(--paper); stroke-width: 2.5; }
+.road__end-dot { fill: var(--paper); }
+.road--narrow .road__dots { stroke-width: 1.3; stroke-dasharray: 0.1 6; }
+.road--narrow .road__casing { stroke-width: 5.5; }
+.road--narrow .road__line { stroke-width: 2.4; }
+/* the van, seen from above and heading down the page; its middle is its origin */
+.van { position: fixed; left: 0; top: 0; width: 0; height: 0; z-index: 33; pointer-events: none; transform-origin: 0 0; will-change: transform; --van-w: 20px; visibility: hidden; }
+.van.is-on { visibility: visible; }
+.van__car {
+  position: absolute; overflow: visible;
+  width: calc(var(--van-w) * 36 / 28); height: calc(var(--van-w) * 54 / 28);
+  left: calc(var(--van-w) * -18 / 28); top: calc(var(--van-w) * -27 / 28);
+  filter: drop-shadow(0 2px 2.5px rgb(20 20 20 / 0.35));
+}
+.van__body { fill: var(--paper); stroke: var(--ink); stroke-width: 2.2; }
+.van__ribs, .van__bonnet { fill: none; stroke: var(--ink); stroke-width: 1.4; stroke-linecap: round; opacity: 0.5; }
+.van__stripe { fill: var(--alarm); }
+.van__glass, .van__mirror { fill: var(--ink); }
+/* the press stopped: the road lies whole on the sheet, and the van is parked out of sight */
+.no-motion .van { display: none; }
+.no-motion .road__reveal, .no-motion .road__inner { transform: none !important; }
+@media print { .road, .van { display: none !important; } }
 
 /* The mark (brand/final): S, and the D is a speech bubble. In the toolbar lockup and the pill.
    The S takes the ink colour (currentColor); the bubble is always --alarm. */

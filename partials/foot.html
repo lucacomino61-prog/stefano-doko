@@ -5,7 +5,13 @@
       <a class="word" href="/work/bar-martiri/" data-route="martiri">Bar Martiri</a>
       <a class="word" href="/how-it-was-made/" data-route="made" data-i18n="navMade">How it was made</a>
       <a class="word" href="/contact/" data-route="contact" data-i18n="navTelegram">Send a telegram</a>
+      <a class="word" href="/privacy/" data-route="privacy" data-i18n="navPrivacy">Privacy</a>
+      <a class="word" href="/terms/" data-route="terms" data-i18n="navTerms">Terms of use</a>
     </nav>
     <p class="foot__mail"><a class="word" href="mailto:hello@example.invalid" data-mail data-mail-text>hello@example.invalid</a></p>
     <p class="foot__top"><a class="word" href="/" data-route="home" data-i18n="toTop">Back to the front page</a></p>
+    <!-- his profiles: switched on in the admin -->
+    <p class="foot__links" data-optional="links" hidden><span data-i18n="linksLabel">Also on</span> <span class="links" data-links-list></span></p>
+    <!-- share this sheet (src/ui/share.js), and the day the site was last set (written by tools/build-sq.mjs) -->
+    <p class="foot__meta"><span class="foot__share"><button class="word word--btn" type="button" data-share><span data-i18n="shareSheet">Share this sheet</span></button> <span class="foot__status" role="status" aria-live="polite" data-share-status></span></span><span class="foot__updated" data-updated></span></p>
   </footer>

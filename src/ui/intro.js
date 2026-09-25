@@ -59,6 +59,9 @@ export function createIntro() {
   function finish() {
     if (finishing) return;
     finishing = true;
+    // once the stamp opens, the sheet under it is the page: pointer and focus
+    // go through (a mask leaves the counter catching the pointer otherwise)
+    el.style.pointerEvents = 'none';
     opening.forEach((f) => f());
     const disc = el.querySelector('.intro__disc');
     judder(disc, 1.6);

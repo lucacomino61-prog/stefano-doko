@@ -17,6 +17,20 @@
 
       <h1 class="sheethead sheethead--page" id="tg-h" data-fit="head" data-ink="telegraph" data-ink-source="intro"><span data-i18n="ctHead">Send a telegram.</span></h1>
       <p class="sheet__lede" data-feed data-i18n="extraLine">Write in Albanian or English. Say what your business is and what it needs to look like.</p>
+      <p class="avail avail--page" data-avail hidden><svg class="orn" aria-hidden="true"><use href="#star"/></svg><span data-avail-text></span></p>
+
+      <!-- YOUR BUSINESS ON THE FRONT PAGE: switched on in the admin; the name goes into the telegram below -->
+      <section class="setfront" aria-labelledby="setfront-h" data-optional="masthead" hidden>
+        <h2 class="colhead" id="setfront-h"><svg class="orn"><use href="#star"/></svg><span data-i18n="setfrontHead">Your business on the front page</span></h2>
+        <label class="setline__label" for="setfront-in" data-i18n="setfrontLabel">Your business name</label>
+        <input class="setline__in" id="setfront-in" type="text" maxlength="40" autocomplete="organization" spellcheck="false" enterkeyhint="done" data-setfront-in>
+        <div class="setfront__sheet" aria-hidden="true">
+          <p class="setfront__dateline"><span data-setfront-date></span><span data-i18n="zone">Albania</span></p>
+          <p class="setfront__mast" data-setfront-out><span class="setfront__outline"></span><span class="setfront__fill"></span></p>
+          <p class="setfront__sub" data-i18n="setfrontSub">Set in the same type as this sheet.</p>
+        </div>
+        <button class="btn btn--ink" type="button" data-setfront-send hidden><span data-i18n="setfrontSend">Send it with a telegram</span><svg class="hand" aria-hidden="true"><use href="#hand"/></svg></button>
+      </section>
 
       <form class="telegram" name="telegram" method="post" novalidate data-telegram data-netlify="true" netlify-honeypot="bot-field">
         <input type="hidden" name="form-name" value="telegram">
@@ -30,12 +44,12 @@
         <div class="telegram__row">
           <label class="telegram__field">
             <span class="telegram__label" data-i18n="ctName">Your name</span>
-            <input type="text" name="name" autocomplete="name" required aria-describedby="tg-name-err" data-i18n-attr="placeholder:ctNameHint" placeholder="As you would sign it">
+            <input type="text" name="name" autocomplete="name" autocapitalize="words" enterkeyhint="next" required aria-describedby="tg-name-err" data-i18n-attr="placeholder:ctNameHint" placeholder="As you would sign it">
             <span class="telegram__err" id="tg-name-err" data-err="name"></span>
           </label>
           <label class="telegram__field">
             <span class="telegram__label" data-i18n="ctBusiness">Your business</span>
-            <input type="text" name="business" autocomplete="organization" data-i18n-attr="placeholder:ctBusinessHint" placeholder="A shop, a bar, a studio">
+            <input type="text" name="business" autocomplete="organization" enterkeyhint="next" data-i18n-attr="placeholder:ctBusinessHint" placeholder="A shop, a bar, a studio">
           </label>
         </div>
 
@@ -49,7 +63,7 @@
         <div class="telegram__row">
           <label class="telegram__field">
             <span class="telegram__label" data-i18n="ctReply">Where to reply: email or phone</span>
-            <input type="text" name="reply" autocomplete="email" required aria-describedby="tg-reply-err">
+            <input type="text" name="reply" autocomplete="email" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="send" required aria-describedby="tg-reply-err">
             <span class="telegram__err" id="tg-reply-err" data-err="reply"></span>
           </label>
           <fieldset class="telegram__field telegram__langs">
@@ -62,13 +76,43 @@
         <div class="telegram__foot">
           <button class="btn btn--ink btn--lg" type="submit"><span data-i18n="ctSend">Send the telegram</span><svg class="hand" aria-hidden="true"><use href="#hand"/></svg></button>
           <p class="telegram__direct"><span data-i18n="ctDirect">Or write straight to</span> <a class="word" href="mailto:hello@example.invalid" data-mail data-mail-text>hello@example.invalid</a></p>
+          <p class="telegram__direct" data-whatsapp-line hidden><span data-i18n="ctWhatsApp">Or on WhatsApp:</span> <a class="word" href="#" data-whatsapp hidden><span data-whatsapp-number></span></a></p>
+          <p class="telegram__direct" data-optional="links" hidden><span data-i18n="linksLabel">Also on</span> <span class="links" data-links-list></span></p>
         </div>
         <div class="telegram__status" role="status" aria-live="polite" data-telegram-status></div>
       </form>
 
+      <!-- HIS CARD: switched on in the admin once the email is set; the Worker serves the card (/stefano-doko.vcf) -->
+      <section class="card" aria-labelledby="card-h" data-optional="vcard" hidden>
+        <h2 class="colhead" id="card-h"><svg class="orn" aria-hidden="true"><use href="#star"/></svg><span data-i18n="cardHead">Keep his card</span></h2>
+        <div class="card__body">
+          <div class="card__text">
+            <p class="card__line" data-i18n="cardLine">His name, his trade and his email, straight into your phone’s contacts.</p>
+            <a class="btn btn--line" href="/stefano-doko.vcf" data-vcard><span data-i18n="cardSave">Save to contacts</span></a>
+          </div>
+          <figure class="card__qr" data-vcard-qr>
+            <figcaption class="card__scan" data-i18n="cardScan">Or point a phone at the code.</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- QUESTIONS: only what the site already says, each answer opening under its question -->
+      <section class="faq" aria-labelledby="faq-h">
+        <h2 class="colhead" id="faq-h"><svg class="orn"><use href="#star"/></svg><span data-i18n="faqHead">Questions</span></h2>
+        <div class="faq__list">
+          <details class="faq__item"><summary class="faq__q"><span data-i18n-list="faqQ.0">What does Stefano make?</span></summary><p class="faq__a" data-i18n-list="faqA.0">Graphic design, and websites from design to code: the design, the front end that visitors see and touch, and the back end that runs behind it.</p></details>
+          <details class="faq__item"><summary class="faq__q"><span data-i18n-list="faqQ.1">Can I see work he has done?</span></summary><p class="faq__a" data-i18n-list="faqA.1">Yes. Elixir, an online perfume shop, and Bar Martiri, a beach bar in Spille, are live and in use; the work page shows them up close.</p></details>
+          <details class="faq__item"><summary class="faq__q"><span data-i18n-list="faqQ.2">What does a website cost?</span></summary><p class="faq__a" data-i18n-list="faqA.2" data-faq-price>Say what your business needs in a telegram and ask; the price is agreed with Stefano.</p></details>
+          <details class="faq__item"><summary class="faq__q"><span data-i18n-list="faqQ.3">Which language can I write in?</span></summary><p class="faq__a" data-i18n-list="faqA.3">Albanian or English.</p></details>
+          <details class="faq__item"><summary class="faq__q"><span data-i18n-list="faqQ.4">How do I start?</span></summary><p class="faq__a" data-i18n-list="faqA.4">Send a telegram from this page or write to his email, and say what your business is and what it needs.</p></details>
+          <details class="faq__item"><summary class="faq__q"><span data-i18n-list="faqQ.5">What happens to what I send?</span></summary><p class="faq__a" data-i18n-list="faqA.5">A telegram is kept for Stefano to read and answer, and for nothing else. The privacy page says exactly what the site keeps.</p></details>
+        </div>
+      </section>
+
       <section class="privacy" aria-labelledby="privacy-h">
         <h2 class="colhead" id="privacy-h"><svg class="orn"><use href="#star"/></svg><span data-i18n="ctPrivacyHead">What happens to what you write</span></h2>
-        <p data-i18n="ctPrivacy">This form writes the telegram into your own mail app, and nothing is sent until you press send there; this site keeps nothing. In your browser the site stores the language you chose and your best score in the game and, until you close the tab, that you have seen the opening counter. No cookies, no tracking.</p>
+        <p data-i18n="ctPrivacy">This form writes the telegram into your own mail app, and nothing is sent until you press send there; this site keeps nothing. In your browser the site stores the language you chose, the night edition if you chose it, whether you stopped the press, and your best score in the game and, until you close the tab, that you have seen the opening counter and, if a shared link brought you, where it was shared. No cookies, no tracking.</p>
+        <p class="privacy__more"><a class="word" href="/privacy/" data-route="privacy" data-i18n="ctPrivacyMore">All of it, on the privacy page</a></p>
       </section>
     </article>
   </main>

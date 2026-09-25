@@ -1,0 +1,142 @@
+{
+ "rows": [
+  {
+   "phase": "idle-front",
+   "frames": 151,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 17,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "stir-band",
+   "frames": 201,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll     0",
+   "frames": 47,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  1000",
+   "frames": 49,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  2000",
+   "frames": 51,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  3000",
+   "frames": 51,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 33.4,
+   "over20": 1,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  4000",
+   "frames": 57,
+   "p50": 16.7,
+   "p95": 16.7,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  5000",
+   "frames": 46,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  6000",
+   "frames": 57,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  7000",
+   "frames": 65,
+   "p50": 16.7,
+   "p95": 16.7,
+   "max": 50,
+   "over20": 1,
+   "over34": 1
+  },
+  {
+   "phase": "scroll  8000",
+   "frames": 46,
+   "p50": 16.7,
+   "p95": 33.4,
+   "max": 33.4,
+   "over20": 10,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  9000",
+   "frames": 56,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 33.4,
+   "over20": 1,
+   "over34": 0
+  },
+  {
+   "phase": "scroll 10000",
+   "frames": 51,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll 11000",
+   "frames": 110,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  }
+ ],
+ "loaf": [
+  {
+   "start": 21945.800000000745,
+   "dur": 67.90000000223517,
+   "block": 0,
+   "render": 1,
+   "style": 0.30000000074505806,
+   "phase": "scroll-down",
+   "y": 7080,
+   "scripts": []
+  }
+ ]
+}

@@ -1,0 +1,131 @@
+{
+ "rows": [
+  {
+   "phase": "idle-front",
+   "frames": 153,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 18.3,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "stir-band",
+   "frames": 198,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.9,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll     0",
+   "frames": 47,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  1000",
+   "frames": 51,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  2000",
+   "frames": 59,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  3000",
+   "frames": 57,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 33.3,
+   "over20": 1,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  4000",
+   "frames": 61,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 18.6,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  5000",
+   "frames": 45,
+   "p50": 16.7,
+   "p95": 16.7,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  6000",
+   "frames": 52,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.9,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  7000",
+   "frames": 54,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 17.2,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  8000",
+   "frames": 51,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 33.2,
+   "over20": 1,
+   "over34": 0
+  },
+  {
+   "phase": "scroll  9000",
+   "frames": 63,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 33.3,
+   "over20": 2,
+   "over34": 0
+  },
+  {
+   "phase": "scroll 10000",
+   "frames": 55,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  },
+  {
+   "phase": "scroll 11000",
+   "frames": 118,
+   "p50": 16.7,
+   "p95": 16.8,
+   "max": 16.8,
+   "over20": 0,
+   "over34": 0
+  }
+ ],
+ "loaf": []
+}

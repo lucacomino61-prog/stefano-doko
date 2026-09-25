@@ -88,6 +88,9 @@ export function createBand() {
   const world = new THREE.Group();
   scene.add(world);
   const anim = [];
+  // the wind over Albania (setWeather): how far the umbrellas and the palm
+  // sway and how fast, and how fast the clouds cross (+x blows to the west, the sea's side)
+  const wx = { sway: 0.012, pace: 0, drift: 0 };
 
   const add = (geo, mat, [x, y, z] = [0, 0, 0], { rot = [0, 0, 0], scale, line = 1.7, parent = world } = {}) => {
     const m = new THREE.Mesh(geo, mat);
@@ -125,6 +128,7 @@ export function createBand() {
     trunk: engrave({ mode: 0, freq: 8, dir: [0, 1, 0], tone: 0.16, rim: 0.5 }),
     frond: engrave({ mode: 1, freq: 30, tone: 0.12, rim: 0.2, ambient: 0.35, side: THREE.DoubleSide }),
     sun: engrave({ mode: 4, freq: 3.4, ambient: 1, tone: 0.18, rim: 0, far: 0 }),
+    moon: engrave({ mode: 0, freq: 5.2, dir: [0.25, 1, 0], ambient: 1, tone: 0.24, rim: 0, far: 0 }),
     cloud: engrave({ mode: 0, freq: 10, dir: [0, 1, 0], ambient: 0.45, rim: 0.45 }),
   };
 
@@ -211,7 +215,7 @@ export function createBand() {
   const winGeo = new THREE.ShapeGeometry(win);
   winGeo.translate(-1.7, 0, 0);
   add(winGeo, M.window, [0, 0, 0.71], { parent: van, line: 0 });
-  const vanText = textTexture([{ text: 'ELIXIR', font: '150px Ultra', y: 0.45 }, { text: 'PARFUME', font: '700 52px Anybody', y: 0.86 }], 1024, 320);
+  const vanText = textTexture([{ text: 'ELIXIR', font: '900 150px Anybody', y: 0.45 }, { text: 'PARFUME', font: '700 52px Anybody', y: 0.86 }], 1024, 320);
   const decal = engrave({ mode: 0, freq: 30, tone: -1, ambient: 1, rim: 0, map: vanText });
   add(new THREE.PlaneGeometry(1.95, 0.62), decal, [-0.62, 0.78, 0.705], { parent: van, line: 0 });
   const wheels = [];
@@ -280,7 +284,7 @@ export function createBand() {
       add(new THREE.TubeGeometry(rib, 12, 0.022, 4), M.ink, [0, 0, 0], { parent: u, line: 0 });
     }
     add(new THREE.SphereGeometry(0.09, 12, 8), M.cap, [0, 3.05, 0], { parent: u, line: 1 });
-    anim.push((t) => { u.rotation.z = tilt + Math.sin(t * 0.9 + x) * 0.012; });
+    anim.push((t) => { u.rotation.z = tilt + Math.sin(t * (0.9 + wx.pace) + x) * wx.sway; });
     return u;
   };
   const bed = (x, z, flip) => {
@@ -308,7 +312,7 @@ export function createBand() {
   add(new THREE.BoxGeometry(3.3, 0.18, 2.1), M.roof, [0, 1.6, 0.05], { parent: kiosk });
   add(new THREE.BoxGeometry(3.0, 0.07, 0.72), M.awning, [0, 1.36, 1.02], { rot: [0.38, 0, 0], parent: kiosk, line: 1.2 });
   add(new THREE.BoxGeometry(2.4, 0.08, 0.3), M.cap, [0, 0.95, 0.9], { parent: kiosk, line: 1 });
-  const signText = textTexture([{ text: 'BAR MARTIRI', font: '138px Ultra', y: 0.55 }], 1400, 260);
+  const signText = textTexture([{ text: 'BAR MARTIRI', font: '900 138px Anybody', y: 0.55 }], 1400, 260);
   const signMat = engrave({ mode: 0, freq: 30, tone: -1, ambient: 1, rim: 0, map: signText });
   add(new THREE.BoxGeometry(2.7, 0.52, 0.06), signMat, [0, 2.3, 0.2], { parent: kiosk });
   add(new THREE.BoxGeometry(0.05, 0.64, 0.05), M.pole, [-1.1, 1.86, 0.2], { parent: kiosk, line: 0.8 });
@@ -356,10 +360,13 @@ export function createBand() {
     add(new THREE.TubeGeometry(mid, 24, 0.028, 4), M.ink, [0, 0, 0], { parent: palm, line: 0 });
     fronds.push(f);
   }
-  anim.push((t) => { palm.rotation.z = Math.sin(t * 0.7) * 0.012; });
+  anim.push((t) => { palm.rotation.z = Math.sin(t * (0.7 + wx.pace * 0.7)) * wx.sway; });
 
   // ---------- sky: sun, gulls, clouds ----------
+  // The sun stands where the sun stands over Albania (setSun): it rises over
+  // the perfumes in the east and sets into the sea by Bar Martiri in the west.
   const sun = new THREE.Group();
+  sun.userData.dynamic = true;
   sun.position.set(6.2, 6.5, -22);
   world.add(sun);
   add(new THREE.CircleGeometry(1.7, 56), M.sun, [0, 0, 0], { parent: sun, line: 0 });
@@ -380,12 +387,35 @@ export function createBand() {
   }
   anim.push((t) => { rays.rotation.z = t * 0.05; });
 
+  // The moon: a crescent cut like the sun's disc, a paper face finely lined
+  // and an ink edge. It stands in the sun's place in the night edition, and
+  // over the sea after dark (setSun).
+  const crescent = (ro, ri, d) => {
+    // the outer circle (ro, at the centre) less an inner one (ri, d to the right)
+    const x = (d * d + ro * ro - ri * ri) / (2 * d), y = Math.sqrt(Math.max(0, ro * ro - x * x));
+    const a = Math.atan2(y, x), b = Math.atan2(y, x - d);
+    const s = new THREE.Shape();
+    s.absarc(0, 0, ro, a, Math.PI * 2 - a, false);
+    s.absarc(d, 0, ri, Math.PI * 2 - b, b, true);
+    return new THREE.ShapeGeometry(s, 48);
+  };
+  const moon = new THREE.Group();
+  moon.userData.dynamic = true;
+  moon.position.set(7, 4.2, -22);
+  moon.rotation.z = -0.55;
+  moon.visible = false;
+  world.add(moon);
+  add(crescent(1.62, 1.62, 1.05), M.moon, [0, 0, 0], { parent: moon, line: 0 });
+  add(crescent(1.74, 1.5, 1.05), M.ink, [0, 0, -0.02], { parent: moon, line: 0 });
+
+  const gulls = [];
   const gull = (x, y, z, sc, ph) => {
     const g = new THREE.Group();
     g.userData.dynamic = true;
     g.position.set(x, y, z);
     g.scale.setScalar(sc);
     world.add(g);
+    gulls.push(g);
     const wing = (sgn) => {
       const w = new THREE.Group();
       w.userData.dynamic = true;
@@ -401,18 +431,41 @@ export function createBand() {
   gull(4.6, 6.0, -9, 0.9, 1.4);
   gull(9.8, 5.6, -6, 1.0, 2.6);
 
-  const cloud = (x, y, z, sc) => {
+  // The clouds: three as the sky was cut, two more for a partly cloudy sky
+  // (fill 1) and four more overcast (fill 2), all darker as the sky closes in
+  // (setWeather). In a wind they cross the sky and come round again, out of
+  // sight at either end (the sky at their distance is some 54 units wide).
+  const clouds = [];
+  const cloud = (x, y, z, sc, fill = 0) => {
     const c = new THREE.Group();
     c.userData.dynamic = true;
     c.position.set(x, y, z);
     c.scale.set(sc * 1.6, sc * 0.62, sc);
+    c.visible = fill === 0;
     world.add(c);
     [[0, 0, 0, 1], [0.9, -0.12, 0.1, 0.72], [-0.85, -0.18, 0.05, 0.66], [0.35, 0.36, -0.1, 0.62]].forEach(([cx, cy, cz, r]) => add(new THREE.SphereGeometry(r, 28, 18), M.cloud, [cx, cy, cz], { parent: c, line: 1.3 }));
-    anim.push((t) => { c.position.x = x + Math.sin(t * 0.05 + x) * 0.6; });
+    clouds.push({ c, x, fill });
+    return c;
   };
   cloud(-9.2, 6.3, -14, 1.2);
   cloud(-2.8, 6.9, -18, 1.0);
   cloud(11.8, 7.0, -20, 0.8);
+  cloud(4.6, 7.3, -19, 1.05, 1);
+  cloud(-13.6, 7.5, -21, 0.95, 1);
+  cloud(1.2, 6.1, -16, 1.35, 2);
+  cloud(8.6, 6.5, -17, 1.25, 2);
+  cloud(-6.4, 7.7, -22, 1.45, 2);
+  cloud(15.0, 6.0, -18, 1.1, 2);
+  const wrapSky = (v) => ((((v + 31) % 62) + 62) % 62) - 31;
+  anim.push((t) => { for (const k of clouds) k.c.position.x = wrapSky(k.x + Math.sin(t * 0.05 + k.x) * 0.6 + t * wx.drift); });
+  // and, overcast, one across the lower half of the sun (or the moon), which
+  // still shows above it and can still be pressed
+  const veil = new THREE.Group();
+  veil.userData.dynamic = true;
+  veil.scale.set(0.95 * 1.6, 0.95 * 0.62, 0.95);
+  veil.visible = false;
+  world.add(veil);
+  [[0, 0, 0, 1], [0.9, -0.12, 0.1, 0.72], [-0.85, -0.18, 0.05, 0.66], [0.35, 0.36, -0.1, 0.62]].forEach(([cx, cy, cz, r]) => add(new THREE.SphereGeometry(r, 28, 18), M.cloud, [cx, cy, cz], { parent: veil, line: 1.3 }));
 
   // ---------- fewer draw calls ----------
   // Everything that moves together and shares a material is merged into one
@@ -424,17 +477,237 @@ export function createBand() {
   dynamicRoots.reverse().forEach(consolidate);
   consolidate(world);
 
+  // ---------- the weather over Albania (setWeather) ----------
+  // What falls: rain as the engraver cuts it, thin strokes slanting with the
+  // wind; snow as paper flakes ringed in ink. Each stroke or flake falls
+  // through a box of air before the sky, placed and moved on the GPU from its
+  // own seed and the time, so nothing is written per frame. A share of them
+  // show (uCount): a light shower is part of a heavy one.
+  const fallVert = /* glsl */ `
+    uniform float uTime;
+    uniform vec2 uRes;
+    uniform float uLineScale;
+    uniform float uCount;
+    uniform float uSpeed;
+    uniform float uLen;
+    uniform float uSlant;
+    uniform float uWidth;
+    uniform float uFlake;
+    attribute vec4 aSeed;
+    attribute vec2 aCorner;
+    varying vec2 vCorner;
+    void main() {
+      vCorner = aCorner;
+      if (aSeed.w > uCount) { gl_Position = vec4(2.0, 2.0, 2.0, 1.0); return; }
+      float h = 11.0;
+      float y = 9.8 - mod(aSeed.z * h + uTime * uSpeed * (0.75 + 0.5 * aSeed.z), h);
+      float x = mix(-30.0, 30.0, aSeed.x) + uSlant * (9.8 - y) + uFlake * sin(uTime * (0.5 + aSeed.w) + aSeed.x * 40.0) * 0.4;
+      vec3 head = vec3(x, y, mix(-16.0, 5.0, aSeed.y));
+      vec4 ch = projectionMatrix * viewMatrix * vec4(head, 1.0);
+      float px = uWidth * uLineScale;
+      if (uFlake > 0.5) {
+        // a flake: a square about its centre, cut round below; nearer is larger
+        vec4 c = ch;
+        c.xy += (aCorner * 2.0 - 1.0) * px * clamp(30.0 / ch.w, 0.6, 1.5) / uRes * c.w;
+        gl_Position = c;
+        return;
+      }
+      vec3 tail = head - normalize(vec3(uSlant, -1.0, 0.0)) * uLen * (0.7 + 0.6 * aSeed.w);
+      vec4 ct = projectionMatrix * viewMatrix * vec4(tail, 1.0);
+      vec2 d = (ct.xy / ct.w - ch.xy / ch.w) * uRes;
+      vec2 n = normalize(vec2(-d.y, d.x) + 1e-5);
+      vec4 c = mix(ch, ct, aCorner.x);
+      c.xy += n * (aCorner.y * 2.0 - 1.0) * px / uRes * c.w;
+      gl_Position = c;
+    }
+  `;
+  const fallFrag = /* glsl */ `
+    uniform float uFlake;
+    varying vec2 vCorner;
+    void main() {
+      float ink = 1.0;
+      if (uFlake > 0.5) {
+        float r = length(vCorner * 2.0 - 1.0);
+        if (r > 1.0) discard;
+        ink = step(0.6, r); // paper inside, an ink rim
+      }
+      gl_FragColor = vec4(ink, 0.0, 0.0, 1.0);
+    }
+  `;
+  // a seeded order, so a still of the rain is the same rain every time
+  let seedState = 7;
+  const rand = () => { seedState = (seedState + 0x6D2B79F5) | 0; let r = Math.imul(seedState ^ (seedState >>> 15), 1 | seedState); r ^= r + Math.imul(r ^ (r >>> 7), 61 | r); return ((r ^ (r >>> 14)) >>> 0) / 4294967296; };
+  const falling = (n, flake) => {
+    const seed = new Float32Array(n * 16), corner = new Float32Array(n * 8), index = [];
+    for (let i = 0; i < n; i++) {
+      const s = [rand(), rand(), rand(), (i + 0.5) / n];
+      for (let k = 0; k < 4; k++) {
+        seed.set(s, (i * 4 + k) * 4);
+        corner.set([k & 1, k >> 1], (i * 4 + k) * 2);
+      }
+      const b = i * 4;
+      index.push(b, b + 1, b + 2, b + 1, b + 3, b + 2);
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(n * 12), 3));
+    g.setAttribute('aSeed', new THREE.BufferAttribute(seed, 4));
+    g.setAttribute('aCorner', new THREE.BufferAttribute(corner, 2));
+    g.setIndex(index);
+    const m = new THREE.Mesh(g, new THREE.ShaderMaterial({
+      vertexShader: fallVert,
+      fragmentShader: fallFrag,
+      depthWrite: false,
+      blending: THREE.NoBlending,
+      uniforms: {
+        uTime: shared.uTime, uRes: shared.uRes, uLineScale: shared.uLineScale,
+        uCount: { value: 0 }, uSpeed: { value: flake ? 0.85 : 13 }, uLen: { value: 0.9 },
+        uSlant: { value: 0 }, uWidth: { value: flake ? 4.2 : 1.1 }, uFlake: { value: flake ? 1 : 0 },
+      },
+    }));
+    m.frustumCulled = false;
+    m.renderOrder = 5;
+    m.visible = false;
+    world.add(m);
+    return m;
+  };
+  const rain = falling(900, false);
+  const snow = falling(640, true);
+  // thunder: a jagged bolt with a fork, down to the far sea where the sky is
+  // open (between the sun and the cone, past the cone, over the bar), a flash
+  // and a flicker
+  const bolt = new THREE.Group();
+  bolt.visible = false;
+  world.add(bolt);
+  const jag = (pts, r) => {
+    const path = new THREE.CurvePath();
+    const v = pts.map(([x, y]) => new THREE.Vector3(x, y, 0));
+    for (let i = 0; i < v.length - 1; i++) path.add(new THREE.LineCurve3(v[i], v[i + 1]));
+    add(new THREE.TubeGeometry(path, 16 * v.length, r, 5, false), M.ink, [0, 0, 0], { parent: bolt, line: 0 });
+  };
+  jag([[0, 7.4], [-0.6, 6.0], [0.4, 5.3], [-0.4, 3.9], [0.5, 3.0], [-0.1, 1.6], [0.35, 0.1]], 0.11);
+  jag([[0.4, 5.3], [1.2, 4.6], [1.0, 3.9], [1.6, 3.2]], 0.07);
+  const BOLT_AT = [[1.8, -20], [6.3, -20], [9.6, -20]];
+  const storm = { on: false, next: 0, until: 0, again: 0, againUntil: 0 };
+  // one fog for the engraving's materials and their outlines, none for anything else drawn
+  const fogU = { value: 0 };
+  scene.traverse((o) => { if (o.material?.uniforms?.uFog) o.material.uniforms.uFog = fogU; });
+
+  const weather = { fill: 0, veil: false, gulls: true, rain: 0, snow: 0, thunder: false };
+  function setWeather(w) {
+    // no reading: the sky as it was cut, and not a breath of wind
+    const s = w || { sky: 'fair', fall: null, amount: 0, thunder: false, fog: false, wind: 0, from: 270 };
+    const overcast = s.sky === 'overcast';
+    weather.fill = overcast ? 2 : s.sky === 'partly' || s.sky === 'fog' ? 1 : 0;
+    weather.veil = overcast;
+    weather.thunder = !!s.thunder;
+    weather.gulls = !s.fall && !s.thunder && !s.fog;
+    const k = [0, 0.28, 0.6, 1][s.amount] || 0;
+    weather.rain = s.fall === 'rain' ? Math.max(k, s.thunder ? 0.6 : 0) : s.fall === 'sleet' ? 0.4 : s.thunder && !s.fall ? 0.5 : 0;
+    weather.snow = s.fall === 'snow' ? k : s.fall === 'sleet' ? 0.25 : 0;
+    rain.material.uniforms.uCount.value = weather.rain;
+    snow.material.uniforms.uCount.value = weather.snow;
+    rain.material.uniforms.uLen.value = s.amount === 3 ? 1.25 : s.fall === 'sleet' ? 0.55 : 0.9;
+    // the wind: east-west as seen from the beach (+x is west, the sea's side)
+    const wind = Math.min(22, Math.max(0, s.wind));
+    const west = Math.sin(((s.from ?? 270) * Math.PI) / 180);
+    rain.material.uniforms.uSlant.value = Math.max(-0.6, Math.min(0.6, (wind * west) / 16));
+    snow.material.uniforms.uSlant.value = Math.max(-0.4, Math.min(0.4, (wind * west) / 24));
+    wx.sway = 0.012 + (wind / 22) * 0.055;
+    wx.pace = (wind / 22) * 1.6;
+    wx.drift = wind > 3.5 ? west * wind * 0.03 : 0;
+    M.sea.uniforms.uWave.value = 1 + (wind / 22) * 0.9;
+    M.cloud.uniforms.uTone.value = s.thunder ? 0.3 : overcast ? 0.16 : s.sky === 'partly' || s.fog ? 0.06 : 0;
+    // fog, or the haze of a heavy fall, fades the distance toward the paper
+    fogU.value = s.fog ? 0.85 : s.amount === 3 ? 0.3 : s.fall ? 0.12 : 0;
+  }
+  setWeather(null);
+
+  // ---------- the sun over Albania ----------
+  // Its bearing runs across the sky, east on the left and west on the right
+  // (60 to 300 degrees across 28 units at the sun's distance); its height runs
+  // from the sea's edge (at noon at midsummer, 72 degrees, it nears the top of
+  // the band). Near the horizon it is drawn as the engraver would, a disc
+  // half sunk into the sea, and below a degree it has set.
+  const SKY = { x: 14, top: 6, maxEl: 72, r: 1.8 };
+  // the horizon at the sun's distance: the sea's far edge on the beach's side,
+  // the nearer end of the land on the perfumes' (which hides a sun below it)
+  const horizonAt = (x) => (x >= 0.5 ? -0.26 : x <= -2.5 ? -1.65 : -1.65 + ((x + 2.5) / 3) * 1.39);
+  let sunUp = true;
+  const sunLamp = new THREE.Vector3(-0.55, 0.75, 0.5);
+  // the moon after dark: high over the sea
+  const NIGHT_MOON = new THREE.Vector3(7, 4.2, -22);
+  function setSun({ azimuth, elevation }) {
+    const k = Math.max(-1, Math.min(1, (azimuth - 180) / 120));
+    const horizon = horizonAt(k * SKY.x);
+    const y = elevation >= 2
+      ? horizon + SKY.r + ((elevation - 2) / (SKY.maxEl - 2)) * (SKY.top - horizon - SKY.r)
+      : horizon + (SKY.r * (elevation - 0.5)) / 1.5;
+    sun.position.set(k * SKY.x, Math.min(SKY.top, y), -22);
+    sunUp = elevation > -1;
+    moon.position.copy(sunUp ? sun.position : NIGHT_MOON);
+    // the light comes from the sun's side: the east in the morning, over the
+    // sea in the evening, from high up at noon; after dark, a lamp from the front
+    if (sunUp) sunLamp.set(k * 1.1, 0.35 + 0.55 * Math.min(1, Math.max(0, elevation) / 60), 0.5);
+    else sunLamp.set(0.1, 0.9, 0.62);
+  }
+
+  // The sky's one body: the sun, or the moon in the night edition and after
+  // dark. Pressing it turns the one into the other (skyK 0 to 1 over 0.8s):
+  // the sun shrinks away with its rays, then the moon grows in its place.
+  let skyK = -1;
+  const smooth = (x) => { const c = Math.max(0, Math.min(1, x)); return c * c * (3 - 2 * c); };
+  function turnSky(dt, night, still) {
+    const target = night || !sunUp ? 1 : 0;
+    if (skyK < 0 || still) skyK = target;
+    else if (skyK < target) skyK = Math.min(target, skyK + dt / 0.8);
+    else if (skyK > target) skyK = Math.max(target, skyK - dt / 0.8);
+    sun.scale.setScalar(Math.max(0.001, 1 - smooth(skyK / 0.5)));
+    moon.scale.setScalar(Math.max(0.001, smooth((skyK - 0.5) / 0.5)));
+    api.morphing = skyK !== target;
+  }
+  const skyBody = () => (skyK > 0.5 ? moon : sun);
+
   // ---------- per-frame ----------
   const look = new THREE.Vector3();
   const lampTarget = new THREE.Vector3(-0.55, 0.75, 0.5);
   const lamp = new THREE.Vector3(-0.55, 0.75, 0.5);
   let par = { x: 0, y: 0 };
-  function update(t, dt, { px, py, inside, still }) {
+  // tilt: a phone's lean, -1..1 each way (stage.js), or null; night: the night edition
+  function update(t, dt, { px, py, inside, still, tilt = null, night = false }) {
     if (!still) anim.forEach((f) => f(t, dt));
-    par = { x: inside ? px * 0.55 : 0, y: inside ? py * 0.22 : 0 };
-    // the lamp follows the pointer; the hatching re-cuts itself to match
+    turnSky(dt, night, still);
+    // the weather: the clouds the sky holds, the gulls (gone to shelter in a
+    // fall, a storm or fog), what falls (still, with the press stopped), and
+    // thunder: a flash and a flicker every 4 to 12 seconds, none when still
+    for (const k of clouds) k.c.visible = k.fill <= weather.fill;
+    for (const g of gulls) g.visible = weather.gulls;
+    rain.visible = weather.rain > 0;
+    snow.visible = weather.snow > 0;
+    const body = skyBody().position;
+    veil.position.set(body.x + 0.95, Math.max(0.6, body.y - 1.3), body.z + 1.6);
+    if (weather.thunder && !still) {
+      if (!storm.on) { storm.on = true; storm.next = t + 1.5 + rand() * 3; }
+      if (t >= storm.next) {
+        const [bx, bz] = BOLT_AT[Math.floor(rand() * BOLT_AT.length)];
+        bolt.position.set(bx, 0, bz);
+        bolt.scale.x = rand() < 0.5 ? -1 : 1;
+        storm.until = t + 0.12;
+        storm.again = t + 0.2;
+        storm.againUntil = t + 0.27;
+        storm.next = t + 4 + rand() * 8;
+      }
+      bolt.visible = t < storm.until || (t > storm.again && t < storm.againUntil);
+    } else {
+      storm.on = false;
+      bolt.visible = false;
+    }
+    // the view leans a little with the pointer, or with the phone
+    const lean = inside ? { x: px, y: py } : tilt ? { x: tilt.x * 0.7, y: tilt.y * 0.7 } : null;
+    par = lean ? { x: lean.x * 0.55, y: lean.y * 0.22 } : { x: 0, y: 0 };
+    // the lamp follows the pointer, or leans off the sun with the phone; the hatching re-cuts itself to match
     if (inside) lampTarget.set(px * 1.25, 0.8 - py * 0.35, 0.55);
-    else lampTarget.set(-0.55 + Math.sin(t * 0.25) * 0.18, 0.75, 0.5);
+    else if (tilt) lampTarget.set(sunLamp.x + tilt.x * 0.9, sunLamp.y - tilt.y * 0.35, sunLamp.z);
+    else lampTarget.set(sunLamp.x + Math.sin(t * 0.25) * 0.18, sunLamp.y, sunLamp.z);
     lamp.lerp(lampTarget, Math.min(1, dt * 4));
     shared.uLight.value.copy(lamp).normalize();
   }
@@ -451,10 +724,49 @@ export function createBand() {
     look.set(cx + par.x * 0.4, 2.6, 0);
     camera.lookAt(look);
     camera.updateProjectionMatrix();
+    // printed as two panels, the sun (or the moon) is drawn in one: the
+    // perfumes' sky before noon, the beach's after (both see the middle of the sky)
+    const inPanel = (o) => panel === 'full' || (panel === 'left') === (o.position.x < 0);
+    sun.visible = sunUp && skyK < 0.5 && inPanel(sun);
+    moon.visible = skyK > 0.5 && inPanel(moon);
+    veil.visible = weather.veil && (sun.visible || moon.visible);
+  }
+
+  // Where the sky's body stands in a panel's view, for the button over it
+  // (stage.js): its centre in the panel's -1..1 coordinates and its radius as
+  // a share of the panel's width. Null when there is nothing in the sky.
+  const pc = new THREE.Vector3(), pe = new THREE.Vector3();
+  const skyPanel = () => (skyBody().position.x < 0 ? 'left' : 'right');
+  function project(aspect, panel) {
+    const o = skyBody();
+    if (o === sun && !sunUp) return null;
+    aim(aspect, panel);
+    camera.updateMatrixWorld();
+    o.updateMatrixWorld();
+    pc.setFromMatrixPosition(o.matrixWorld);
+    pe.copy(pc);
+    pe.x += SKY.r;
+    pc.project(camera);
+    pe.project(camera);
+    return { x: pc.x, y: pc.y, r: Math.abs(pe.x - pc.x) / 2 };
   }
 
   let draws = 0;
   scene.traverse((o) => { if (o.isMesh) draws++; });
 
-  return { scene, camera, update, aim, draws, setLineSpacing: (px) => { M.sea.uniforms.uFreq.value = px; } };
+  // for the warm-up: both bodies and every piece of weather shown, so their
+  // programs link with the rest (the next update puts the weather back)
+  const revealSky = () => {
+    sun.visible = true;
+    moon.visible = true;
+    veil.visible = true;
+    rain.visible = true;
+    snow.visible = true;
+    bolt.visible = true;
+    for (const k of clouds) k.c.visible = true;
+  };
+
+  const api = { scene, camera, update, aim, setSun, setWeather, project, skyPanel, revealSky, morphing: false, draws, setLineSpacing: (px) => { M.sea.uniforms.uFreq.value = px; } };
+  if (import.meta.env.DEV) api.debugWeather = () => ({ weather: { ...weather }, storm: { ...storm }, bolt: bolt.visible, boltAt: bolt.position.toArray(), rain: rain.visible });
+  return api;
 }

@@ -11,11 +11,12 @@ const FLOURISH = [
 ];
 
 // The verse is a fixed text, so its long words are hyphenated by hand, the
-// way a compositor would, in both languages (browsers carry no Albanian
+// way a compositor would, in every language (browsers carry no Albanian
 // hyphenation). Only these soft hyphens may break a word.
 const BREAKS = {
   en: ['Ste-fa-no', 'graph-ic', 'de-sign-er', 'Al-ba-nia', 'busi-ness-es', 'busi-ness', 'per-fume', 'on-line', 'fra-granc-es', 'de-liv-ered', 'Mar-ti-ri', 'sun-beds', 'lan-guag-es', 'close-ly', 'Al-ba-ni-an', 'Eng-lish', 'de-vel-op-er', 'web-site', 'de-signs'],
-  sq: ['Ste-fa-no', 'Ste-fa-nos', 'di-zaj-ner', 'gra-fik', 'Shqi-pë-ri', 'Shqi-pë-ri-në', 'biz-ne-set', 'biz-ne-se', 'biz-ne-si', 'vi-zi-tosh', 'par-fu-me-ri', 'de-sig-ner', 'dër-ge-së', 'aku-llo-re', 'shez-lo-ne', 'për-do-rim', 'Shi-ko-ji', 'pi-kë-risht', 'shkrua-ji', 'an-glisht', 'Mar-ti-ri', 'on-li-ne', 'zhvi-llu-es', 'di-zaj-non', 'ren-di-tu-ra', 'shkru-an'],
+  sq: ['Ste-fa-no', 'Ste-fa-nos', 'di-zaj-ner', 'gra-fik', 'Shqi-pë-ri', 'Shqi-pë-ri-në', 'biz-ne-set', 'biz-ne-se', 'biz-ne-si', 'vi-zi-tosh', 'par-fu-me-ri', 'par-fu-me', 'de-sig-ner', 'dër-ge-sa', 'aku-llo-re', 'shez-lon-gë', 'për-do-rim', 'Shi-ko-ji', 'pi-kë-risht', 'shkrua-ji', 'an-glisht', 'Mar-ti-ri', 'on-li-ne', 'zhvi-llu-es', 'di-zaj-non', 'shkru-an', 'pro-von'],
+  it: ['Ste-fa-no', 'gra-phic', 'de-si-gner', 'svi-lup-pa-to-re', 'Al-ba-nia', 'at-ti-vi-tà', 'pre-sen-ti-no', 'di-mo-stra', 'vi-si-ta-re', 'ne-go-zio', 'pro-fu-mi', 'on-li-ne', 'gran-di', 'nic-chia', 'con-se-gne', 'Mar-ti-ri', 'ge-la-ti', 'let-ti-ni', 'En-tram-bi', 'Guar-da-li', 'vi-ci-no', 'pro-prio', 'Pro-get-ta', 'lin-guag-gi', 'e-len-ca-ti', 'se-guen-te', 'al-ba-ne-se', 'in-gle-se', 'pre-sen-tar-si'],
 };
 const table = {};
 for (const [lang, list] of Object.entries(BREAKS)) {

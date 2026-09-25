@@ -19,10 +19,14 @@ const browser = await puppeteer.launch({
   args: ['--mute-audio', '--use-angle=d3d11', '--enable-gpu', '--ignore-gpu-blocklist', '--disable-background-timer-throttling', '--disable-renderer-backgrounding'],
 });
 
-// the band, at a moment when the van is on the road below the bottles
+// The band, at a moment when the van is on the road below the bottles. The
+// engraving's sun follows the sun over Albania (src/sun.js), so the still is
+// lit as at half past four in the afternoon, the sun over the sea, whatever
+// the hour it is made.
+const SUN = 'sun=16:30';
 const page = await browser.newPage();
 await page.setViewport({ width: 1600, height: 1000, deviceScaleFactor: 1.25 });
-await page.goto(`${url}?lang=en`, { waitUntil: 'networkidle0' });
+await page.goto(`${url}?lang=en&${SUN}`, { waitUntil: 'networkidle0' });
 await sleep(8200);
 await page.mouse.move(5, 5);
 await sleep(600);
@@ -35,7 +39,7 @@ console.log('band-poster.jpg');
 if (process.argv.includes('--og')) {
   const og = await browser.newPage();
   await og.setViewport({ width: 1200, height: 630, deviceScaleFactor: 1 });
-  await og.goto(`${url}?lang=en`, { waitUntil: 'networkidle0' });
+  await og.goto(`${url}?lang=en&${SUN}`, { waitUntil: 'networkidle0' });
   await sleep(8200);
   await og.mouse.move(5, 5);
   await og.evaluate(() => window.__lenis?.scrollTo(84, { immediate: true, force: true }));

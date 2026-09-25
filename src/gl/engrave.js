@@ -77,6 +77,7 @@ const frag = /* glsl */ `
   uniform float uFar;
   uniform float uFlatN;
   uniform float uSolid;     // 1 = all ink
+  uniform float uFog;       // 0..1: the distance fades to paper, and sooner
   uniform float uOut;
   uniform float uAlpha;
   uniform sampler2D uMap;
@@ -102,8 +103,8 @@ const frag = /* glsl */ `
       float panel = floor((ang / 6.28318 + 0.5) * uStripes);
       if (mod(panel, 2.0) > 0.5) dark = clamp(dark + 0.42, 0.0, 1.0);
     }
-    float far = smoothstep(18.0, 42.0, vDepth) * uFar;
-    dark *= 1.0 - 0.5 * far;
+    float far = smoothstep(18.0 - 8.0 * uFog, 42.0 - 14.0 * uFog, vDepth) * max(uFar, uFog);
+    dark *= 1.0 - (0.5 + 0.45 * uFog) * far;
 
     float coord;
     if (uMode == 0) coord = dot(vW, uDir) * uFreq;
@@ -188,6 +189,9 @@ export function engrave(opts = {}) {
       uFar: { value: o.far },
       uFlatN: { value: o.flat },
       uSolid: { value: o.solid },
+      // fog over Albania: the engraving's materials share one (band.js
+      // setWeather); everything else keeps its own at 0
+      uFog: { value: 0 },
       uOut: { value: o.out },
       uAlpha: { value: 1 },
       uWave: { value: o.wave },
@@ -205,8 +209,11 @@ const hullVert = /* glsl */ `
   uniform float uLineScale;
   uniform float uTime;
   uniform float uWave;
+  varying float vDepth;
   void main() {
-    vec4 clip = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    vec4 mv = modelViewMatrix * vec4(position, 1.0);
+    vDepth = -mv.z;
+    vec4 clip = projectionMatrix * mv;
     vec3 n = normalize(normalMatrix * normal);
     vec2 dir = normalize(n.xy + 1e-5);
     clip.xy += dir * uPx * uLineScale * 2.0 / uRes * clip.w;
@@ -217,7 +224,12 @@ const hullFrag = /* glsl */ `
   uniform float uOut;
   uniform vec3 uInk;
   uniform float uAlpha;
+  uniform float uFog;
+  varying float vDepth;
+  float hash12(vec2 p) { vec3 p3 = fract(vec3(p.xyx) * 0.1031); p3 += dot(p3, p3.yzx + 33.33); return fract((p3.x + p3.y) * p3.z); }
   void main() {
+    // in fog a far outline breaks up, as a burin's line thins into the distance
+    if (uFog > 0.0 && hash12(floor(gl_FragCoord.xy)) < smoothstep(14.0, 34.0, vDepth) * uFog * 0.9) discard;
     if (uOut < 0.5) gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
     else gl_FragColor = vec4(uInk * uAlpha, uAlpha);
   }
@@ -241,6 +253,7 @@ export function hull(px = 1.6, out = 0) {
       uAlpha: { value: 1 },
       uTime: shared.uTime,
       uWave: { value: 0 },
+      uFog: { value: 0 },
     },
   });
 }

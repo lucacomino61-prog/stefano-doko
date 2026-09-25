@@ -60,10 +60,13 @@ export function initFan() {
   apply(-1, deal.p);
   if (state.reduced) fan.classList.add('is-dealt');
   if (!state.reduced) {
+    // A finger's scroll already glides on its own: smoothing the deal on top
+    // of it left the proofs trailing the page on a phone, so there they
+    // follow the scroll as it is. The wheel's scroll gets the smoothing.
     gsap.to(deal, {
       p: 1,
       ease: 'none',
-      scrollTrigger: { trigger: fan, start: 'top 92%', end: 'top 38%', scrub: 0.6 },
+      scrollTrigger: { trigger: fan, start: 'top 92%', end: 'top 38%', scrub: state.fine ? 0.6 : true },
       onUpdate: () => { apply(-1, deal.p); fan.classList.toggle('is-dealt', deal.p > 0.98); },
     });
   }

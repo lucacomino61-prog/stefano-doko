@@ -6,3 +6,9 @@ __pycache__/
 .impeccable/perf/trace.json
 .impeccable/perf/regress-desktop.png
 .impeccable/perf/redsheet-trace.json
+# the Worker's local secrets and simulated storage (production secrets: wrangler secret put)
+.dev.vars
+.dev.vars.*
+.env
+.env.*
+.wrangler/

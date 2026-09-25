@@ -4,6 +4,7 @@
 import './style.css';
 import gsap from 'gsap';
 import { STRINGS, initialLang, applyStrings } from './i18n.js';
+import { pathFor } from './routes.js';
 import { layPaper } from './ui/paper.js';
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -11,6 +12,9 @@ layPaper();
 const lang = initialLang();
 const T = STRINGS[lang];
 applyStrings(T);
+// back to the front page in the reader's own language
+document.querySelectorAll('a[data-home]').forEach((a) => { a.href = pathFor('home', lang); });
+document.querySelectorAll('a[data-route]').forEach((a) => { a.href = pathFor(a.dataset.route, lang); });
 document.documentElement.classList.add('fitted');
 
 const pie = document.querySelector('[data-pie]');
@@ -53,7 +57,7 @@ function setInLine() {
   set = true;
 }
 
-document.fonts.load('400 60px Ultra').finally(() => {
+document.fonts.load('900 60px Anybody').finally(() => {
   build();
   scatter(false);
 });

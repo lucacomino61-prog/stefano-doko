@@ -5,7 +5,10 @@
 // while the counter hides the sheet:
 // - the red sheet: the stamp's rings beside the outlined head;
 // - the fan: its tilted cards and their screenshots;
-// - a case plate: its rounded mount cut by the chamfered clip-path.
+// - a case plate: its rounded mount (it was cut by a chamfered clip-path);
+// - the pinned bar: its frosted glass (a backdrop blur), which alone cost a
+//   frame of about 100ms, with nothing on the main thread, the first time the
+//   bar slid in (the modern edition, 2026-09-25).
 // The copies of the work sit together in a band clear of the red sheet's head
 // and stamp (style.css), so everything is drawn at once, inside the screen.
 import { state } from '../state.js';
@@ -48,8 +51,21 @@ export function warmSheets() {
   work.querySelectorAll('.fan__card').forEach((c, i) => {
     if (i < 2) c.style.transform = c.style.transform.replace(/scale\([^)]*\)/, 'scale(1.1)');
   });
-  work.querySelectorAll('img').forEach((img) => { img.decoding = 'sync'; });
+  // drawn now, so loaded now; the plate's picture is left out of the copy: with
+  // the stage on, the real plate's picture is drawn by WebGL, not by the page,
+  // and a full-width copy of it was the largest thing painted on arrival (the
+  // page's LCP, at 2.1s, instead of the band at 0.75s). Its mount and chamfered
+  // clip, the part that compiles, are still drawn.
+  work.querySelectorAll('img').forEach((img) => { img.decoding = 'sync'; img.loading = 'eager'; });
+  work.querySelectorAll('.plate__mount img').forEach((img) => { img.style.visibility = 'hidden'; });
   if (work.childElementCount) box.append(work);
+  // the pinned bar, shown as it is once the head has gone by (phones have the tab bar, on screen from the start)
+  const pill = document.querySelector('[data-pill]');
+  if (pill && !state.mobile) {
+    const copy = copyOf(pill);
+    copy.classList.add('is-on');
+    box.append(copy);
+  }
   if (!box.childElementCount) return null;
   document.body.append(box);
   return () => box.remove();

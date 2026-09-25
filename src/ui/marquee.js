@@ -1,4 +1,4 @@
-// One running line in two faces: wood gothic caps and the newspaper italic,
+// One running line in two faces: wood gothic caps and Inter set light,
 // changing voice at every star. It runs with the scroll, and turns when the
 // reader turns. Under it, a flourish draws itself once.
 import gsap from 'gsap';

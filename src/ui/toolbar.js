@@ -5,8 +5,10 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { state, bus, clamp } from '../state.js';
 import { albaniaNow } from '../i18n.js';
-import { pathFor, isHere } from '../routes.js';
+import { sunIsUp } from '../sun.js';
+import { pathFor, isHere, routeOf } from '../routes.js';
 import { judder, sound } from './press.js';
+import { has } from './site.js';
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -16,19 +18,40 @@ export function startClock() {
   const tick = () => {
     const { date, time, seconds } = albaniaNow(state.lang, state.mobile);
     $$('[data-date]').forEach((el) => { el.textContent = date; });
-    $$('[data-clock]').forEach((el) => { el.textContent = `${time}:${seconds}`; el.setAttribute('datetime', time); });
+    // with the press stopped the clock keeps the minute: seconds that tick by are motion too
+    $$('[data-clock]').forEach((el) => { el.textContent = state.still ? time : `${time}:${seconds}`; el.setAttribute('datetime', time); });
     const line = $('[data-clock-line]');
     if (line) line.textContent = state.T.clockLine(time);
+    // the band's line on its sun, up or set as the sun over Albania is now (or
+    // turned to a moon in the night edition), and what pressing it does; only
+    // where the engraving is drawn, since only it follows the sun
+    const drawn = document.documentElement.classList.contains('gl-on');
+    const T = state.T;
+    const up = sunIsUp();
+    const sky = !up ? T.sunNight : state.night ? T.moonDay : T.sunDay;
+    const press = state.night ? T.pressMoonDay : up ? T.pressSun : T.pressMoonNight;
+    // and, read from MET Norway through the Worker, the weather it shows (src/weather.js)
+    const w = state.weather;
+    const weather = w ? T.wxLine(T.wx[w.word], w.temp, w.met) : '';
+    const sunLine = [sky, weather, press].filter(Boolean).join(' ');
+    $$('[data-sun-line]').forEach((el) => {
+      if (el.textContent !== sunLine) el.textContent = sunLine;
+      if (el.hidden === drawn) el.hidden = !drawn;
+    });
   };
   tick();
   setInterval(tick, 1000);
   bus.on('lang', tick);
+  bus.on('still', tick);
+  bus.on('night', tick);
+  bus.on('weather', tick);
 }
 
 // ---------- pill, read states, current section ----------
-const tracked = ['work', 'elixir', 'martiri', 'greta', 'about', 'services', 'contact', 'back'];
-// the case sheets belong to the work
-const CASES = new Set(['elixir', 'martiri', 'greta']);
+const tracked = ['work', 'elixir', 'martiri', 'greta', 'graphic', 'quotes', 'about', 'services', 'rates', 'contact', 'back'];
+// the case sheets and the graphic work belong to the work, the rates to the websites; the letters have no word of their own
+const CASES = new Set(['elixir', 'martiri', 'greta', 'graphic']);
+const NAV_OF = { rates: 'services', quotes: null, back: null };
 
 export function initNav() {
   const pill = $('[data-pill]');
@@ -45,11 +68,15 @@ export function initNav() {
   bus.on('refit', measureHeight);
   ScrollTrigger.addEventListener('refresh', measureHeight);
 
-  // the words that point at a part of the front page (the others name whole sheets)
-  const navLinks = () => $$('.toolbar__nav .word[data-hash], .pill__nav .word[data-hash], .tabbar__item[data-hash]').filter((a) => !a.closest('[data-edition]'));
+  // On the front page the words that lead to its parts' pages (data-spy) mark the
+  // part being read, and fade once it has been read. On a part's own page the
+  // word of that page is marked as the page (main.js), and nothing is spied.
+  const home = routeOf() === 'home';
+  const navLinks = () => (home ? $$('.toolbar__nav .word[data-spy], .pill__nav .word[data-spy], .tabbar__item[data-spy]').filter((a) => !a.closest('[data-edition]')) : []);
   let links = navLinks();
   bus.on('edition', () => { links = navLinks(); });
-  const sections = tracked.map((id) => document.getElementById(id)).filter(Boolean);
+  // an optional part that is switched off is not read, nor current
+  const sections = tracked.map((id) => document.getElementById(id)).filter((el) => el && !el.hidden);
   let pillOn = null, lastRead = -1, lastCurrent;
 
   let tbBottom = 0, edTop = Infinity, current = null;
@@ -74,13 +101,13 @@ export function initNav() {
     if (Math.abs(read - lastRead) > 0.002) { lastRead = read; pill.style.setProperty('--read', read.toFixed(3)); }
     for (const id of newlyRead) {
       readSet.add(id);
-      $$(`a[href="#${id}"], a[data-hash="#${id}"]`).filter((a) => !a.closest('[data-edition]')).forEach((a) => a.classList.add('is-read'));
+      if (home) $$(`a[href="#${id}"], a[data-spy="#${id}"]`).filter((a) => !a.closest('[data-edition]')).forEach((a) => a.classList.add('is-read'));
     }
-    const navId = CASES.has(current) ? 'work' : current === 'back' ? null : current;
+    const navId = CASES.has(current) ? 'work' : current in NAV_OF ? NAV_OF[current] : current;
     if (navId !== lastCurrent) {
       lastCurrent = navId;
       for (const a of links) {
-        if (a.dataset.hash === `#${navId}`) a.setAttribute('aria-current', 'true');
+        if (a.dataset.spy === `#${navId}`) a.setAttribute('aria-current', 'true');
         else a.removeAttribute('aria-current');
       }
     }
@@ -96,9 +123,10 @@ export function initMenu(scrollTo) {
   const closer = $('[data-menu-close]', menu);
   let trigger = null;
 
-  // each sheet of the index names a sheet of the site, or a part of the front page
+  // each sheet of the index names a sheet of the site, or a part of the front
+  // page; an optional part (a fifth entry names it) only while it is switched on
   const render = () => {
-    list.replaceChildren(...state.T.menu.map(([route, hash, title, line], i) => {
+    list.replaceChildren(...state.T.menu.filter((entry) => !entry[4] || has(entry[4])).map(([route, hash, title, line], i) => {
       const li = document.createElement('li');
       const a = document.createElement('a');
       a.className = 'stack-menu__sheet';
@@ -115,7 +143,66 @@ export function initMenu(scrollTo) {
     closer.textContent = state.T.navClose;
   };
   render();
-  bus.on('lang', render);
+
+  // The search: the words typed are looked for in every sheet of this
+  // language (all of them, accents aside), and the sheets that hold them take
+  // the index's place, each with the line where the first word stands. An
+  // empty field gives the index back; Enter opens the first sheet found.
+  const field = $('[data-menu-search] input', menu);
+  const found = {};
+  const fold = (s) => [...s].map((c) => c.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().charAt(0) || c).join('');
+  const sheetsOf = (lang) => {
+    found[lang] ||= fetch(`/search/${lang}.json`).then((r) => (r.ok ? r.json() : [])).catch(() => [])
+      .then((list) => list.map((e) => ({ ...e, f: fold(e.x), ft: fold(e.t) })));
+    return found[lang];
+  };
+  const around = (e, w) => {
+    const i = e.f.indexOf(w);
+    if (i < 0) return `${e.x.slice(0, 90).trim()}…`;
+    const a = Math.max(0, e.x.lastIndexOf(' ', Math.max(0, i - 36)));
+    return `${a > 0 ? '…' : ''}${e.x.slice(a, i + 64).trim()}…`;
+  };
+  let asked = '';
+  async function search() {
+    const q = field.value.trim();
+    asked = q;
+    const words = fold(q).split(/\s+/).filter((w) => w.length > 1);
+    if (!words.length) { render(); return; }
+    const lang = state.lang;
+    const all = await sheetsOf(lang);
+    if (asked !== q) return; // a later keystroke has asked again
+    // a sheet named by the words comes first; then the one where they stand
+    // thickest (per thousand letters: the front page holds every part, so a
+    // plain count would always put it first)
+    const hits = all
+      .filter((e) => words.every((w) => e.f.includes(w) || e.ft.includes(w)))
+      .map((e) => ({ e, score: words.reduce((s, w) => s + (e.ft.includes(w) ? 20 : 0) + ((e.f.split(w).length - 1) * 1000) / Math.max(1000, e.f.length), 0) }))
+      .sort((a, b) => b.score - a.score).slice(0, 6);
+    if (!hits.length) {
+      const li = document.createElement('li');
+      li.className = 'stack-menu__none';
+      li.textContent = state.T.searchNone(q);
+      list.replaceChildren(li);
+      return;
+    }
+    list.replaceChildren(...hits.map(({ e }, i) => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.className = 'stack-menu__sheet';
+      a.dataset.route = e.r;
+      a.href = pathFor(e.r, lang);
+      a.style.zIndex = String(20 - i);
+      a.innerHTML = `<b></b><i></i><svg class="hand" aria-hidden="true"><use href="#hand"/></svg>`;
+      a.querySelector('b').textContent = e.t;
+      a.querySelector('i').textContent = around(e, words[0]);
+      li.appendChild(a);
+      return li;
+    }));
+  }
+  let typing = null;
+  field?.addEventListener('input', () => { clearTimeout(typing); typing = setTimeout(search, 120); });
+  field?.form.addEventListener('submit', (e) => { e.preventDefault(); list.querySelector('a')?.click(); });
+  bus.on('lang', () => { if (field?.value.trim()) search(); else render(); });
 
   const sheets = () => $$('.stack-menu__sheet', menu);
   function open(btn) {
@@ -145,6 +232,8 @@ export function initMenu(scrollTo) {
     const done = () => {
       menu.hidden = true;
       pull.y = 0; paintPull(); menu.style.opacity = '';
+      // the index opens as the index next time
+      if (field?.value) { field.value = ''; asked = ''; render(); }
       if (returnFocus) trigger?.focus();
     };
     if (state.reduced) done();
@@ -218,11 +307,36 @@ export function initMenu(scrollTo) {
 }
 
 // ---------- language, sound and proof words ----------
-export function initWords({ onLang, onProof }) {
+export function initWords({ onLang, onProof, onStill }) {
+  // phones: the tab bar's language word opens the three languages above it
+  const pop = $('[data-langpop]');
+  const toggles = $$('[data-lang-toggle]');
+  const closePop = (returnFocus = false) => {
+    if (!pop || pop.hidden) return;
+    pop.hidden = true;
+    toggles.forEach((t) => t.setAttribute('aria-expanded', 'false'));
+    document.removeEventListener('pointerdown', onOutside, true);
+    document.removeEventListener('keydown', onEsc);
+    if (returnFocus) toggles[0]?.focus();
+  };
+  function onOutside(e) { if (!pop.contains(e.target) && !e.target.closest('[data-lang-toggle]')) closePop(); }
+  function onEsc(e) { if (e.key === 'Escape') { e.preventDefault(); closePop(true); } }
+  toggles.forEach((t) => t.addEventListener('click', () => {
+    if (!pop) return;
+    if (!pop.hidden) { closePop(); return; }
+    judder(t);
+    pop.hidden = false;
+    t.setAttribute('aria-expanded', 'true');
+    sound.paper();
+    pop.querySelector('[aria-pressed="true"]')?.focus();
+    document.addEventListener('pointerdown', onOutside, true);
+    document.addEventListener('keydown', onEsc);
+  }));
+
   $$('[data-lang]').forEach((b) => b.addEventListener('click', () => {
     if (b.dataset.lang !== state.lang) { judder(b.parentElement); onLang(b.dataset.lang); }
+    closePop(b.closest('[data-langpop]') !== null);
   }));
-  $$('[data-lang-toggle]').forEach((b) => b.addEventListener('click', () => { judder(b); onLang(state.lang === 'en' ? 'sq' : 'en'); }));
 
   const soundBtn = $('[data-sound]');
   const soundLabel = $('[data-sound-label]');
@@ -240,11 +354,29 @@ export function initWords({ onLang, onProof }) {
   };
   proofBtn.addEventListener('click', () => { onProof(!state.proof); paintProof(); judder(proofBtn); sound.press(); });
 
+  // stop the press: everything that moves by itself stops, and stays stopped on every sheet
+  const stillBtn = $('[data-still]');
+  const stillLabel = $('[data-still-label]');
+  const paintStill = () => {
+    if (!stillBtn) return;
+    stillBtn.setAttribute('aria-pressed', String(state.still));
+    stillLabel.textContent = state.still ? state.T.stillOn : state.T.still;
+    stillBtn.setAttribute('aria-label', state.still ? state.T.stillOnName : state.T.stillName);
+  };
+  stillBtn?.addEventListener('click', () => { onStill(!state.still); paintStill(); sound.press(); });
+
+  const NAMES = { en: 'English', sq: 'Shqip', it: 'Italiano' };
   const paintLang = () => {
     $$('[data-lang]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === state.lang)));
-    $$('[data-lang-toggle]').forEach((b) => { const other = state.lang === 'en' ? 'sq' : 'en'; b.textContent = other.toUpperCase(); b.lang = other; });
+    // the tab bar's word is the language the sheet is in; tapping it offers the others
+    $$('[data-lang-toggle]').forEach((b) => {
+      b.textContent = state.lang.toUpperCase();
+      b.lang = state.lang;
+      // the name starts with the word it shows (EN, SQ, IT), then says what it is
+      b.setAttribute('aria-label', `${state.lang.toUpperCase()}, ${state.T.langLabel}: ${NAMES[state.lang]}`);
+    });
   };
-  const paint = () => { paintSound(); paintProof(); paintLang(); };
+  const paint = () => { paintSound(); paintProof(); paintStill(); paintLang(); };
   paint();
   bus.on('lang', paint);
   return paint;

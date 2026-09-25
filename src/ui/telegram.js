@@ -1,15 +1,18 @@
 // The telegraph counter. The blank is a real form: it asks for what it needs,
 // counts the words the way a telegraph office did, and hands the telegram on.
-// Until the site has a form service, sending writes the telegram into the
-// visitor's own mail app, addressed to Stefano. Set ENDPOINT to post it
-// instead (on Netlify, '/' works as it is: the blank is marked for Netlify
-// Forms, with a honeypot field for bots).
+// Served by the Worker (worker/public-api.js), a telegram is posted to the
+// site and kept in the admin's inbox. A page with no Worker behind it (a plain
+// static preview) writes the telegram into the visitor's own mail app instead,
+// addressed to Stefano. The blank carries a honeypot line for bots either way.
 import gsap from 'gsap';
 import { state, bus } from '../state.js';
 import { albaniaNow } from '../i18n.js';
 import { judder, sound } from './press.js';
+import { site, has } from './site.js';
+import { orderText } from './calculator.js';
+import { sourceOf } from './from.js';
 
-const ENDPOINT = '';
+const endpoint = () => (site.inbox ? '/api/telegram' : '');
 
 const words = (s) => (String(s).trim().match(/\S+/g) || []).length;
 const reEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
@@ -25,13 +28,26 @@ export function initTelegram() {
   let tried = false;
   let lastErrs = {};
 
-  // the reply language starts as the sheet's own
+  // the reply language starts as the sheet's own (Stefano answers in Albanian or English: an Italian sheet starts on English)
   const pickLang = () => {
     if (form.querySelector('input[name="lang"]:checked')) return;
-    const r = form.querySelector(`input[name="lang"][value="${state.lang}"]`);
+    const r = form.querySelector(`input[name="lang"][value="${state.lang === 'sq' ? 'sq' : 'en'}"]`);
     if (r) r.checked = true;
   };
   pickLang();
+
+  // a list sent from the price calculator (?rates=0,2) opens the message; the rest is the visitor's
+  const picked = (new URLSearchParams(location.search).get('rates') || '').split(',').filter((v) => /^\d{1,2}$/.test(v)).map(Number);
+  if (picked.length && has('calculator') && !msg.value.trim()) msg.value = orderText(state.T, state.lang, picked);
+
+  // With visits counted, the site also counts telegrams begun (once a page, a
+  // number and nothing else), so that the admin can set them against those sent.
+  let begun = false;
+  form.addEventListener('input', () => {
+    if (begun || !site.counted || !site.inbox) return;
+    begun = true;
+    try { navigator.sendBeacon?.('/api/telegram/started'); } catch { /* not counted */ }
+  });
 
   const recount = () => { count.textContent = String(words(msg.value)); };
   msg.addEventListener('input', recount);
@@ -147,20 +163,30 @@ export function initTelegram() {
       return;
     }
     const { subject, body } = compose();
-    if (ENDPOINT) {
+    const url = endpoint();
+    if (url) {
+      const submit = form.querySelector('[type="submit"]');
+      if (submit?.disabled) return; // one telegram per press, however often it is tapped
+      if (submit) submit.disabled = true;
       say(state.T.ctSending);
       try {
-        const res = await fetch(ENDPOINT, {
+        const data = new URLSearchParams(new FormData(form));
+        // where the visit came from, when a shared link said so (src/ui/from.js)
+        if (sourceOf()) data.set('from', sourceOf());
+        const res = await fetch(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams(new FormData(form)).toString(),
+          body: data.toString(),
         });
+        if (res.status === 429) { say(state.T.ctTooMany); return; }
         if (!res.ok) throw new Error(String(res.status));
         form.classList.add('is-sent');
         say(state.T.ctSent);
         press('sent');
       } catch {
         say(state.T.ctFailed);
+      } finally {
+        if (submit) submit.disabled = false;
       }
       return;
     }

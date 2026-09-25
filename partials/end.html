@@ -1,5 +1,10 @@
   <nav class="stack-menu" id="stack-menu" aria-label="Index" hidden data-menu data-i18n-attr="aria-label:navMenu">
     <button class="stack-menu__close word word--btn" type="button" data-menu-close data-i18n="navClose">Close</button>
+    <!-- the site search: every sheet's words, in this language (dist/search/, written by tools/build-sq.mjs) -->
+    <form class="stack-menu__search" role="search" data-menu-search>
+      <label class="sr-only" for="menu-q" data-i18n="menuSearch">Search the sheets</label>
+      <input class="stack-menu__q" id="menu-q" type="search" autocomplete="off" spellcheck="false" enterkeyhint="go" placeholder="Search the sheets" data-i18n-attr="placeholder:menuSearch">
+    </form>
     <ol class="stack-menu__list" data-menu-list></ol>
   </nav>
 

@@ -167,7 +167,16 @@ export function initCases(stage) {
       if (d < 0.05) dealt = false;
     }
 
-    if (!state.mobile && !state.reduced) {
+    if (!state.mobile && state.short && !state.reduced) {
+      // a phone held sideways lays the sheets one after another (style.css):
+      // each is read, with the same plates, rules and facts, as it passes
+      ScrollTrigger.create({
+        trigger: body,
+        start: 'top 85%',
+        end: 'bottom 60%',
+        onUpdate: (st) => apply(st.progress),
+      });
+    } else if (!state.mobile && !state.reduced) {
       const dwell = caseEl.nextElementSibling;
       ScrollTrigger.create({
         trigger: dwell,

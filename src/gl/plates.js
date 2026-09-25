@@ -27,6 +27,7 @@ const frag = /* glsl */ `
   uniform float uCount;
   uniform float uLeader;    // 0..1 drawn
   uniform float uTime;
+  uniform float uRadius;    // css px: the picture's corners (style.css .plate__mount img)
   varying vec2 vUv;
 
   float hash12(vec2 p) { vec3 p3 = fract(vec3(p.xyx) * 0.1031); p3 += dot(p3, p3.yzx + 33.33); return fract((p3.x + p3.y) * p3.z); }
@@ -108,7 +109,12 @@ const frag = /* glsl */ `
       col = mix(col, uPaper, halo * 0.7 * grow);
       col = mix(col, uInk, ln * grow);
     }
-    gl_FragColor = vec4(col, 1.0);
+    // the rounded corners of the box it is drawn into (style.css): outside
+    // them the canvas is left clear, so the paper shows; written premultiplied
+    vec2 rq = abs(px - uView * 0.5) - (uView * 0.5 - uRadius);
+    float rd = length(max(rq, 0.0)) + min(max(rq.x, rq.y), 0.0) - uRadius;
+    float ra = uRadius > 0.0 ? 1.0 - smoothstep(-0.7, 0.7, rd) : 1.0;
+    gl_FragColor = vec4(col * ra, ra);
   }
 `;
 
@@ -142,6 +148,7 @@ export function createPlates() {
         uCount: { value: anchors.length },
         uLeader: { value: 0 },
         uTime: shared.uTime,
+        uRadius: { value: parseFloat(getComputedStyle(imgEl).borderTopLeftRadius) || 0 },
       },
     });
     const mesh = new THREE.Mesh(geo, mat);

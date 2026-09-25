@@ -7,7 +7,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { DrawSVGPlugin } from 'gsap/DrawSVGPlugin';
 import Lenis from 'lenis';
 import { STRINGS, initialLang, rememberLang, applyStrings } from './i18n.js';
-import { state, bus } from './state.js';
+import { state, bus, prefersReduced, SHORT } from './state.js';
 import { layPaper } from './ui/paper.js';
 import { fitAll } from './ui/fit.js';
 import { collectInk, measureInk, updateInk, roller } from './ui/ink.js';
@@ -30,6 +30,18 @@ import { initTypecase } from './ui/typecase.js';
 import { initFolio } from './ui/folio.js';
 import { initTelegram } from './ui/telegram.js';
 import { initSetline } from './ui/setline.js';
+import { readSite, applySite } from './ui/site.js';
+import { initPortrait } from './ui/portrait.js';
+import { initGraphic } from './ui/graphic.js';
+import { initCalculator } from './ui/calculator.js';
+import { initPrint } from './ui/print.js';
+import { initSetfront } from './ui/setfront.js';
+import { initMagnifier } from './ui/magnifier.js';
+import { initTilt } from './ui/tilt.js';
+import { initNight } from './ui/night.js';
+import { initShare } from './ui/share.js';
+import { initRoad } from './ui/road.js';
+import { noteSource } from './ui/from.js';
 import { paintRoutes, syncAddress, isHere, routeOf } from './routes.js';
 
 gsap.registerPlugin(ScrollTrigger, DrawSVGPlugin);
@@ -87,9 +99,14 @@ function scrollToHash(hash, immediate = false) {
 
 async function boot() {
   layPaper();
+  // a shared link that names its place (?utm_source=…): noted for a telegram, and cleared from the address
+  noteSource();
   state.lang = initialLang();
   state.T = STRINGS[state.lang];
+  // the admin's settings (from the Worker): what they switch on is set before anything is fitted
+  readSite();
   applyStrings(state.T);
+  applySite(state.T);
   paintRoutes(state.lang);
   syncAddress(state.lang);
   // the word for the sheet you are on stays pressed
@@ -101,7 +118,7 @@ async function boot() {
   intro.progress(0.04);
 
   // the fitting needs the faces' real metrics
-  const faces = ['900 100px Anybody', '400 100px Ultra', '400 20px "Old Standard"', 'italic 400 20px "Old Standard"', '850 40px Anybody'];
+  const faces = ['900 100px Anybody', '400 20px Inter', '600 20px Inter', '850 40px Anybody'];
   let n = 0;
   await Promise.all(faces.map((f) => document.fonts.load(f).catch(() => null).then(() => intro.progress(0.06 + (++n / faces.length) * 0.4))));
   fitAll();
@@ -141,6 +158,7 @@ async function boot() {
       state.T = STRINGS[lang];
       rememberLang(lang);
       applyStrings(state.T);
+      applySite(state.T);
       paintRoutes(lang);
       syncAddress(lang);
       fitAll();
@@ -149,7 +167,23 @@ async function boot() {
       ScrollTrigger.refresh();
     });
   };
-  initWords({ onLang: setLang, onProof: (on) => setProof(on) });
+  // Stop the press. Everything that moves by itself reads state.reduced every
+  // frame (the running line, the stamp, the engraving, the brayer, the plates),
+  // so turning it on stops them where they are and sets every head inked; the
+  // choice is kept, and the next sheet opens as it does for reduced motion: no
+  // counter, no feed, no glide.
+  const setStill = (on) => {
+    state.still = on;
+    try { if (on) localStorage.setItem('sd-still', '1'); else localStorage.removeItem('sd-still'); } catch { /* not kept */ }
+    state.reduced = prefersReduced || on;
+    root.classList.toggle('no-motion', state.reduced);
+    if (lenis) lenis.options.lerp = state.reduced ? 1 : 0.1;
+    bus.emit('still', on);
+  };
+  initWords({ onLang: setLang, onProof: (on) => setProof(on), onStill: setStill });
+  // the night edition: the engraving's sun, and the date line's, turn the sheet dark
+  initNight();
+  initShare();
   const marquee = createMarquee();
   initFan();
   initCases(stage);
@@ -164,8 +198,19 @@ async function boot() {
   initFeed();
   initTypecase();
   initFolio(stage);
+  initPortrait(stage);
+  initGraphic(stage);
   initTelegram();
   initSetline();
+  // the optional parts that behave, not only show (each does nothing unless switched on)
+  initPrint();
+  initSetfront();
+  initCalculator();
+  initMagnifier();
+  // a phone's tilt leans the engraving's light, where the engraving is drawn
+  if (stage) initTilt();
+  // the Elixir van's road down the sheet, painted as it is read
+  const road = initRoad();
 
   // A link to a part of this sheet is carried there by the one scroll; a link
   // to another sheet is left to the browser, and the press feeds that sheet in.
@@ -201,6 +246,7 @@ async function boot() {
     updateInk();
     marquee(dt);
     extra(dt);
+    road?.update();
     game(dt);
     if (stage) stage.frame(t, dt);
     if (state.sound) {
@@ -219,14 +265,21 @@ async function boot() {
   // keep the sheet fitted to its window
   let lastW = state.vw;
   let resizeCall = null;
+  const touch = window.matchMedia('(pointer: coarse)').matches;
   window.addEventListener('resize', () => {
     resizeCall?.kill();
     resizeCall = gsap.delayedCall(0.16, () => {
-      const wasMobile = state.mobile;
+      // a phone's address bar sliding in or out: the height only, and by a little
+      if (touch && window.innerWidth === state.vw && Math.abs(window.innerHeight - state.vh) < 160) {
+        state.vh = window.innerHeight;
+        return;
+      }
+      const wasMobile = state.mobile, wasShort = state.short;
       state.vw = window.innerWidth;
       state.vh = window.innerHeight;
       state.mobile = window.matchMedia('(max-width: 767px)').matches;
-      if (wasMobile !== state.mobile) { location.reload(); return; }
+      state.short = window.matchMedia(SHORT).matches;
+      if (wasMobile !== state.mobile || wasShort !== state.short) { location.reload(); return; }
       stage?.resize();
       if (state.vw !== lastW) {
         lastW = state.vw;

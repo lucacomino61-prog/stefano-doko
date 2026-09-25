@@ -1,5 +1,7 @@
-// Newsprint made in the browser: a grain tile laid under everything, and a
-// speckle mask for inked type (the dots where the ink did not take).
+// Paper made in the browser: a fine grain tile laid under everything, and a
+// speckle mask for the counter's rubber stamp (the dots where the ink did not
+// take). Since the modern edition (2026-09-25) the grain is lighter and the
+// coarse mottle of old newsprint is no longer made.
 // Generated from a fixed seed, so every visit gets the same sheet.
 
 function rng(seed) {
@@ -29,19 +31,19 @@ export function makeGrain() {
     for (let i = 0; i < s * s; i++) {
       const n = r();
       const o = i * 4;
-      if (n < 0.06) { // ink speck
-        d[o] = 20; d[o + 1] = 20; d[o + 2] = 20; d[o + 3] = 10 + r() * 22;
-      } else if (n > 0.965) { // bright fibre dot
-        d[o] = 255; d[o + 1] = 252; d[o + 2] = 240; d[o + 3] = 26 + r() * 30;
+      if (n < 0.045) { // ink speck
+        d[o] = 20; d[o + 1] = 20; d[o + 2] = 20; d[o + 3] = 6 + r() * 14;
+      } else if (n > 0.975) { // bright fibre dot
+        d[o] = 255; d[o + 1] = 252; d[o + 2] = 240; d[o + 3] = 18 + r() * 22;
       }
     }
   });
   // a few fibres: short hairlines in both tones
   const ctx = c.getContext('2d');
   ctx.lineCap = 'round';
-  for (let i = 0; i < 26; i++) {
+  for (let i = 0; i < 12; i++) {
     const x = r() * 256, y = r() * 256, a = r() * Math.PI, l = 6 + r() * 16;
-    ctx.strokeStyle = r() > 0.5 ? 'rgba(20,20,20,0.07)' : 'rgba(255,250,236,0.22)';
+    ctx.strokeStyle = r() > 0.5 ? 'rgba(20,20,20,0.045)' : 'rgba(255,250,236,0.16)';
     ctx.lineWidth = 0.6 + r() * 0.5;
     ctx.beginPath();
     ctx.moveTo(x, y);
@@ -113,9 +115,8 @@ function blobUrl(canvas) {
 export async function layPaper() {
   const root = document.documentElement.style;
   try {
-    const [grain, mottle, speckle] = await Promise.all([makeGrain(), makeMottle(), makeSpeckle()].map(blobUrl));
+    const [grain, speckle] = await Promise.all([makeGrain(), makeSpeckle()].map(blobUrl));
     root.setProperty('--grain', `url(${grain})`);
-    root.setProperty('--mottle', `url(${mottle})`);
     root.setProperty('--speckle', `url(${speckle})`);
   } catch { /* canvas blocked: plain paper still reads */ }
 }

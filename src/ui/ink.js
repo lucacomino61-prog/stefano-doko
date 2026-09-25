@@ -19,7 +19,7 @@ export function collectInk() {
     const follow = el.dataset.inkFollow || null;
     // the head of each sheet is inked as the sheet opens; the rest as they are read
     // a case sheet's name is inked while the sheet is held (its data-ink is the case's id)
-    const source = follow ? 'follow' : key === 'mast' || el.dataset.inkSource === 'intro' ? 'intro' : el.closest('[data-case]')?.id === key && !state.mobile ? 'dwell' : 'view';
+    const source = follow ? 'follow' : key === 'mast' || el.dataset.inkSource === 'intro' ? 'intro' : el.closest('[data-case]')?.id === key && !state.mobile && !state.short ? 'dwell' : 'view';
     const occluder = el.closest('[data-case]')?.nextElementSibling?.nextElementSibling || null;
     const it = { el, key, source, follow, occluder, u: -1, p: -1, x: 0, leader: null };
     byEl.set(el, it);

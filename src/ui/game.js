@@ -130,16 +130,24 @@ export function initGame() {
     ctx.fill();
     ctx.lineWidth = 2.2; ctx.strokeStyle = colors.ink; ctx.stroke();
     ctx.fillStyle = S.inked ? colors.paper : colors.ink;
-    ctx.font = '400 34px Ultra, serif';
+    ctx.font = '900 34px Anybody, sans-serif';
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText('S', S.x + S.w / 2, S.y + S.h / 2 + 2);
-    // captions
+    // captions, broken into lines where they run long (a phone's box is narrow,
+    // and squeezed onto one line the Albanian ran its letters together)
     if (mode !== 'run') {
       ctx.fillStyle = colors.ink;
       ctx.font = '800 13px Anybody, sans-serif';
       ctx.textAlign = 'left';
       const text = (mode === 'over' ? state.T.gameOver(score) : state.T.gameStart).toUpperCase();
-      ctx.fillText(text, S.x + S.w + 22, 34, W - S.x - S.w - 40);
+      const room = W - S.x - S.w - 40;
+      const lines = [];
+      for (const word of text.split(' ')) {
+        const line = lines.length ? `${lines[lines.length - 1]} ${word}` : word;
+        if (lines.length && ctx.measureText(line).width <= room) lines[lines.length - 1] = line;
+        else lines.push(word);
+      }
+      lines.forEach((line, i) => ctx.fillText(line, S.x + S.w + 22, 34 + i * 18, room));
     }
   }
 

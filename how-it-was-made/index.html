@@ -21,11 +21,11 @@
       <div class="colophon-long">
         <section aria-labelledby="md-eng-h">
           <h2 class="colhead" id="md-eng-h"><svg class="orn"><use href="#star"/></svg><span data-i18n="mdEngHead">The engraving</span></h2>
-          <p data-i18n="mdEng">The band at the top of the front page is a small 3D scene (perfume bottles, a delivery van, a beach bar) drawn as a line engraving: tone becomes parallel lines, crossed where the shadow is deep. Move the pointer over it and the wet ink smears, the black plate slipping off the red. It is WebGL, drawn with three.js and cut again thirty times a second.</p>
+          <p data-i18n="mdEng">The band at the top of the front page is a small 3D scene (perfume bottles, a delivery van, a beach bar) drawn as a line engraving: tone becomes parallel lines, crossed where the shadow is deep. Move the pointer over it and the wet ink smears, the black plate slipping off the red. It is WebGL, drawn with three.js and cut again thirty times a second. Its sun stands where the sun stands over Albania, and its sky takes Tirana’s weather from MET Norway: the clouds gather, rain falls in slanting strokes, snow in white flakes, fog fades the distance and lightning is cut over the sea.</p>
         </section>
         <section aria-labelledby="md-type-h">
           <h2 class="colhead" id="md-type-h"><svg class="orn"><use href="#star"/></svg><span data-i18n="mdTypeHead">The type</span></h2>
-          <p data-i18n="mdType">Three faces, all served from this site: Anybody, a wood gothic whose width can be set anywhere from 50 to 150; Ultra, a fat face from wood type; and Old Standard, a newspaper face of the late 1800s. Every headline is fitted line by line, the way a compositor fills a measure: the width and the size of each line are chosen to fill it, and nothing is stretched.</p>
+          <p data-i18n="mdType">Two faces, both served from this site: Anybody, a grotesque whose width can be set anywhere from 50 to 150, for the headlines, the labels and, set wide, the names of the work; and Inter, a face drawn for screens, for everything that is read. Every headline is fitted line by line, the way a compositor fills a measure: the width and the size of each line are chosen to fill it, and nothing is stretched.</p>
         </section>
         <section aria-labelledby="md-ink-h">
           <h2 class="colhead" id="md-ink-h"><svg class="orn"><use href="#star"/></svg><span data-i18n="mdInkHead">The ink</span></h2>
@@ -68,6 +68,18 @@
         <input class="setline__in" id="setline-in" type="text" maxlength="40" autocomplete="off" spellcheck="false" value="Stefano Doko" data-setline-in>
         <p class="setline__out" aria-hidden="true" data-setline-out>Stefano Doko</p>
         <p class="setline__how" data-i18n="mdSetHow">Type, and the line is fitted to the measure as you go: the width axis first, then the size.</p>
+        <!-- the press: the line printed as a poster, to save or share (src/ui/setline.js, src/ui/poster.js) -->
+        <div class="setline__press">
+          <button class="btn btn--ink" type="button" data-setline-print><span data-i18n="mdPrint">Print it as a poster</span><svg class="hand" aria-hidden="true"><use href="#hand"/></svg></button>
+          <p class="setline__status" role="status" data-setline-status></p>
+        </div>
+        <figure class="setline__poster" data-setline-poster hidden>
+          <img class="setline__img" alt="" width="1080" height="1350" data-setline-img>
+          <figcaption class="setline__take">
+            <a class="btn btn--line" href="#" download data-setline-save><span data-i18n="mdSave">Save the poster</span></a>
+            <button class="btn btn--line" type="button" data-setline-share hidden><span data-i18n="mdShare">Share it</span></button>
+          </figcaption>
+        </figure>
       </section>
 
       <nav class="next" aria-label="Next sheet" data-i18n-attr="aria-label:nextLabel">

@@ -4,23 +4,40 @@ import fs from 'node:fs';
 
 const root = import.meta.dirname;
 
-// The sheets: the broadside itself, the two case editions, the colophon at
-// length, the telegraph counter and the 404. Static output in dist/; the
-// Albanian pages are written from these after the build (tools/build-sq.mjs).
+// The sheets: the broadside itself, the work, about and the websites each as a
+// page of its own, the two case editions, the colophon at length, the telegraph
+// counter and the 404. Static output in dist/; the Albanian and Italian pages
+// are written from these after the build (tools/build-sq.mjs).
 const pages = {
   main: 'index.html',
+  work: 'work/index.html',
+  about: 'about/index.html',
+  services: 'services/index.html',
   elixir: 'work/elixir/index.html',
   martiri: 'work/bar-martiri/index.html',
   made: 'how-it-was-made/index.html',
   contact: 'contact/index.html',
+  privacy: 'privacy/index.html',
+  terms: 'terms/index.html',
   notFound: '404.html',
+  // the admin panel: its own small script and styles, none of the sheet's (served by the Worker)
+  admin: 'admin/index.html',
 };
 
 // <!-- @include name.html --> pulls in a shared piece of every sheet from
-// partials/, so the toolbar, the dateline and the foot are set once.
+// partials/, so the toolbar, the dateline and the foot are set once, and each
+// part of the front page is set once for the front page and for its own page.
+// A part that leads its own page (<!-- @include sheet-work.html lead -->) opens
+// with the dateline, and its head is the page's h1, inked as the page opens;
+// on the front page the same markers leave the part exactly as it was.
+const LEAD = { LEAD_CLASS: ' sheet--lead', LEAD_TOP: '<!-- @include dateline.html -->\n\n', H: '1', SUB: '2', HEAD_CLASS: ' sheethead--page', HEAD_SOURCE: ' data-ink-source="intro"' };
+const PLAIN = { LEAD_CLASS: '', LEAD_TOP: '', H: '2', SUB: '3', HEAD_CLASS: '', HEAD_SOURCE: '' };
 function partials() {
   const dir = resolve(root, 'partials');
-  const include = (html) => html.replace(/<!--\s*@include\s+([\w.-]+)\s*-->/g, (_, file) => include(fs.readFileSync(resolve(dir, file), 'utf8')));
+  const include = (html) => html.replace(/<!--\s*@include\s+([\w.-]+)(\s+lead)?\s*-->/g, (_, file, lead) => {
+    const vars = lead ? LEAD : PLAIN;
+    return include(fs.readFileSync(resolve(dir, file), 'utf8').replace(/\{\{([A-Z_]+)\}\}/g, (m, k) => (k in vars ? vars[k] : m)));
+  });
   return {
     name: 'sheet-partials',
     transformIndexHtml: { order: 'pre', handler: include },

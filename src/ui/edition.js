@@ -7,11 +7,18 @@ export function initEdition() {
   const slot = document.querySelector('[data-edition]');
   if (!slot || state.reduced) { slot?.remove(); return null; }
   const build = () => {
-    const parts = ['[data-toolbar]', '.dateline', '.mast', '[data-gl="band"]'].map((s) => document.querySelector(s)?.cloneNode(true)).filter(Boolean);
+    const parts = ['[data-toolbar]', '.dateline', '.mast', '[data-gl="band"]'].map((s) => document.querySelector(s)?.cloneNode(true)).filter(Boolean).map((p) => {
+      // the masthead is the page's one <h1>; its copy is set the same, as a plain block
+      if (p.tagName !== 'H1') return p;
+      const div = document.createElement('div');
+      for (const a of p.attributes) div.setAttribute(a.name, a.value);
+      div.append(...p.childNodes);
+      return div;
+    });
     parts.forEach((p) => {
       p.querySelectorAll('[id]').forEach((el) => el.removeAttribute('id'));
       p.removeAttribute('id');
-      p.querySelectorAll('.proof-note, figcaption').forEach((el) => el.remove());
+      p.querySelectorAll('.proof-note, figcaption, [data-sky]').forEach((el) => el.remove());
       p.querySelectorAll('a, button, input').forEach((el) => el.setAttribute('tabindex', '-1'));
       p.querySelectorAll('[data-clock]').forEach((el) => el.setAttribute('data-clock', ''));
     });

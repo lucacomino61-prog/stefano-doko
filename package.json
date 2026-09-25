@@ -6,16 +6,23 @@
   "scripts": {
     "dev": "vite --port 3670 --strictPort",
     "build": "vite build && node tools/build-sq.mjs",
-    "preview": "vite preview --port 3671 --strictPort"
+    "preview": "vite preview --port 3671 --strictPort",
+    "worker:dev": "npm run build && wrangler dev --port 3672 --ip 127.0.0.1",
+    "admin:password": "node tools/admin-password.mjs",
+    "test:admin": "node tools/test-admin.mjs"
   },
   "dependencies": {
     "gsap": "^3.15.0",
+    "hono": "^4.13.9",
     "lenis": "^1.3.26",
     "opentype.js": "^2.0.0",
+    "qrcode-generator": "^2.0.4",
     "three": "^0.186.0"
   },
   "devDependencies": {
+    "axe-core": "^4.13.0",
     "puppeteer-core": "^25.12.0",
-    "vite": "^8.3.0"
+    "vite": "^8.3.0",
+    "wrangler": "^4.138.0"
   }
 }

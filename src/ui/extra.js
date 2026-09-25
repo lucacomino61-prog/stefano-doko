@@ -35,9 +35,24 @@ export function initExtra() {
     revert = gsap.delayedCall(2.6, () => { copyLabel.textContent = state.T.copy; status.textContent = ''; });
   });
 
-  // the stamp's two phrases follow the language
+  // The stamp's two phrases follow the language, and are set to fit their half
+  // of the ring between its two stars: at the sheet's size "Shkruaji Stefanos"
+  // ran half a word into them. Both phrases take the smaller of the two fits.
   const paintBadge = () => {
-    sheet.querySelectorAll('[data-badge]').forEach((t) => { t.textContent = state.T.badge[+t.dataset.badge]; });
+    const paths = [...sheet.querySelectorAll('[data-badge]')];
+    paths.forEach((t) => { t.textContent = state.T.badge[+t.dataset.badge]; t.parentElement.style.fontSize = ''; });
+    let k = 1;
+    for (const t of paths) {
+      const arc = sheet.querySelector(t.getAttribute('href'))?.getTotalLength() || 0;
+      const len = t.parentElement.getComputedTextLength();
+      if (arc && len) k = Math.min(k, (arc * 0.8) / len);
+    }
+    if (k < 1) {
+      paths.forEach((t) => {
+        const size = parseFloat(getComputedStyle(t.parentElement).fontSize);
+        t.parentElement.style.fontSize = `${(size * k).toFixed(2)}px`;
+      });
+    }
   };
   paintBadge();
   bus.on('lang', paintBadge);
@@ -63,25 +78,36 @@ export function initExtra() {
   if (state.fine && !state.reduced) {
     head.addEventListener('pointermove', (e) => { target = Math.max(-60, Math.min(60, target + e.movementX * 0.9)); });
   }
+  // The stamp turns on the compositor, 7 degrees a second, faster with a fast
+  // scroll. Written from here every frame, its transform cost a full
+  // compositor update on every frame the sheet was on screen (a phone at a
+  // quarter speed dropped every other frame there); now the scroll's pace sets
+  // the animation's rate, and only when it changes by a step.
   const ring = sheet.querySelector('.badge__ring');
-  let rot = 0;
+  const spin = ring.animate?.([{ transform: 'rotate(0deg)' }, { transform: 'rotate(360deg)' }], { duration: (360 / 7) * 1000, iterations: Infinity }) || null;
+  spin?.pause();
+  let rate = 1;
   let visible = false;
-  new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { rootMargin: '80px' }).observe(sheet);
+  const turn = () => { if (!spin) return; if (visible && !state.reduced) spin.play(); else spin.pause(); };
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; turn(); }, { rootMargin: '80px' }).observe(sheet);
+  bus.on('still', turn);
 
   return function update(dt) {
     if (!visible) return;
-    if (!state.reduced) {
-      rot += dt * (7 + Math.min(120, Math.abs(state.velocity) * 4));
-      ring.style.transform = `rotate(${rot.toFixed(2)}deg)`;
+    if (spin && !state.reduced) {
+      const want = Math.round((1 + Math.min(120, Math.abs(state.velocity) * 4) / 7) * 2) / 2;
+      if (want !== rate) { rate = want; spin.updatePlaybackRate(rate); }
     }
     target *= Math.pow(0.02, dt);
     off += (target - off) * Math.min(1, dt * 14);
     const on = Math.abs(off) > 0.4;
+    const was = active;
     if (on !== active) {
       active = on;
       head.classList.toggle('is-sliced', on);
     }
-    if (slices.length === 3) {
+    // the slices are written only while they slip, and once to put them back
+    if (slices.length === 3 && (on || was)) {
       slices[0].style.transform = on ? `translateX(${(-off * 0.55).toFixed(2)}px)` : '';
       slices[1].style.transform = on ? `translateX(${(off * 0.35).toFixed(2)}px)` : '';
       slices[2].style.transform = on ? `translateX(${off.toFixed(2)}px)` : '';
